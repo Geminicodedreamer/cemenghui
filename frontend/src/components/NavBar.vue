@@ -1,32 +1,25 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light nav-color bg-primary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg navbar-light nav-color bg-primary" data-bs-theme="dark">
   <div class="container">
-    <router-link class="navbar-brand" style="font-family:STXingkai;font-size:200%; margin-right:2%;font-weight: normal;" :to="{name:'404'}">测盟汇</router-link>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <router-link class="navbar-brand" style="font-family:STXingkai;font-size:200%; margin-right:2%;font-weight: normal;" :to="{name: 'home'}">测盟汇</router-link>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'404'}">首页</router-link>
+          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name: 'customer'}">用户</router-link>
         </li>
         <li class="nav-item">
-            <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'user_account_login'}">用户管理</router-link>
+          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name: 'organization'}">组织</router-link>
         </li>
         <li class="nav-item">
-            <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'user_account_login'}">组织管理</router-link>
+          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name: 'industry'}">行业动态</router-link>
         </li>
         <li class="nav-item">
-            <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'user_account_login'}">行业动态管理</router-link>
+          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name: 'lesson'}">课程管理</router-link>
         </li>
         <li class="nav-item">
-            <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'user_account_login'}">课程管理</router-link>
+          <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name: 'meeting'}">会议管理</router-link>
         </li>
-        <li class="nav-item">
-            <router-link :class="route_name == 'pk_index' ? 'nav-link active' : 'nav-link'" :to="{name:'user_account_login'}">会议管理</router-link>
-        </li>
-       </ul> 
-      
+      </ul>
       <ul class="navbar-nav" v-if="$store.state.user.is_login">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,7 +28,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
 
-                <router-link class="dropdown-item" :to="{name: 'user_account_login'}">我的</router-link>
+                <router-link class="dropdown-item" :to="{name: '404'}">个人资料</router-link>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#" @click="logout">退出</a></li>
@@ -54,8 +47,6 @@
           </router-link>
         </li>
       </ul>
-      
-
     </div>
   </div>
 </nav>
@@ -86,10 +77,8 @@ export default {
 
 <style scoped>
 .nav-color{
-  background-color: rgb(38,38,38);
   font-family:YouYuan;
   font-size: 120%;
   font-weight: bolder;
 }
-
 </style>
