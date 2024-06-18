@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UserAccountLoginView from '../views/user/account/UserAccountLoginView'
-import UserAccountRegisterView from '../views/user/account/UserAccountRegisterView'
+import UserAccountLoginView from '../views/home/account/UserAccountLoginView.vue'
+import UserAccountRegisterView from '../views/home/account/UserAccountRegisterView'
+import NotFoundView from '../views/error/NotFoundView'
 import store from '../store/index'
 
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
   {
     path: "/404/",
     name: "404",
-    component: NotFound,
+    component: NotFoundView,
     meta: {
       requestAuth: false,
     }
