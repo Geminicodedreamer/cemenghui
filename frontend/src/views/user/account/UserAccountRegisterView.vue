@@ -1,5 +1,5 @@
 <template>
-    <ContentField>
+    <ContentField class="start">
         <div class="row justify-content-md-center">
             <div class="col-3">
                 <form @submit.prevent="register">
@@ -76,5 +76,10 @@ button {
 
 div.error-message {
     color: red;
+}
+
+.start{
+    position: relative;
+    top: 40%;
 }
 </style>

@@ -1,39 +1,83 @@
 <template>
-    <ContentField v-if="!$store.state.user.pulling_info">
-        <div class="row justify-content-md-center">
-            <div class="col-3">
-                <form @submit.prevent="login">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">用户名</label>
-                        <input v-model="username" type="text" class="form-control" id="username" placeholder="请输入用户名">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">密码</label>
-                        <input v-model="password" type="password" class="form-control" id="password" placeholder="请输入密码">
-                    </div>
-                    <div class="error-message">{{ error_message }}</div>
-                    <button type="submit" class="btn btn-primary">提交</button>
-                </form>
+    <div class="card login" v-if="!$store.state.user.pulling_info">
+        <div class="card-body">
+            <div style="font-family:STXingkai;font-size:260%;text-align:center;">
+                测盟汇
             </div>
+                <el-radio-group v-model="labelPosition" style="margin-top:2%;" aria-label="label position">
+                    <el-radio-button value="left">靠左</el-radio-button>
+                    <el-radio-button value="right">靠右</el-radio-button>
+                    <el-radio-button value="top">顶部</el-radio-button>
+                </el-radio-group>
+                <div style="margin: 20px" />
+                <el-form
+                    :label-position="labelPosition"
+                    label-width="auto"
+                    :model="formLabelAlign"
+                    style="max-width: 600px"
+                    @submit.prevent="login"
+                >
+                    <el-form-item label="账号">
+                    <el-input v-model="formLabelAlign.username" type="text" placeholder="账号" />
+                    </el-form-item>
+                    <el-form-item label="密码">
+                    <el-input v-model="formLabelAlign.password" type="password" placeholder="密码"/>
+                    </el-form-item>
+                    <el-form-item label="验证码">
+                        <div>
+                            <el-input v-model="code" />
+                                <SIdentify @click="refreshCode" :identifyCode="identifyCode" />
+                        </div>
+                        
+                    </el-form-item>
+                    <div class="error-message">{{ error_message }}</div>
+                    <el-checkbox label="记住密码" value="true" />
+                    <button type="submit" style="margin-top:4%;" class="btn btn-primary">提交</button>
+                </el-form>
+                
         </div>
-    </ContentField>
+    </div>
 </template>
 
 <script>
-import ContentField from '../../../components/ContentField.vue'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
 import router from '../../../router/index'
+import { FormProps } from 'element-plus'
+import { reactive, ref , onMounted } from 'vue'
+import SIdentify from '../../../components/SIdentify.vue';
 
 export default {
     components: {
-        ContentField
+        SIdentify,
     },
     setup() {
         const store = useStore();
-        let username = ref('');
-        let password = ref('');
         let error_message = ref('');
+        let labelPosition = ref('right');
+        let formLabelAlign = reactive({
+        username: '',
+        password: '',
+        })
+
+        let identifyCodes = "1234567890"
+        let identifyCode = ref('3212')
+        
+        const randomNum = (min, max) => {
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+        
+        const makeCode = (o, l) => {
+            for (let i = 0; i < l; i++) {
+                identifyCode.value += o[
+                    randomNum(0, o.length)
+                ];
+            }
+        }
+        
+        const refreshCode = () => {
+            identifyCode.value = "";
+            makeCode(identifyCodes, 4);
+        }
 
         const jwt_token = localStorage.getItem("jwt_token");
         if (jwt_token) {
@@ -51,11 +95,17 @@ export default {
             store.commit("updatePullingInfo", false);
         }
 
+        onMounted(() => {
+            identifyCode.value = "";
+            makeCode(identifyCodes, 4);
+        })
+
         const login = () => {
             error_message.value = "";
+            console.log(formLabelAlign.username , formLabelAlign.password);
             store.dispatch("login", {
-                username: username.value,
-                password: password.value,
+                username: formLabelAlign.username,
+                password: formLabelAlign.password,
                 success() {
                     store.dispatch("getinfo", {
                         success() {
@@ -70,10 +120,14 @@ export default {
         }
 
         return {
-            username,
-            password,
             error_message,
             login,
+            labelPosition,
+            formLabelAlign,
+            FormProps,
+            refreshCode,
+            identifyCode,
+            identifyCodes
         }
     }
 }
@@ -86,4 +140,13 @@ button {
 div.error-message {
     color: red;
 }
+
+.login{
+    width: 30%;
+    opacity: 0.9;
+    position: absolute;
+    margin-left: 35%;
+    margin-top: 6%;
+}
+
 </style>
