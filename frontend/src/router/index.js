@@ -7,13 +7,14 @@ import OrganizationIndexView from '../views/Organization/OrganizationIndexView'
 import NotFound from '../views/error/NotFound'
 import UserAccountLoginView from '../views/user/account/UserAccountLoginView'
 import UserAccountRegisterView from '../views/user/account/UserAccountRegisterView'
+import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 
 const routes = [
   {
-    path: "/",
+    path: "/home/",
     name: "home",
-    redirect: "/customer/",
+    component: HomeView,
     meta: {
       requestAuth: true,
     }
