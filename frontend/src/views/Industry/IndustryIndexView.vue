@@ -1,13 +1,17 @@
 <template>
-    <ContentField>行业动态</ContentField>
+    <ContentField>
+		<NewsManagement></NewsManagement>
+	</ContentField>
 </template>
 
 <script>
 import ContentField from '../../components/ContentField.vue'
+import NewsManagement from './NewsManagement.vue'
 
 export default {
     components: {
         ContentField,
+		NewsManagement,
     }
 }
 </script>

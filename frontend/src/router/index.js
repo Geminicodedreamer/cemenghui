@@ -7,6 +7,7 @@ import OrganizationIndexView from '../views/Organization/OrganizationIndexView'
 import NotFound from '../views/error/NotFound'
 import UserAccountLoginView from '../views/user/account/UserAccountLoginView'
 import UserAccountRegisterView from '../views/user/account/UserAccountRegisterView'
+import NewsManagement from '../views/Industry/NewsManagement.vue'  // 新增
 import store from '../store/index'
 
 const routes = [
@@ -85,6 +86,14 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     redirect: "/404/"
+  },
+  {
+    path: "/industry/news/",
+    name: "news_management",
+    component: NewsManagement,
+    meta: {
+      requestAuth: true,
+    }
   }
 ]
 
