@@ -229,7 +229,7 @@ div.error-message {
 }
 
 .identify-element {
-  margin-left: 10%; /* 给识别码组件和输入框之间加点间距 */
+  margin-left: 10%;
 }
 
 </style>
