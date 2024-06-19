@@ -11,30 +11,32 @@
                 </el-radio-group>
                 <div style="margin: 20px" />
                 <el-form
-                    :label-position="labelPosition"
-                    label-width="auto"
-                    :model="formLabelAlign"
-                    style="max-width: 600px"
-                    @submit.prevent="login"
+                :label-position="labelPosition"
+                label-width="auto"
+                :model="formLabelAlign"
+                :rules="rules"
+                ref="ruleFormRef"
+                class="demo-ruleForm"
+                @submit.prevent="login"
                 >
-                    <el-form-item label="账号">
-                    <el-input v-model="formLabelAlign.username" type="text" placeholder="账号" />
+                    <el-form-item label="账号" prop="username">
+                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.username" type="text" placeholder="账号" />
                     </el-form-item>
-                    <el-form-item label="密码">
-                    <el-input v-model="formLabelAlign.password" type="password" placeholder="密码"/>
+                    <el-form-item label="密码" prop="password">
+                        <el-input style="caret-color: lightblue;;" v-model="formLabelAlign.password" type="password" placeholder="密码"/>
                     </el-form-item>
-                    <el-form-item label="验证码">
-                        <div>
-                            <el-input v-model="code" />
-                                <SIdentify @click="refreshCode" :identifyCode="identifyCode" />
+                    <el-form-item label="验证码" prop="code">
+                        <div class="container">
+                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.code" class="input-element" />
+                        <SIdentify @click="refreshCode" :identifyCode="identifyCode" class="identify-element" />
                         </div>
-                        
                     </el-form-item>
                     <div class="error-message">{{ error_message }}</div>
-                    <el-checkbox label="记住密码" value="true" />
-                    <button type="submit" style="margin-top:4%;" class="btn btn-primary">提交</button>
-                </el-form>
-                
+                    <el-form-item>
+                        <el-checkbox v-model="rememberMe" label="记住密码" />
+                    </el-form-item>
+                    <button type="submit" style="margin-top:4%;" class="btn btn-primary">登录</button>
+                </el-form>          
         </div>
     </div>
 </template>
@@ -55,8 +57,9 @@ export default {
         let error_message = ref('');
         let labelPosition = ref('right');
         let formLabelAlign = reactive({
-        username: '',
-        password: '',
+            username: '',
+            password: '',
+            code: '',
         })
 
         let identifyCodes = "1234567890"
@@ -94,30 +97,86 @@ export default {
         } else {
             store.commit("updatePullingInfo", false);
         }
+        
+        const rememberMe = ref(false);
 
         onMounted(() => {
             identifyCode.value = "";
             makeCode(identifyCodes, 4);
+
+            const savedUsername = localStorage.getItem('savedUsername');
+            const savedPassword = localStorage.getItem('savedPassword');
+            if (savedUsername && savedPassword) {
+                formLabelAlign.username = savedUsername;
+                formLabelAlign.password = savedPassword;
+                rememberMe.value = true;
+            }
         })
 
+        const ruleFormRef = ref(null);
+
         const login = () => {
-            error_message.value = "";
-            console.log(formLabelAlign.username , formLabelAlign.password);
-            store.dispatch("login", {
-                username: formLabelAlign.username,
-                password: formLabelAlign.password,
-                success() {
-                    store.dispatch("getinfo", {
+             error_message.value = '';
+            if (rememberMe.value) {
+                localStorage.setItem('savedUsername', formLabelAlign.username);
+                localStorage.setItem('savedPassword', formLabelAlign.password);
+            } else {
+                localStorage.removeItem('savedUsername');
+                localStorage.removeItem('savedPassword');
+            }
+
+            const form = ruleFormRef.value;
+            form.validate((valid) => {
+                if (valid) {
+                store.dispatch('login', {
+                    username: formLabelAlign.username,
+                    password: formLabelAlign.password,
+                    success() {
+                    store.dispatch('getinfo', {
                         success() {
-                            router.push({ name: 'home' });
+                        router.push({ name: 'home' });
                         }
-                    })
-                },
-                error() {
-                    error_message.value = "用户名或密码错误";
+                    });
+                    },
+                    error() {
+                    error_message.value = '用户名或密码错误';
+                    }
+                });
+                } else {
+                error_message.value = '请正确填写表单';
                 }
-            })
+            });
         }
+
+        const validateUsername = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('账号不能为空'));
+            }
+            callback();
+        };
+
+        const validatePassword = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('密码不能为空'));
+            }
+            callback();
+        };
+
+        const validateCode = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('验证码不能为空'));
+            } else if (value !== identifyCode.value) {
+                return callback(new Error('验证码不正确'));
+            }
+            callback();
+        };
+
+        const rules = reactive({
+            username: [{ validator: validateUsername, trigger: 'blur' }],
+            password: [{ validator: validatePassword, trigger: 'blur' }],
+            code: [{ validator: validateCode, trigger: 'blur' }]
+        });
+
 
         return {
             error_message,
@@ -127,8 +186,12 @@ export default {
             FormProps,
             refreshCode,
             identifyCode,
-            identifyCodes
+            identifyCodes,
+            rules,
+            rememberMe,
+            ruleFormRef
         }
+
     }
 }
 </script>
@@ -147,6 +210,26 @@ div.error-message {
     position: absolute;
     margin-left: 35%;
     margin-top: 6%;
+    caret-color: transparent;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.input-element, .identify-element {
+  flex: 1;
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
+.input-element {
+  height: 35px;
+}
+
+.identify-element {
+  margin-left: 10%; /* 给识别码组件和输入框之间加点间距 */
 }
 
 </style>
