@@ -129,7 +129,7 @@ export default {
             form.validate((valid) => {
                 if (valid) {
                 store.dispatch('login', {
-                    username: formLabelAlign.username,
+                    companyname: formLabelAlign.username,
                     password: formLabelAlign.password,
                     success() {
                     store.dispatch('getinfo', {

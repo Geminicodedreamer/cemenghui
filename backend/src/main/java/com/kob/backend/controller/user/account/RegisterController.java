@@ -13,9 +13,9 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @PostMapping("/user/account/register/")
+    @PostMapping("/company/account/register/")
     public Map<String, String> register(@RequestParam Map<String, String> map) {
-        String username = map.get("username");
+        String username = map.get("companyname");
         String password = map.get("password");
         String confirmedPassword = map.get("confirmedPassword");
         String telephone = map.get("telephone");

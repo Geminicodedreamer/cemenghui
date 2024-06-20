@@ -1,6 +1,6 @@
-package com.kob.backend.service.impl.user.account;
+package com.kob.backend.service.impl.company.account;
 
-import com.kob.backend.pojo.User;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.service.impl.utils.UserDetailsImpl;
 import com.kob.backend.service.user.account.LoginService;
 import com.kob.backend.utils.JwtUtil;
@@ -20,14 +20,14 @@ public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public Map<String, String> getToken(String username, String password) {
+    public Map<String, String> getToken(String companyname, String password) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
+                new UsernamePasswordAuthenticationToken(companyname, password);
 
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);  // 登录失败，会自动处理
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
-        User user = loginUser.getUser();
-        String jwt = JwtUtil.createJWT(user.getId().toString());
+        Company company = loginUser.getCompany();
+        String jwt = JwtUtil.createJWT(company.getId().toString());
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
