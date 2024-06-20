@@ -1,49 +1,56 @@
 <template>
-  <div class="news-form">
-    <input v-model="newsItem.title" placeholder="新闻标题">
-    <textarea v-model="newsItem.content" placeholder="新闻内容"></textarea>
-    <input v-model="newsItem.author" placeholder="作者">
-    <input v-model="newsItem.summary" placeholder="新闻简介">
-    <input type="file" @change="onFileChange">
-    <button @click="submit">{{ isEditing ? '修改' : '新增' }}资讯</button>
-  </div>
+  <el-form :model="form" label-width="px">
+
+  </el-form>
 </template>
 
 <script>
 export default {
-  props: ['initialNewsItem', 'isEditing'],
   data() {
     return {
-      newsItem: this.initialNewsItem || {
-        title: '',
-        content: '',
+      form: {
+        newsTitle: '',
+        newsDescription: '',
+        newsImagePath: '',
         author: '',
-        summary: '',
-        imagePath: ''
+        order: ''
       }
     }
   },
   methods: {
-    submit() {
-      this.$emit(this.isEditing ? 'edit' : 'create', this.newsItem)
+    searchNews() {
+      // 搜索新闻逻辑
     },
-    onFileChange(event) {
-      const file = event.target.files[0]
-      this.newsItem.imagePath = URL.createObjectURL(file)
+    resetForm() {
+      this.form.newsTitle = ''
+      this.form.newsDescription = ''
+      this.form.newsImagePath = ''
+      this.form.author = ''
+      this.form.order = ''
     }
   }
 }
 </script>
 
 <style scoped>
-.news-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.input-width {
+  width: 100%; /* 设置输入框宽度为100% */
 }
 
-button {
-  padding: 5px 10px;
-  cursor: pointer;
+.form-actions {
+  display: flex;
+  align-items: center;
+}
+
+.el-form-item__label {
+  text-align: left; /* 左对齐标签文本 */
+}
+
+.form-row {
+  margin-bottom: 20px; /* 调整行间距 */
+}
+
+.form-col {
+  padding-right: 5px; /* 调整列间距 */
 }
 </style>
