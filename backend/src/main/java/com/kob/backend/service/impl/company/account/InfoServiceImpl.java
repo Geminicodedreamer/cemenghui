@@ -1,6 +1,6 @@
-package com.kob.backend.service.impl.user.account;
+package com.kob.backend.service.impl.company.account;
 
-import com.kob.backend.pojo.User;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.service.impl.utils.UserDetailsImpl;
 import com.kob.backend.service.user.account.InfoService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,13 +18,13 @@ public class InfoServiceImpl implements InfoService {
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         UserDetailsImpl loginUser = (UserDetailsImpl) authentication.getPrincipal();
-        User user = loginUser.getUser();
+        Company company = loginUser.getCompany();
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
-        map.put("id", user.getId().toString());
-        map.put("username", user.getUsername());
-        map.put("photo", user.getPhoto());
+        map.put("id", company.getId().toString());
+        map.put("companyname", company.getCompanyname());
+        map.put("photo", company.getPhoto());
         return map;
     }
 }

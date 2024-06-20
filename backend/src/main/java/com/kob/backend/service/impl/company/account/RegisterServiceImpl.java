@@ -1,8 +1,8 @@
-package com.kob.backend.service.impl.user.account;
+package com.kob.backend.service.impl.company.account;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.kob.backend.mapper.UserMapper;
-import com.kob.backend.pojo.User;
+import com.kob.backend.mapper.CompanyMapper;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.service.user.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,20 +11,21 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
     @Autowired
-    private UserMapper userMapper;
+    private CompanyMapper companyMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> register(String username, String password, String confirmedPassword , String telephone) {
+    public Map<String, String> register(String companyname, String password, String confirmedPassword , String telephone) {
         Map<String, String> map = new HashMap<>();
-        if (username == null) {
-            map.put("error_message", "用户名不能为空");
+        if (companyname == null) {
+            map.put("error_message", "企业名称不能为空");
             return map;
         }
         if (password == null || confirmedPassword == null) {
@@ -32,9 +33,9 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
-        username = username.trim();
-        if (username.length() == 0) {
-            map.put("error_message", "用户名不能为空");
+        companyname = companyname.trim();
+        if (companyname.length() == 0) {
+            map.put("error_message", "企业名称不能为空");
             return map;
         }
 
@@ -43,7 +44,7 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
-        if (username.length() > 100) {
+        if (companyname.length() > 100) {
             map.put("error_message", "用户名长度不能大于100");
             return map;
         }
@@ -58,18 +59,20 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        List<User> users = userMapper.selectList(queryWrapper);
-        if (!users.isEmpty()) {
+        QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("companyname", companyname);
+        List<Company> companies = companyMapper.selectList(queryWrapper);
+        if (!companies.isEmpty()) {
             map.put("error_message", "用户名已存在");
             return map;
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://cdn.acwing.com/media/user/profile/photo/1_lg_844c66b332.jpg";
-        User user = new User(null, username, encodedPassword, photo , telephone);
-        userMapper.insert(user);
+        String admin_name = "jj";
+        Random random = new Random();
+        Integer symbol = random.nextInt(900000000) + 100000000;
+        Company company = new Company(null, companyname, encodedPassword, null , telephone , admin_name , symbol , null);
+        companyMapper.insert(company);
 
         map.put("error_message", "success");
         return map;

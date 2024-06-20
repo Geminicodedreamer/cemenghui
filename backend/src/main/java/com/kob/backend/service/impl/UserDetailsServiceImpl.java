@@ -1,8 +1,8 @@
 package com.kob.backend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.kob.backend.mapper.UserMapper;
-import com.kob.backend.pojo.User;
+import com.kob.backend.mapper.CompanyMapper;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.service.impl.utils.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,17 +14,17 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserMapper userMapper;
+    private CompanyMapper companyMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        User user = userMapper.selectOne(queryWrapper);
-        if (user == null) {
-            throw new RuntimeException("用户不存在");
+    public UserDetails loadUserByUsername(String companyname) throws UsernameNotFoundException {
+        QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("companyname", companyname);
+        Company company = companyMapper.selectOne(queryWrapper);
+        if (company == null) {
+            throw new RuntimeException("企业不存在");
         }
 
-        return new UserDetailsImpl(user);
+        return new UserDetailsImpl(company);
     }
 }

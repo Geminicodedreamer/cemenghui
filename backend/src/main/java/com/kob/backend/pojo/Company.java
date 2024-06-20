@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Company {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private String username;
+    private String companyname;
     private String password;
     private String photo;
     private String telephone;
+    private String admin_name;
+    private Integer symbol;
+    private String note;
 }
