@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import CustomerIndexView from '../views/Customer/CustomerIndexView.vue'
 import IndustryIndexView from '../views/Industry/IndustryIndexView.vue'
 import LessonIndexView from '../views/Lesson/LessonIndexView'
 import MeetingIndexView from '../views/Meeting/MeetingIndexView'
 import OrganizationIndexView from '../views/Organization/OrganizationIndexView'
 import NotFound from '../views/error/NotFound'
-import UserAccountLoginView from '../views/user/account/UserAccountLoginView'
-import UserAccountRegisterView from '../views/user/account/UserAccountRegisterView'
+import CompanyAccountLoginView from '../views/company/account/CompanyAccountLoginView'
+import CompanyAccountRegisterView from '../views/company/account/CompanyAccountRegisterView'
+
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 
@@ -60,17 +61,17 @@ const routes = [
     }
   },
   {
-    path: "/user/account/login/",
-    name: "user_account_login",
-    component: UserAccountLoginView,
+    path: "/company/account/login/",
+    name: "company_account_login",
+    component: CompanyAccountLoginView,
     meta: {
       requestAuth: false,
     }
   },
   {
-    path: "/user/account/register/",
-    name: "user_account_register",
-    component: UserAccountRegisterView,
+    path: "/company/account/register/",
+    name: "company_account_register",
+    component: CompanyAccountRegisterView,
     meta: {
       requestAuth: false,
     }
@@ -90,13 +91,13 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(process.env.BASE_URL),  
   routes
 })
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requestAuth && !store.state.user.is_login) {
-    next({name: "user_account_login"});
+    next({name: "company_account_login"});
   } else {
     next();
   }

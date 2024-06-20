@@ -13,10 +13,10 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping("/user/account/token/")
+    @PostMapping("/company/account/token/")
     public Map<String, String> getToken(@RequestParam Map<String, String> map) {
-        String username = map.get("username");
+        String companyname = map.get("companyname");
         String password = map.get("password");
-        return loginService.getToken(username, password);
+        return loginService.getToken(companyname, password);
     }
 }

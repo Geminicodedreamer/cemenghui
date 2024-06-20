@@ -185,17 +185,17 @@ export default {
             formEl.validate((valid) => {
                 if (valid) {
                     $.ajax({
-                        url: "http://127.0.0.1:3000/user/account/register/",
+                        url: "http://127.0.0.1:3000/company/account/register/",
                         type: "post",
                         data: {
-                            username: form.username,
+                            companyname: form.username,
                             telephone: form.telephone,
                             password: form.password,
                             confirmedPassword: form.confirmedPassword,
                         },
                         success(resp) {
                             if (resp.error_message === "success") {
-                                router.push({ name: "user_account_login" });
+                                router.push({ name: "company_account_login" });
                             } else {
                                 error_message.value = resp.error_message;
                             }

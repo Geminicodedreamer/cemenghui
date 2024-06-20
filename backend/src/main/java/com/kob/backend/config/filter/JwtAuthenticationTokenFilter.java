@@ -1,7 +1,7 @@
 package com.kob.backend.config.filter;
 
-import com.kob.backend.mapper.UserMapper;
-import com.kob.backend.pojo.User;
+import com.kob.backend.mapper.CompanyMapper;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.service.impl.utils.UserDetailsImpl;
 import com.kob.backend.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
-    private UserMapper userMapper;
+    private CompanyMapper companyMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -43,13 +43,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException(e);
         }
 
-        User user = userMapper.selectById(Integer.parseInt(userid));
+        Company company = companyMapper.selectById(Integer.parseInt(userid));
 
-        if (user == null) {
+        if (company == null) {
             throw new RuntimeException("用户名未登录");
         }
 
-        UserDetailsImpl loginUser = new UserDetailsImpl(user);
+        UserDetailsImpl loginUser = new UserDetailsImpl(company);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, null);
 
