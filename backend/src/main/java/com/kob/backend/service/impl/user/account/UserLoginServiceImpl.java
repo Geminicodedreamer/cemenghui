@@ -1,8 +1,8 @@
-package com.kob.backend.service.impl.company.account;
+package com.kob.backend.service.impl.user.account;
 
-import com.kob.backend.pojo.Company;
-import com.kob.backend.service.impl.utils.CompanyDetailsImpl;
-import com.kob.backend.service.company.account.LoginService;
+import com.kob.backend.pojo.User;
+import com.kob.backend.service.impl.utils.UserDetailsImpl;
+import com.kob.backend.service.user.account.UserLoginService;
 import com.kob.backend.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,24 +15,24 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserLoginServiceImpl implements UserLoginService {
 
-    private static final Logger logger = Logger.getLogger(LoginServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(UserLoginServiceImpl.class.getName());
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
-    public Map<String, String> getToken(String companyname, String password) {
-        logger.info("LoginServiceImpl getToken called with companyname: " + companyname);
+    public Map<String, String> getToken(String username, String password) {
+        logger.info("UserLoginServiceImpl getToken called with username: " + username);
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(companyname, password);
+                new UsernamePasswordAuthenticationToken(username, password);
 
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);  // 登录失败，会自动处理
-        CompanyDetailsImpl loginUser = (CompanyDetailsImpl) authenticate.getPrincipal();
-        Company company = loginUser.getCompany();
-        String jwt = JwtUtil.createJWT(company.getId().toString(), "Company");
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
+        User user = loginUser.getUser();
+        String jwt = JwtUtil.createJWT(user.getUserid().toString(), "User");
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");

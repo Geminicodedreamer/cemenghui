@@ -1,6 +1,6 @@
-package com.kob.backend.controller.user.account;
+package com.kob.backend.controller.company.account;
 
-import com.kob.backend.service.user.account.RegisterService;
+import com.kob.backend.service.company.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

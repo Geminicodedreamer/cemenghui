@@ -1,10 +1,10 @@
 package com.kob.backend.service.impl.utils;
 
 import com.kob.backend.pojo.Company;
-import com.kob.backend.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,9 +13,9 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class CompanyDetailsImpl implements UserDetails {
 
-    private User user;
+    private Company company;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -24,13 +24,13 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return company.getPassword();
     }
 
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return company.getCompanyname();
     }
 
     @Override
@@ -53,4 +53,3 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
-
