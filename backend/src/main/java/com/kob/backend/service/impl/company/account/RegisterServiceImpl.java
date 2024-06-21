@@ -3,7 +3,7 @@ package com.kob.backend.service.impl.company.account;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.user.account.RegisterService;
+import com.kob.backend.service.company.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,7 @@ public class RegisterServiceImpl implements RegisterService {
         queryWrapper.eq("companyname", companyname);
         List<Company> companies = companyMapper.selectList(queryWrapper);
         if (!companies.isEmpty()) {
-            map.put("error_message", "用户名已存在");
+            map.put("error_message", "企业名称已存在");
             return map;
         }
 
@@ -71,7 +71,7 @@ public class RegisterServiceImpl implements RegisterService {
         String admin_name = "jj";
         Random random = new Random();
         Integer symbol = random.nextInt(900000000) + 100000000;
-        Company company = new Company(null, companyname, encodedPassword, null , telephone , admin_name , symbol , null);
+        Company company = new Company(null, companyname, encodedPassword, null , "", telephone , admin_name , symbol , null);
         companyMapper.insert(company);
 
         map.put("error_message", "success");

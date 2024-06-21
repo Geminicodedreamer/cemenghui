@@ -13,8 +13,9 @@ export default {
     },
     mutations: {
         updateUser(state, user) {
+            console.log(user);
             state.id = user.id;
-            state.username = user.companyname;
+            state.username = user.username;
             state.photo = user.photo;
             state.is_login = user.is_login;
         },
@@ -55,6 +56,9 @@ export default {
                 }
             });
         },
+        user_login(context, data) {
+            console.log("user_login" + context.session + data.user  );
+        },
         getinfo(context, data) {
             $.ajax({
                 url: "http://127.0.0.1:3000/company/account/info/",
@@ -63,6 +67,7 @@ export default {
                     Authorization: "Bearer " + context.state.token,
                 },
                 success(resp) {
+                    console.log(resp);
                     if (resp.error_message === "success") {
                         context.commit("updateUser", {
                             ...resp,
