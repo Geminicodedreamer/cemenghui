@@ -19,8 +19,8 @@
                 class="demo-ruleForm"
                 @submit.prevent="login"
                 >
-                    <el-form-item label="企业名称" prop="username">
-                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.username" type="text" placeholder="企业名称" />
+                    <el-form-item label="用户名称" prop="username">
+                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.username" type="text" placeholder="用户名称" />
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input style="caret-color: lightblue;;" v-model="formLabelAlign.password" type="password" placeholder="密码"/>
@@ -104,8 +104,8 @@ export default {
             identifyCode.value = "";
             makeCode(identifyCodes, 4);
 
-            const savedUsername = localStorage.getItem('savedCompanyrname');
-            const savedPassword = localStorage.getItem('savedCompanyPassword');
+            const savedUsername = localStorage.getItem('savedUsername');
+            const savedPassword = localStorage.getItem('savedPassword');
             if (savedUsername && savedPassword) {
                 formLabelAlign.username = savedUsername;
                 formLabelAlign.password = savedPassword;
@@ -118,18 +118,18 @@ export default {
         const login = () => {
              error_message.value = '';
             if (rememberMe.value) {
-                localStorage.setItem('savedCompanyrname', formLabelAlign.username);
-                localStorage.setItem('savedCompanyPassword', formLabelAlign.password);
+                localStorage.setItem('savedUsername', formLabelAlign.username);
+                localStorage.setItem('savedPassword', formLabelAlign.password);
             } else {
-                localStorage.removeItem('savedCompanyrname');
-                localStorage.removeItem('savedCompanyPassword');
+                localStorage.removeItem('savedUsername');
+                localStorage.removeItem('savedPassword');
             }
 
             const form = ruleFormRef.value;
             form.validate((valid) => {
                 if (valid) {
-                store.dispatch('login', {
-                    companyname: formLabelAlign.username,
+                store.dispatch('user_login', {
+                    username: formLabelAlign.username,
                     password: formLabelAlign.password,
                     success() {
                     store.dispatch('getinfo', {
@@ -139,7 +139,7 @@ export default {
                     });
                     },
                     error() {
-                    error_message.value = '企业名称或密码错误';
+                    error_message.value = '用户名称或密码错误';
                     }
                 });
                 } else {
@@ -150,7 +150,7 @@ export default {
 
         const validateUsername = (rule, value, callback) => {
             if (!value) {
-                return callback(new Error('企业名称不能为空'));
+                return callback(new Error('用户名称不能为空'));
             }
             callback();
         };

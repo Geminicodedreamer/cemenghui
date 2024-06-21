@@ -7,13 +7,14 @@ import OrganizationIndexView from '../views/Organization/OrganizationIndexView'
 import NotFound from '../views/error/NotFound'
 import CompanyAccountLoginView from '../views/company/account/CompanyAccountLoginView'
 import CompanyAccountRegisterView from '../views/company/account/CompanyAccountRegisterView'
+import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountLoginView.vue'
 
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 
 const routes = [
   {
-    path: "/home/",
+    path: "/",
     name: "home",
     component: HomeView,
     meta: {
@@ -77,6 +78,14 @@ const routes = [
     }
   },
   {
+    path: "/user/account/login/",
+    name: "user_account_login",
+    component: CustomerAccountLoginView,
+    meta: {
+      requestAuth: false,
+    }
+  },
+  {
     path: "/404/",
     name: "404",
     component: NotFound,
@@ -91,13 +100,14 @@ const routes = [
 ]
 
 const router = createRouter({
+  mode:'history',
   history: createWebHashHistory(process.env.BASE_URL),  
   routes
 })
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requestAuth && !store.state.user.is_login) {
-    next({name: "company_account_login"});
+    next({name: "user_account_login"});
   } else {
     next();
   }
