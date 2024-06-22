@@ -19,7 +19,7 @@ public class User {
     private String telephone;
     private String apartment_name;
     private String gender;
-    private boolean status;
+    private int status;
     private String email;
     private String role;
     private String companyname;
