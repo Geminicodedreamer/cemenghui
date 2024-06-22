@@ -1,22 +1,32 @@
 package com.kob.backend.controller.user.account;
 
+import com.kob.backend.context.UserContext;
 import com.kob.backend.service.user.account.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/user/account")
 public class UserLoginController {
+
     @Autowired
     private UserLoginService userLoginService;
 
-    @PostMapping("/user/account/token")
+    @PostMapping("/token")
     public Map<String, String> getToken(@RequestParam Map<String, String> map) {
-        String username = map.get("username");
-        String password = map.get("password");
-        return userLoginService.getToken(username, password);
+        String userType = "user"; // 设置用户类型为普通用户
+        UserContext.setUserType(userType);
+        try {
+            String username = map.get("username");
+            String password = map.get("password");
+            return userLoginService.getToken(username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            UserContext.clear();
+        }
     }
 }

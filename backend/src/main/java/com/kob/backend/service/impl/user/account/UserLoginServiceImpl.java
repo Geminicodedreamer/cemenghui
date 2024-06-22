@@ -28,15 +28,19 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
-
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);  // 登录失败，会自动处理
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
+
+        System.err.println(loginUser);
+
         User user = loginUser.getUser();
         String jwt = JwtUtil.createJWT(user.getUserid().toString(), "User");
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
         map.put("token", jwt);
+
+        System.err.println(map);
 
         return map;
     }
