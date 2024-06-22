@@ -69,12 +69,15 @@
 		}
 	},
 	"tabBar": {
+		"color":"#000",
+		"selectedColor":"#00BBFF",
+		"borderStyle": "black",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "static/tabs/menu.png",
-				"selectedIconPath": "static/tabs/menu_select.png"
+				"selectedIconPath": "static/tabs/menu_select.png",
 			},
 			{
 				"pagePath": "pages/cooperation/cooperation",
