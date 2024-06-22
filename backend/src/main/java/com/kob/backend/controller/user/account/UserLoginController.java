@@ -22,10 +22,7 @@ public class UserLoginController {
             String username = map.get("username");
             String password = map.get("password");
             return userLoginService.getToken(username, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
+        }  finally {
             UserContext.clear();
         }
     }
