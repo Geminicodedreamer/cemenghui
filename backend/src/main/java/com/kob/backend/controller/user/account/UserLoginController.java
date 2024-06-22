@@ -22,7 +22,7 @@ public class UserLoginController {
             String username = map.get("username");
             String password = map.get("password");
             return userLoginService.getToken(username, password);
-        }  finally {
+        }finally{
             UserContext.clear();
         }
     }

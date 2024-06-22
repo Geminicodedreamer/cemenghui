@@ -36,6 +36,8 @@ public class UserLoginServiceImpl implements UserLoginService {
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
         map.put("token", jwt);
+        map.put("role" , user.getRole());
+        map.put("status" , String.valueOf(user.getStatus()));
 
         return map;
     }

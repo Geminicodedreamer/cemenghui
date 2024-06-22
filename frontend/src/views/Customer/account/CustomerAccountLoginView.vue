@@ -19,8 +19,8 @@
                 class="demo-ruleForm"
                 @submit.prevent="login"
                 >
-                    <el-form-item label="用户名称" prop="username">
-                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.username" type="text" placeholder="用户名称" />
+                    <el-form-item label="管理员名称" prop="username">
+                        <el-input style="caret-color: lightblue;" v-model="formLabelAlign.username" type="text" placeholder="管理员名称" />
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input style="caret-color: lightblue;;" v-model="formLabelAlign.password" type="password" placeholder="密码"/>
@@ -139,7 +139,7 @@ export default {
                     });
                     },
                     error() {
-                    error_message.value = '用户名称或密码错误';
+                        error_message.value = '管理员名称或密码错误';
                     }
                 });
                 } else {
@@ -150,7 +150,7 @@ export default {
 
         const validateUsername = (rule, value, callback) => {
             if (!value) {
-                return callback(new Error('用户名称不能为空'));
+                return callback(new Error('管理员名称不能为空'));
             }
             callback();
         };
