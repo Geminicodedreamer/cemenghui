@@ -13,7 +13,6 @@ export default {
     },
     mutations: {
         updateUser(state, user) {
-            console.log(user);
             state.id = user.id;
             state.username = user.username;
             state.photo = user.photo;
@@ -66,7 +65,6 @@ export default {
                     password: data.password,
                 },
                 success(resp) {
-                    console.log(resp);
                     if (resp.error_message === "success") {
                         localStorage.setItem("jwt_token", resp.token);
                         localStorage.setItem("userType", "user");
@@ -93,7 +91,6 @@ export default {
                         Authorization: "Bearer " + context.state.token,
                     },
                     success(resp) {
-                        console.log(resp);
                         if (resp.error_message === "success") {
                             context.commit("updateUser", {
                                 ...resp,
@@ -117,7 +114,6 @@ export default {
                         Authorization: "Bearer " + context.state.token,
                     },
                     success(resp) {
-                        console.log(resp);
                         if (resp.error_message === "success") {
                             context.commit("updateUser", {
                                 ...resp,
