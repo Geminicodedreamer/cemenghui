@@ -25,6 +25,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         map.put("id", user.getUserid().toString());
         map.put("username", user.getUsername());
         map.put("photo", user.getPhoto());
+        map.put("role" , user.getRole());
         return map;
     }
 }

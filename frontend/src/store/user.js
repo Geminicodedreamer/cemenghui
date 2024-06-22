@@ -66,10 +66,14 @@ export default {
                 },
                 success(resp) {
                     if (resp.error_message === "success") {
-                        localStorage.setItem("jwt_token", resp.token);
-                        localStorage.setItem("userType", "user");
-                        context.commit("updateToken", resp.token);
-                        data.success(resp);
+                        if((resp.role === "超级管理员" || resp.role === "租户管理员") && resp.status === "1"){
+                            localStorage.setItem("jwt_token", resp.token);
+                            localStorage.setItem("userType", "user");
+                            context.commit("updateToken", resp.token);
+                            data.success(resp);
+                        }else{
+                            data.error(resp);
+                        }
                     } else {
                         data.error(resp);
                     }
