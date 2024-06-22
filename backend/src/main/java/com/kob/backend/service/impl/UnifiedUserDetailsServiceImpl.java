@@ -1,5 +1,6 @@
 package com.kob.backend.service.impl;
 
+import com.kob.backend.context.UserContext;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.Company;
@@ -24,18 +25,21 @@ public class UnifiedUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<Company> companyQuery = new QueryWrapper<>();
-        companyQuery.eq("companyname", username);
-        Company company = companyMapper.selectOne(companyQuery);
-        if (company != null) {
-            return new CompanyDetailsImpl(company);
-        }
-
-        QueryWrapper<User> userQuery = new QueryWrapper<>();
-        userQuery.eq("username", username);
-        User user = userMapper.selectOne(userQuery);
-        if (user != null) {
-            return new UserDetailsImpl(user);
+        String userType = UserContext.getUserType();
+        if ("company".equals(userType)) {
+            QueryWrapper<Company> companyQuery = new QueryWrapper<>();
+            companyQuery.eq("companyname", username);
+            Company company = companyMapper.selectOne(companyQuery);
+            if (company != null) {
+                return new CompanyDetailsImpl(company);
+            }
+        } else if ("user".equals(userType)) {
+            QueryWrapper<User> userQuery = new QueryWrapper<>();
+            userQuery.eq("username", username);
+            User user = userMapper.selectOne(userQuery);
+            if (user != null) {
+                return new UserDetailsImpl(user);
+            }
         }
 
         throw new UsernameNotFoundException("User not found with username: " + username);
