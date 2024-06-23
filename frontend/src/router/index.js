@@ -11,6 +11,7 @@ import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountL
 
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
+// import AddMeeting from '../views/Meeting/AddMeeting'
 
 const routes = [
   {
@@ -96,7 +97,15 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     redirect: "/404/"
-  }
+  },
+  // {
+  //   path: "/meeting/addMeeting/",
+  //   name: "addMeeting",
+  //   component: AddMeeting,
+  //   meta: {
+  //     requestAuth: true,
+  //   }
+  // }
 ]
 
 const router = createRouter({
