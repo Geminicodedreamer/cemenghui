@@ -22,7 +22,7 @@ public class GetCompanyServiceImpl implements GetCompanyListService {
     public JSONObject getcompanylist(Integer page) {
         IPage<Company> companyIPage = new Page<>(page , 10);
         QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
+        queryWrapper.orderByAsc("id");
         List<Company> companyList = companyMapper.selectPage(companyIPage, queryWrapper).getRecords();
         JSONObject resp = new JSONObject();
         List<JSONObject> items = new LinkedList<>();
@@ -30,6 +30,11 @@ public class GetCompanyServiceImpl implements GetCompanyListService {
             JSONObject item = new JSONObject();
             item.put("companyId" , company.getId());
             item.put("companyName" , company.getCompanyname());
+            item.put("photo" , company.getPhoto());
+            item.put("telephone" , company.getTelephone());
+            item.put("adminname" , company.getAdminname());
+            item.put("symbol" , company.getSymbol());
+            item.put("ownername" , company.getOwnername());
             items.add(item);
         }
         resp.put("companys", items);

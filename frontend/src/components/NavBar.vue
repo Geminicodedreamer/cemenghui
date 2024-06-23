@@ -7,8 +7,19 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <router-link :class="route_name == 'customer' ? 'nav-link active' : 'nav-link'" :to="{name: 'customer'}">用户</router-link>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              信息管理
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                  <router-link class="dropdown-item" :to="{name: 'customer'}">用户</router-link>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                  <router-link class="dropdown-item" :to="{name: 'company'}">企业租户</router-link>
+              </li>
+            </ul>
         </li>
         <li class="nav-item">
           <router-link :class="route_name == 'organization' ? 'nav-link active' : 'nav-link'" :to="{name: 'organization'}">组织</router-link>
@@ -25,16 +36,15 @@
       </ul>
       <ul class="navbar-nav" v-if="$store.state.user.is_login">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ $store.state.user.username }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-
                 <router-link class="dropdown-item" :to="{name: '404'}">个人信息</router-link>
             </li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#" @click="logout">退出</a></li>
+            <li><a class="dropdown-item"  @click="logout">退出</a></li>
           </ul>
         </li>
       </ul>

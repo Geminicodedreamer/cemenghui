@@ -1,6 +1,6 @@
 package com.kob.backend.controller.company.account;
 
-import com.kob.backend.service.company.account.RegisterService;
+import com.kob.backend.service.company.account.AddCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,16 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-public class RegisterController {
+public class AddCompanyController {
     @Autowired
-    private RegisterService registerService;
+    private AddCompanyService addCompanyService;
 
-    @PostMapping("/company/account/register/")
+    @PostMapping("/company/add/")
     public Map<String, String> register(@RequestParam Map<String, String> map) {
         String companyname = map.get("companyname");
-        String password = map.get("password");
-        String confirmedPassword = map.get("confirmedPassword");
+        String photo = map.get("photo");
+        String ownername = map.get("ownername");
+        String adminname = map.get("adminname");
+        String note = map.get("note");
         String telephone = map.get("telephone");
-        return registerService.register(companyname, password, confirmedPassword , telephone);
+        return addCompanyService.addCompany(companyname,photo , ownername , telephone , adminname , note);
     }
 }

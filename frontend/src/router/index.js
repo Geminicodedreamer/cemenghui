@@ -12,6 +12,7 @@ import LessonAdd from'../views/Lesson/LessonAdd'
 import LessonModify from'../views/Lesson/LessonModify'
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
+import CompanyListView from '../views/company/list/CompanyListView.vue'
 // import AddMeeting from '../views/Meeting/AddMeeting'
 
 const routes = [
@@ -43,6 +44,14 @@ const routes = [
     path: "/customer/",
     name: "customer",
     component: CustomerIndexView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/company/list/",
+    name: "company",
+    component: CompanyListView,
     meta: {
       requestAuth: true,
     }
