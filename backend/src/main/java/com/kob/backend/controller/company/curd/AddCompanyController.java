@@ -1,6 +1,6 @@
-package com.kob.backend.controller.company.account;
+package com.kob.backend.controller.company.curd;
 
-import com.kob.backend.service.company.account.AddCompanyService;
+import com.kob.backend.service.company.curd.AddCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

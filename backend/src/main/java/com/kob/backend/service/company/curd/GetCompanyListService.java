@@ -1,4 +1,4 @@
-package com.kob.backend.service.company.account;
+package com.kob.backend.service.company.curd;
 
 import com.alibaba.fastjson.JSONObject;
 

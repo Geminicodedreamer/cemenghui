@@ -1,9 +1,9 @@
-package com.kob.backend.service.impl.company.account;
+package com.kob.backend.service.impl.company.curd;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.account.AddCompanyService;
+import com.kob.backend.service.company.curd.AddCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

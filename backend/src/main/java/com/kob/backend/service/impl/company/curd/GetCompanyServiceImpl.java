@@ -1,4 +1,4 @@
-package com.kob.backend.service.impl.company.account;
+package com.kob.backend.service.impl.company.curd;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -6,13 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.account.GetCompanyListService;
+import com.kob.backend.service.company.curd.GetCompanyListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GetCompanyServiceImpl implements GetCompanyListService {
