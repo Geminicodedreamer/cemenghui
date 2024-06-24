@@ -14,6 +14,6 @@
 <style scoped>
 div.content-field {
     margin-top: 20px;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 </style>

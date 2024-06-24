@@ -1,20 +1,23 @@
-package com.kob.backend.service.impl.company.account;
+package com.kob.backend.service.impl.company.curd;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.account.RegisterService;
+import com.kob.backend.service.company.curd.AddCompanyService;
+import com.kob.backend.utils.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 @Service
-public class RegisterServiceImpl implements RegisterService {
+public class AddCompanyServiceImpl implements AddCompanyService {
     @Autowired
     private CompanyMapper companyMapper;
 
@@ -22,40 +25,30 @@ public class RegisterServiceImpl implements RegisterService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> register(String companyname, String password, String confirmedPassword , String telephone) {
+    public Map<String, String> addCompany(String companyname, String photo, String ownername, String telephone, String adminname, String note) {
         Map<String, String> map = new HashMap<>();
         if (companyname == null) {
             map.put("error_message", "企业名称不能为空");
             return map;
         }
-        if (password == null || confirmedPassword == null) {
-            map.put("error_message", "密码不能为空");
+
+        if (ownername == null) {
+            map.put("error_message", "联系人不能为空");
             return map;
         }
 
-        companyname = companyname.trim();
-        if (companyname.length() == 0) {
-            map.put("error_message", "企业名称不能为空");
+        if (telephone == null) {
+            map.put("error_message", "电话不能为空");
             return map;
         }
 
-        if (password.length() == 0 || confirmedPassword.length() == 0) {
-            map.put("error_message", "密码不能为空");
+        if (adminname == null) {
+            map.put("error_message", "管理员不能为空");
             return map;
         }
 
         if (companyname.length() > 100) {
             map.put("error_message", "用户名长度不能大于100");
-            return map;
-        }
-
-        if (password.length() > 100 || confirmedPassword.length() > 100) {
-            map.put("error_message", "密码长度不能大于100");
-            return map;
-        }
-
-        if (!password.equals(confirmedPassword)) {
-            map.put("error_message", "两次输入的密码不一致");
             return map;
         }
 
@@ -67,11 +60,11 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
-        String encodedPassword = passwordEncoder.encode(password);
-        String adminname = "jj";
         Random random = new Random();
         Integer symbol = random.nextInt(900000000) + 100000000;
-        Company company = new Company(null, companyname, encodedPassword, null , "", telephone , adminname , symbol , null);
+        String encodedPassword = passwordEncoder.encode(symbol.toString());
+
+        Company company = new Company(null, companyname, encodedPassword, photo, ownername, telephone, adminname, symbol, note);
         companyMapper.insert(company);
 
         map.put("error_message", "success");
