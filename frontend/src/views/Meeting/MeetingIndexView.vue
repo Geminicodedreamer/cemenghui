@@ -22,11 +22,14 @@
                     />
                 </div>
             </div>
-            <button class="btn btn-primary btn-sm" @click="filterList">查询</button>
-            <button class="btn btn-warning btn-sm" @click="resetFilters">重置</button>
-            <button class="btn btn-success btn-sm" @click="addMeeting">新增会议</button>
-            <button class="btn btn-danger btn-sm" @click="deleteSelectedMeetings">删除选中会议</button>
-            <button class="btn btn-info btn-sm" @click="exportToExcel">导出会议数据</button>
+            <div class="button-group">
+                <button class="btn btn-primary btn-sm btn-margin" @click="filterList">查询</button>
+                <button class="btn btn-warning btn-sm btn-margin" @click="resetFilters">重置</button>
+                <button class="btn btn-success btn-sm btn-margin" @click="showAddMeetingModal">新增会议</button>
+                <button class="btn btn-danger btn-sm btn-margin" @click="deleteSelectedMeetings">删除选中会议</button>
+                <button class="btn btn-info btn-sm btn-margin" @click="exportToExcel">导出会议数据</button>
+
+            </div>
         </div>
 
         <div>
@@ -57,7 +60,7 @@
                         <td>{{ meeting.startTime }}</td>
                         <td>{{ meeting.endTime }}</td>
                         <td>
-                            <button @click="editMeeting(meeting.id)" class="btn btn-outline-primary btn-sm">编辑</button>
+                            <button @click="editMeeting(meeting.id)" class="btn btn-outline-primary btn-sm">修改</button>
                             <button @click="deleteMeeting(meeting.id)" class="btn btn-outline-danger btn-sm">删除</button>
                         </td>
                     </tr>
@@ -83,16 +86,22 @@
                 </ul>
             </nav>
         </div>
+		<AddMeeting v-if="showModal" @close="showModal = false" @create="handleCreateMeeting" />
+		<EditMeeting v-if="showEditModal" :meeting="editedMeeting" @close="showEditModal = false" @update="handleUpdateMeeting" />
     </ContentField>
 </template>
 
 <script>
 import ContentField from '../../components/ContentField.vue';
 import * as XLSX from 'xlsx'; // 确保正确引入 xlsx 库
+import AddMeeting from '../../components/AddMeeting.vue';
+import EditMeeting from '../../components/EditMeeting.vue';
 
 export default {
     components: {
         ContentField,
+		AddMeeting,
+		EditMeeting,
     },
     data() {
         return {
@@ -126,7 +135,10 @@ export default {
             value1: null, // 会议日期
             sortDirection: 'asc', // 排序方向
             selectedMeetings: [], // 选中的会议ID列表
-            originalMeetings: [] // 原始会议数据副本
+            originalMeetings: [], // 原始会议数据副本
+			showModal: false,
+			showEditModal: false, // 控制编辑会议信息弹窗显示与隐藏
+			editedMeeting: null // 当前编辑的会议信息
         };
     },
     computed: {
@@ -143,10 +155,11 @@ export default {
                 return (
                     (this.searchName === '' || meeting.name.includes(this.searchName)) &&
                     (this.searchCreator === '' || meeting.creator.includes(this.searchCreator)) &&
-                    (this.searchDate === null || meeting.startTime === this.formatDate(this.searchDate))
+                    (this.searchDate === null || this.formatDate(meeting.startTime) === this.formatDate(this.searchDate))
                 );
             });
-        }
+        },
+
     },
     methods: {
         changePage(page) {
@@ -154,10 +167,10 @@ export default {
                 this.currentPage = page;
             }
         },
-        editMeeting(id) {
-            // 编辑会议的逻辑
-            console.log(`编辑会议 ID: ${id}`);
-        },
+        // editMeeting(id) {
+        //     // 编辑会议的逻辑
+        //     console.log(`修改会议 ID: ${id}`);
+        // },
         deleteMeeting(id) {
             // 删除会议的逻辑
             this.meetings = this.meetings.filter(meeting => meeting.id !== id);
@@ -168,20 +181,43 @@ export default {
             this.selectedMeetings = []; // 清空选中列表
             this.filterList(); // 删除后重新过滤列表
         },
-        addMeeting() {
-			this.$router.push('AddMeeting');
-            // const newId = this.meetings.length ? this.meetings[this.meetings.length - 1].id + 1 : 1;
-            // const newMeeting = {
-            //     id: newId,
-            //     name: '新会议',
-            //     creator: '新创建人',
-            //     content: '新会议内容',
-            //     startTime: this.formatDate(new Date()),
-            //     endTime: this.formatDate(new Date())
-            // };
-            // this.meetings.push(newMeeting);
-            // this.filterList(); // 新增后重新过滤列表
+        addMeeting(meeting) {
+            // 检查会议是否已经存在
+            if (this.meetings.some(m => m.name === meeting.name && m.startTime === meeting.startTime && m.endTime === meeting.endTime)) {
+                // 如果会议已经存在，则不进行添加
+                return;
+            }
+        
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64Image = e.target.result;
+                this.meetings.push({
+                    id: this.meetings.length + 1,
+                    name: meeting.name,
+                    cover: base64Image, // 保存 Base64 格式的图片
+                    creator: meeting.creator,
+                    content: meeting.content,
+                    startTime: meeting.startTime, // 直接使用传入的 startTime
+                    endTime: meeting.endTime // 直接使用传入的 endTime
+                });
+                this.showModal = false;
+            };
+            if (meeting.cover) {
+                reader.readAsDataURL(meeting.cover);
+            } else {
+                this.meetings.push({
+                    id: this.meetings.length + 1,
+                    name: meeting.name,
+                    cover: '', // 没有上传图片时，封面为空
+                    creator: meeting.creator,
+                    content: meeting.content,
+                    startTime: meeting.startTime, // 直接使用传入的 startTime
+                    endTime: meeting.endTime // 直接使用传入的 endTime
+                });
+                this.showModal = false;
+            }
         },
+
         exportToExcel() {
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.json_to_sheet(this.meetings);
@@ -218,9 +254,10 @@ export default {
             const month = '' + (d.getMonth() + 1);
             const day = '' + d.getDate();
             const year = d.getFullYear();
-
+            
             return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
         },
+
         getStatus(startTime, endTime) {
             const now = new Date();
             const meetingStartTime = new Date(startTime);
@@ -233,7 +270,36 @@ export default {
             } else {
                 return '进行中';
             }
-        }
+        },
+		showAddMeetingModal() {
+            this.showModal = true;
+        },
+        handleCreateMeeting(newMeeting) {
+            // 在这里处理创建会议的逻辑，比如将新会议添加到列表中
+            this.meetings.push({
+                id: this.meetings.length + 1,
+                name: newMeeting.name,
+                content: newMeeting.content,
+                cover: newMeeting.cover,
+                creator: newMeeting.creator,
+                startTime: newMeeting.startTime, // 直接使用传入的 startTime
+                endTime: newMeeting.endTime // 直接使用传入的 endTime
+            });
+            this.showModal = false; // 创建成功后关闭弹窗
+            this.filterList(); // 重新过滤列表
+        },
+		editMeeting(meeting) {
+			this.editedMeeting = { ...meeting }; // 复制会议信息，避免直接修改原始数据
+			this.showEditModal = true; // 打开编辑会议信息弹窗
+		},
+		handleUpdateMeeting(updatedMeeting) {
+		// 在这里处理更新会议信息的逻辑，比如将更新后的会议信息保存到列表中
+			const index = this.meetings.findIndex(meeting => meeting.id === updatedMeeting.id);
+			if (index !== -1) {
+				this.meetings.splice(index, 1, updatedMeeting);
+			}
+		}
+
     },
     mounted() {
         this.originalMeetings = JSON.parse(JSON.stringify(this.meetings)); // 存储原始会议数据副本
@@ -248,5 +314,9 @@ export default {
 }
 .search-conditions .form-group {
   margin-bottom: 15px;
+}
+.btn-margin {
+    margin-right: 5px; /* 调整按钮之间的间距 */
+    margin-top:5px;
 }
 </style>
