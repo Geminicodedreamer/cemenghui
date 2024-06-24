@@ -74,6 +74,7 @@
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { useStore } from 'vuex';
+import router from '../router/index'
 
 export default {
     setup() {
@@ -83,6 +84,7 @@ export default {
 
         const logout = () => {
           store.dispatch("logout");
+          router.push({name : 'home'});
         }
 
         return {

@@ -46,10 +46,10 @@
 
                 <div class="error-message">{{ error_message }}</div>
                 <el-form-item>
-                    <el-button type="primary" native-type="submit">注册</el-button>
+                    <el-button type="primary" native-type="submit" style="margin-top:4%;" class="btn btn-primary">注册</el-button>
                 </el-form-item>
             </el-form>
-        </div>
+        </div>  
     </div>
 </template>
 <script>
