@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
 import com.kob.backend.service.company.curd.AddCompanyService;
+import com.kob.backend.utils.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ public class AddCompanyServiceImpl implements AddCompanyService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public Map<String, String> addCompany(String companyname, String photo, String ownername, String telephone, String adminname, String note) {
         Map<String, String> map = new HashMap<>();
@@ -43,12 +47,6 @@ public class AddCompanyServiceImpl implements AddCompanyService {
             return map;
         }
 
-        companyname = companyname.trim();
-        if (companyname.length() == 0) {
-            map.put("error_message", "企业名称不能为空");
-            return map;
-        }
-
         if (companyname.length() > 100) {
             map.put("error_message", "用户名长度不能大于100");
             return map;
@@ -61,12 +59,12 @@ public class AddCompanyServiceImpl implements AddCompanyService {
             map.put("error_message", "企业名称已存在");
             return map;
         }
+
         Random random = new Random();
         Integer symbol = random.nextInt(900000000) + 100000000;
         String encodedPassword = passwordEncoder.encode(symbol.toString());
 
-
-        Company company = new Company(null, companyname, encodedPassword, photo , ownername, telephone , adminname , symbol , note);
+        Company company = new Company(null, companyname, encodedPassword, photo, ownername, telephone, adminname, symbol, note);
         companyMapper.insert(company);
 
         map.put("error_message", "success");
