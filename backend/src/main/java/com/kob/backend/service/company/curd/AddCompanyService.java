@@ -1,6 +1,5 @@
 package com.kob.backend.service.company.curd;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
