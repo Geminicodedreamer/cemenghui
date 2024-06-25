@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="添加租户管理" v-model="internalDialogVisible" @close="resetForm">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="租户名称" class="form-item">
+      <el-form-item label="租户名称" :required="true" class="form-item">
         <el-input v-model="form.companyname" placeholder="请输入租户名称"></el-input>
       </el-form-item>
       <el-form-item label="租户图标" class="form-item">
@@ -12,25 +12,34 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <template #trigger>
-            <el-button icon="el-icon-upload2">点击上传</el-button>
+            <div class="upload-trigger">
+              <div v-if="!form.photoUrl" ><Plus style="width:20px;color: #dcdfe6;"/></div>
+              <img v-if="form.photoUrl" :src="form.photoUrl" class="avatar">
+            </div>
           </template>
-          <img v-if="form.photoUrl" :src="form.photoUrl" class="avatar">
         </el-upload>
-        <div>建议尺寸750px*300px，支持jpg/png/jpeg/gif格式</div>
+        <br>
+        <div class="upload-description">
+          请上传 大小不超过<span class="red-bold">5MB</span> 格式为 
+          <span class="red-bold">png/jpg/jpeg/gif</span> 的文件
+        </div>
       </el-form-item>
-      <el-form-item label="联系人" class="form-item">
+      
+      <el-form-item label="联系人" :required="true" class="form-item">
         <el-input v-model="form.ownername" placeholder="请输入联系人"></el-input>
       </el-form-item>
-      <el-form-item label="电话" class="form-item">
+      <el-form-item label="电话" :required="true" class="form-item">
         <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
       </el-form-item>
-      <el-form-item label="管理员" class="form-item">
+      <el-form-item label="管理员" :required="true" class="form-item">
         <el-input v-model="form.adminname" placeholder="请输入管理员"></el-input>
       </el-form-item>
       <el-form-item label="备注" class="form-item">
         <div class="editor-container">
           <!-- <quill-editor v-model="form.note" ref="quillEditor" :options="editorOptions"></quill-editor> -->
+          <textarea v-model="form.note" class="el-textarea__inner" placeholder="请输入备注内容"></textarea>
         </div>
+        <div class="note-description">备注是富文本格式可以添加媒体资源</div>
       </el-form-item>
       <el-form-item class="button-container">
         <el-button type="primary" @click="submitForm">提交</el-button>
@@ -45,10 +54,12 @@ import { ElMessage } from 'element-plus';
 import { useStore } from 'vuex';
 import $ from 'jquery';
 // import { QuillEditor } from 'vue3-quill';
+import { Plus } from '@element-plus/icons-vue'; // 引入图标
 
 export default {
   components: {
     // QuillEditor
+    Plus,
   },
   props: {
     dialogVisible: {
@@ -121,11 +132,18 @@ export default {
             } else {
               ElMessage.error(response.error_message);
             }
+            this.form.companyname = "";
+            this.form.photoUrl = "";
+            this.form.ownername = "";
+            this.form.telephone = "";
+            this.form.adminname = "";
+            this.form.note = "";
           },
           error: (error) => {
             console.error(error);
             ElMessage.error('提交失败');
           }
+          
         });
       } else {
         ElMessage.error('请完整填写表单');
@@ -155,13 +173,43 @@ export default {
   width: 100px;
   height: 100px;
   display: block;
-  border-radius: 50%;
+  margin-top: 10px;
 }
-.avatar-uploader-icon {
-  font-size: 28px;
+.upload-trigger {
+  width: 120px;
+  height: 120px;
+  border: 1px dashed #dcdfe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  line-height: 100px;
-  text-align: center;
+}
+
+
+.upload-description {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888;
+  white-space: pre-line; 
+}
+.red-bold {
+  color: red;
+  font-weight: bold;
+}
+.note-description {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888;
 }
 .ql-container.ql-snow {
   border: none;
