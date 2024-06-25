@@ -50,6 +50,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
             item.put("adminname" , company.getAdminname());
             item.put("symbol" , company.getSymbol());
             item.put("ownername" , company.getOwnername());
+            item.put("note" , company.getNote());
             items.add(item);
         }
         resp.put("companys", items);

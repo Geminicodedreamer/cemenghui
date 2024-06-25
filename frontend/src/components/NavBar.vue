@@ -35,6 +35,9 @@
         </li>
       </ul>
       <ul class="navbar-nav" v-if="$store.state.user.is_login">
+        <li>
+          <img :src="$store.state.user.photo" class="record-user-photo" v-if="$store.state.user.photo !== 'No file uploaded' && $store.state.user.photo !== '' && $store.state.user.photo !== null">
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ $store.state.user.username }}
@@ -112,6 +115,12 @@ export default {
 .navbar-nav .nav-link.active {
   color: yellow !important; /* Active 链接的颜色设置为黄色 */
   font-weight: bold; /* Active 链接加粗 */
+}
+
+img.record-user-photo {
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
 }
 
 </style>

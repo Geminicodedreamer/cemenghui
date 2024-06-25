@@ -59,7 +59,7 @@
             <td>{{ company.companyName }}</td>
             <td>{{ company.adminname }}</td>
             <td>
-              <el-button @click="editCompany(company.companyId)" type="primary" :icon="Edit" circle />
+               <el-button @click="editCompany(company)" type="primary" :icon="Edit" circle />
               <el-button @click="deleteCompany(company.companyId)" type="danger" :icon="Delete" circle />
             </td>
           </tr>
@@ -82,6 +82,7 @@
       </nav>
 
       <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" @update="handleDataUpdate"/>
+      <ModifyCompanyDialog v-model:dialogVisible="isModifyTenantDialogVisible" :company="selectedCompany" @update="handleDataUpdate"/>
     </div>
   </ContentField>
 </template>
@@ -89,6 +90,7 @@
 <script>
 import ContentField from '../../../components/ContentField';
 import AddCompanyDialog from '../../../components/AddCompanyDialog';
+import ModifyCompanyDialog from '../../../components/ModifyCompanyDialog';
 import { ElMessage } from 'element-plus';
 import { ElMessageBox } from 'element-plus';
 import * as XLSX from 'xlsx';
@@ -105,6 +107,7 @@ export default {
   components: {
     ContentField,
     AddCompanyDialog,
+    ModifyCompanyDialog, 
   },
   setup() {
     const store = useStore();
@@ -122,6 +125,8 @@ export default {
     });
 
     const isAddTenantDialogVisible = ref(false);
+    const isModifyTenantDialogVisible = ref(false); // 新增 ModifyCompanyDialog 的可见状态
+    const selectedCompany = ref(null);
 
     const search = () => {
       pullPage(current_page);
@@ -129,10 +134,10 @@ export default {
 
     const resetFilters = () => {
       filters.value = {
-        tenantId: '',
-        contactPerson: '',
-        phone: '',
-        tenantName: '',
+        symbol: '',
+        ownername: '',
+        telephone: '',
+        companyname: '',
       };
       pullPage(current_page);
     };
@@ -250,8 +255,10 @@ export default {
       });
   };
 
-    const editCompany = id => {
-      console.log(id);
+    const editCompany = company => {
+      selectedCompany.value = { ...company }; // 传递当前选中的公司信息
+      isModifyTenantDialogVisible.value = true;
+      pullPage(current_page);
     };
 
       const deleteCompany = id => {
@@ -314,6 +321,8 @@ export default {
       Search,
       isAddTenantDialogVisible,
       handleDataUpdate,
+      isModifyTenantDialogVisible, 
+      selectedCompany
     };
   }
 }
