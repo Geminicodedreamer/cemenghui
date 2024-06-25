@@ -9,7 +9,6 @@ import CompanyAccountLoginView from '../views/company/account/CompanyAccountLogi
 import CompanyAccountRegisterView from '../views/company/account/CompanyAccountRegisterView'
 import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountLoginView.vue'
 import LessonAdd from'../views/Lesson/LessonAdd'
-import LessonModify from'../views/Lesson/LessonModify'
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 // import AddMeeting from '../views/Meeting/AddMeeting'
@@ -27,14 +26,6 @@ const routes = [
     path: "/lesson/lessonAdd/",
     name: "lessonAdd",
     component: LessonAdd,
-    meta: {
-      requestAuth: true,
-    }
-  },
-  {
-    path: "/lesson/lessonModify/",
-    name: "lessonModify",
-    component: LessonModify,
     meta: {
       requestAuth: true,
     }
