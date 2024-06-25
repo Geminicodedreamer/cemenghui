@@ -78,7 +78,7 @@
         </ul>
       </nav>
 
-      <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" @update-company-list="handleNewCompanyAdded"  />
+      <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" @update="handleDataUpdate"/>
     </div>
   </ContentField>
 </template>
@@ -190,7 +190,7 @@ export default {
 
     const showAddTenantDialog = () => {
       isAddTenantDialogVisible.value = true;
-      console.log(isAddTenantDialogVisible.value);
+      pullPage(current_page);
     };
 
     const editTenant = () => {
@@ -266,24 +266,24 @@ export default {
               }
 
               ElMessage({
-                message: 'Tenant deleted successfully',
+                message: '删除成功',
                 type: 'success',
                 duration: 2000
               });
+              pullPage(current_page);
             } else {
-              ElMessage.error('Error occurred while deleting the tenant');
+              ElMessage.error('发生错误');
             }
           },
-          error: (resp) => {
-            console.error('Error deleting tenant:', resp);
-            ElMessage.error('Failed to delete tenant');
+          error: () => {
+            ElMessage.error('未成功删除');
           }
         });
       };
 
-    const  handleNewCompanyAdded = (newCompany) => {
-    this.companys.push(newCompany);
-  };
+    const handleDataUpdate = () => {
+      pullPage(current_page);  // 调用 pullPage 来刷新页面数据
+    };
 
     pullPage(current_page);
 
@@ -307,7 +307,7 @@ export default {
       Edit,
       Search,
       isAddTenantDialogVisible,
-      handleNewCompanyAdded,
+      handleDataUpdate,
     };
   }
 }

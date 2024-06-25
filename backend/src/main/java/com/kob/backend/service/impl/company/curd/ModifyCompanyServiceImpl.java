@@ -3,29 +3,22 @@ package com.kob.backend.service.impl.company.curd;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.curd.AddCompanyService;
-import com.kob.backend.utils.UploadUtil;
+import com.kob.backend.service.company.curd.ModifyCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.sql.Struct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Service
-public class AddCompanyServiceImpl implements AddCompanyService {
+public class ModifyCompanyServiceImpl implements ModifyCompanyService {
     @Autowired
     private CompanyMapper companyMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
-    public Map<String , String> addCompany(String companyname, String photo, String ownername, String telephone, String adminname, String note) {
+    public Map<String, String> modifycompany(Integer id, String companyname, String photo, String ownername, String telephone, String note) {
         Map<String , String> map = new HashMap<>();
         if (companyname == null) {
             map.put("error_message", "企业名称不能为空");
@@ -42,11 +35,6 @@ public class AddCompanyServiceImpl implements AddCompanyService {
             return map;
         }
 
-        if (adminname == null) {
-            map.put("error_message", "管理员不能为空");
-            return map;
-        }
-
         if (companyname.length() > 100) {
             map.put("error_message", "企业名称长度不能大于100");
             return map;
@@ -60,14 +48,13 @@ public class AddCompanyServiceImpl implements AddCompanyService {
             return map;
         }
 
-        Random random = new Random();
-        Integer symbol = random.nextInt(900000000) + 100000000;
-        String encodedPassword = passwordEncoder.encode(symbol.toString());
+        QueryWrapper<Company> querywrapper_id = new QueryWrapper<>();
+        querywrapper_id.eq("id" , id);
+        Company company = companyMapper.selectOne(queryWrapper);
+        Company new_company = new Company(id , companyname , company.getPassword() , photo , ownername , telephone , company.getAdminname(), company.getSymbol() , note);
+        companyMapper.updateById(new_company);
 
-        Company company = new Company(null, companyname, encodedPassword, photo, ownername, telephone, adminname, symbol, note);
-        companyMapper.insert(company);
-
-        map.put("error_message", "success");
+        map.put("error_message" , "success");
         return map;
     }
 }

@@ -113,10 +113,11 @@ export default {
             Authorization: "Bearer " + this.store.state.user.token,
           },
           success: (response) => {
+            console.log(response);
             if (response.error_message === 'success') {
               ElMessage.success('表单提交成功');
               this.internalDialogVisible = false;
-              this.$emit('update-company-list', response.company);
+              this.$emit('update');
             } else {
               ElMessage.error(response.error_message);
             }

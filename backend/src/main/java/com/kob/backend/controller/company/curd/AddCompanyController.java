@@ -16,7 +16,7 @@ public class AddCompanyController {
     private AddCompanyService addCompanyService;
 
     @PostMapping("/company/add/")
-    public Map<String, String> addCompany(@RequestParam Map<String , String> map) {
+    public Map<String , String> addCompany(@RequestParam Map<String , String> map) {
         String companyname = map.get("companyname");
         String photo = map.get("photo");
         String ownername = map.get("ownername");
