@@ -5,16 +5,16 @@
       <div class="filters">
         <div class="row">
           <div class="col">
-            <input type="text" v-model="filters.tenantId" class="form-control" placeholder="请输入租户标识">
+            <input type="text" v-model="filters.symbol" class="form-control" placeholder="请输入租户标识">
           </div>
           <div class="col">
-            <input type="text" v-model="filters.contactPerson" class="form-control" placeholder="请输入联系人">
+            <input type="text" v-model="filters.ownername" class="form-control" placeholder="请输入联系人">
           </div>
           <div class="col">
-            <input type="text" v-model="filters.phone" class="form-control" placeholder="请输入电话">
+            <input type="text" v-model="filters.telephone" class="form-control" placeholder="请输入电话">
           </div>
           <div class="col">
-            <input type="text" v-model="filters.tenantName" class="form-control" placeholder="请输入租户名称">
+            <input type="text" v-model="filters.companyname" class="form-control" placeholder="请输入租户名称">
           </div>
           <div class="col">
             <el-button @click="search" :icon="Search" circle />
@@ -29,7 +29,7 @@
         <button @click="showAddTenantDialog" class="btn btn-success">新增</button>
         <button @click="editTenant" class="btn btn-warning">修改</button>
         <button @click="deleteTenant" class="btn btn-danger">删除</button>
-        <button @click="exportTenants" class="btn btn-info">导出</button>
+        <button @click="exportTenants" class="btn btn-info">导出全部租户数据到excel</button>
       </div>
       
       <!-- Table Section -->
@@ -78,7 +78,7 @@
         </ul>
       </nav>
 
-      <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" />
+      <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" @update-company-list="handleNewCompanyAdded"  />
     </div>
   </ContentField>
 </template>
@@ -86,6 +86,8 @@
 <script>
 import ContentField from '../../../components/ContentField';
 import AddCompanyDialog from '../../../components/AddCompanyDialog';
+import { ElMessage } from 'element-plus';
+import * as XLSX from 'xlsx';
 import { useStore } from 'vuex';
 import { ref } from 'vue';
 import $ from 'jquery';
@@ -109,10 +111,10 @@ export default {
     let total_companys = 0;
     let pages = ref([]);
     let filters = ref({
-      tenantId: '',
-      contactPerson: '',
-      phone: '',
-      tenantName: '',
+      symbol: '',
+      ownername: '',
+      telephone: '',
+      companyname: '',
     });
 
     const isAddTenantDialogVisible = ref(false);
@@ -158,7 +160,7 @@ export default {
     const pullPage = page => {
       current_page = page;
       $.ajax({
-        url: "http://127.0.0.1:3000/company/list/",
+        url: "http://127.0.0.1:3000/company/search/",
         data: {
           page,
           ...filters.value
@@ -200,16 +202,88 @@ export default {
     };
 
     const exportTenants = () => {
-      // Export tenants logic here
-    };
+    $.ajax({
+        url: 'http://127.0.0.1:3000/company/list/',
+        type: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + store.state.user.token,
+        },
+        success: function(resp) {
+          const data = resp.companys.map(company => ({
+            'Tenant ID': company.companyId,
+            'Tenant Name': company.companyName,
+            'Contact': company.ownername,
+            'Phone': company.telephone,
+            'Admin Name': company.adminname,
+            'Symbol': company.symbol
+          }));
+
+          // Convert JSON data to worksheet
+          const worksheet = XLSX.utils.json_to_sheet(data);
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, "Tenants");
+
+          // Generate buffer
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+          // Create a Blob object
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+          // Create URL for download
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'Tenants.xlsx');
+
+          // Append link to the body, trigger click, and remove it after download
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },
+        error: function(err) {
+          console.error('Error fetching tenant data:', err);
+        }
+      });
+  };
 
     const editCompany = id => {
       console.log(id);
     };
 
-    const deleteCompany = id => {
-      console.log(id);
-    };
+      const deleteCompany = id => {
+        $.ajax({
+          url: "http://127.0.0.1:3000/company/del/",
+          data: { id },
+          type: "get", 
+          headers: {
+            Authorization: "Bearer " + store.state.user.token,
+          },
+          success: (resp) => {
+            if (resp.error_message == "success") {
+              const index = companys.value.findIndex(company => company.companyId === id);
+              if (index !== -1) {
+                companys.value.splice(index, 1);
+              }
+
+              ElMessage({
+                message: 'Tenant deleted successfully',
+                type: 'success',
+                duration: 2000
+              });
+            } else {
+              ElMessage.error('Error occurred while deleting the tenant');
+            }
+          },
+          error: (resp) => {
+            console.error('Error deleting tenant:', resp);
+            ElMessage.error('Failed to delete tenant');
+          }
+        });
+      };
+
+    const  handleNewCompanyAdded = (newCompany) => {
+    this.companys.push(newCompany);
+  };
 
     pullPage(current_page);
 
@@ -233,6 +307,7 @@ export default {
       Edit,
       Search,
       isAddTenantDialogVisible,
+      handleNewCompanyAdded,
     };
   }
 }

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.curd.GetCompanyListService;
+import com.kob.backend.service.company.curd.SearchCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class GetCompanyServiceImpl implements GetCompanyListService {
+public class SearchCompanyServiceImpl implements SearchCompanyService {
     @Autowired
     private CompanyMapper companyMapper;
     @Override
-    public JSONObject getcompanylist() {
+    public JSONObject searchcompany(Integer page , String symbol, String ownername, String telephone, String companyname) {
+        IPage<Company> companyIPage = new Page<>(page , 10);
         QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
+        if(symbol != null && !symbol.isEmpty()){
+            queryWrapper.like("symbol" , symbol);
+        }
+        if(ownername != null && !ownername.isEmpty())
+        {
+            queryWrapper.like("adminname" , ownername);
+        }
+        if(telephone != null && !telephone.isEmpty())
+        {
+            queryWrapper.like("telephone" , telephone);
+        }
+        if(companyname != null && !companyname.isEmpty())
+        {
+            queryWrapper.like("companyname" , companyname);
+        }
+
         queryWrapper.orderByAsc("id");
-        List<Company> companyList = companyMapper.selectList(queryWrapper);
+        List<Company> companyList = companyMapper.selectPage(companyIPage, queryWrapper).getRecords();
         JSONObject resp = new JSONObject();
         List<JSONObject> items = new LinkedList<>();
         for (Company company: companyList) {
@@ -36,9 +53,9 @@ public class GetCompanyServiceImpl implements GetCompanyListService {
             items.add(item);
         }
         resp.put("companys", items);
+        resp.put("company_count", companyMapper.selectCount(queryWrapper));
 
 
         return resp;
-
     }
 }

@@ -116,7 +116,7 @@ export default {
             if (response.error_message === 'success') {
               ElMessage.success('表单提交成功');
               this.internalDialogVisible = false;
-              this.$emit('refresh');
+              this.$emit('update-company-list', response.company);
             } else {
               ElMessage.error(response.error_message);
             }
