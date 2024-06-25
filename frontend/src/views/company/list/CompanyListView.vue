@@ -27,8 +27,11 @@
       <!-- Button Action Section -->
       <div class="button-actions my-3">
         <button @click="showAddTenantDialog" class="btn btn-success">新增</button>
-        <button @click="editTenant" class="btn btn-warning">修改</button>
+        &nbsp;
+        <button @click="editTenant" class="btn btn-warning">修改管理员</button>
+        &nbsp;
         <button @click="deleteTenant" class="btn btn-danger">删除</button>
+        &nbsp;
         <button @click="exportTenants" class="btn btn-info">导出全部租户数据到excel</button>
       </div>
       
@@ -87,6 +90,7 @@
 import ContentField from '../../../components/ContentField';
 import AddCompanyDialog from '../../../components/AddCompanyDialog';
 import { ElMessage } from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import * as XLSX from 'xlsx';
 import { useStore } from 'vuex';
 import { ref } from 'vue';
@@ -251,7 +255,9 @@ export default {
     };
 
       const deleteCompany = id => {
-        $.ajax({
+          ElMessageBox.confirm('确定删除?')
+          .then(() => {
+            $.ajax({
           url: "http://127.0.0.1:3000/company/del/",
           data: { id },
           type: "get", 
@@ -278,9 +284,9 @@ export default {
           error: () => {
             ElMessage.error('未成功删除');
           }
-        });
-      };
-
+        });}).catch(() => {})
+        
+    };
     const handleDataUpdate = () => {
       pullPage(current_page);  // 调用 pullPage 来刷新页面数据
     };
