@@ -26,7 +26,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
         }
         if(ownername != null && !ownername.isEmpty())
         {
-            queryWrapper.like("adminname" , ownername);
+            queryWrapper.like("ownername" , ownername);
         }
         if(telephone != null && !telephone.isEmpty())
         {

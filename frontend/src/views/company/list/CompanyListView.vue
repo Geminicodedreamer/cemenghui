@@ -1,7 +1,6 @@
 <template>
   <ContentField>
     <div class="container">
-      <!-- Filter Section -->
       <div class="filters">
         <div class="row">
           <div class="col">
@@ -28,7 +27,7 @@
       <div class="button-actions my-3">
         <button @click="showAddTenantDialog" class="btn btn-success">新增</button>
         &nbsp;
-        <button @click="editTenant" class="btn btn-warning">修改管理员</button>
+        <button @click="showEditAdminDialog" class="btn btn-warning">修改管理员</button>
         &nbsp;
         <button @click="deleteTenant" class="btn btn-danger">删除</button>
         &nbsp;
@@ -83,6 +82,18 @@
 
       <AddCompanyDialog v-model:dialogVisible="isAddTenantDialogVisible" @update="handleDataUpdate"/>
       <ModifyCompanyDialog v-model:dialogVisible="isModifyTenantDialogVisible" :company="selectedCompany" @update="handleDataUpdate"/>
+
+      <el-dialog title="修改管理员" v-model="isEditAdminDialogVisible" @close="resetEditAdminForm">
+        <el-form :model="editAdminForm" label-width="120px">
+          <el-form-item label="管理员名字" :required="true">
+            <el-input v-model="editAdminForm.adminname" placeholder="请输入管理员名字"></el-input>
+          </el-form-item>
+          <el-form-item class="button-container">
+            <el-button type="primary" @click="submitEditAdminForm">提交</el-button>
+            <el-button @click="resetEditAdminForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </ContentField>
 </template>
@@ -125,8 +136,13 @@ export default {
     });
 
     const isAddTenantDialogVisible = ref(false);
-    const isModifyTenantDialogVisible = ref(false); // 新增 ModifyCompanyDialog 的可见状态
+    const isModifyTenantDialogVisible = ref(false);
     const selectedCompany = ref(null);
+    const isEditAdminDialogVisible = ref(false); 
+   const editAdminForm = ref({
+      adminname: ''
+    });
+
 
     const search = () => {
       pullPage(current_page);
@@ -202,12 +218,107 @@ export default {
       pullPage(current_page);
     };
 
-    const editTenant = () => {
-      // Edit tenant logic here
+    const showEditAdminDialog = () => {
+      if (selectedCompanies.value.length === 0) {
+        ElMessage.error('请至少选择一个租户进行修改');
+        return;
+      }
+      isEditAdminDialogVisible.value = true;
     };
 
+
     const deleteTenant = () => {
-      // Delete tenant logic here
+      if (selectedCompanies.value.length === 0) {
+        ElMessage.error('请至少选择一个租户进行删除');
+        return;
+      }
+
+      ElMessageBox.confirm('确定删除选中的租户?')
+        .then(() => {
+          let deletePromises = selectedCompanies.value.map(companyId => {
+            return $.ajax({
+              url: "http://127.0.0.1:3000/company/del/",
+              data: { id: companyId },
+              type: "get",
+              headers: {
+                Authorization: "Bearer " + store.state.user.token,
+              }
+            });
+          });
+
+          Promise.all(deletePromises)
+            .then(responses => {
+              responses.forEach((response, index) => {
+                if (response.error_message === 'success') {
+                  const companyId = selectedCompanies.value[index];
+                  const indexToRemove = companys.value.findIndex(company => company.companyId === companyId);
+                  if (indexToRemove !== -1) {
+                    companys.value.splice(indexToRemove, 1);
+                  }
+                } else {
+                  ElMessage.error(`租户ID ${selectedCompanies.value[index]} 删除失败`);
+                }
+              });
+              ElMessage.success('选中的租户删除成功');
+              pullPage(current_page);
+            })
+            .catch(error => {
+              console.error('删除过程中发生错误', error);
+              ElMessage.error('删除失败');
+            });
+        })
+        .catch(() => {});
+    };
+
+ const submitEditAdminForm = () => {
+      if (!editAdminForm.value || !editAdminForm.value.adminname) {
+        ElMessage.error('管理员名字不能为空');
+        return;
+      }
+
+      const updatePromises = selectedCompanies.value.map(companyId => {
+        return $.ajax({
+          url: "http://127.0.0.1:3000/company/modifyadmin/",
+          data: $.param({
+            companyid: companyId,
+            adminname: editAdminForm.value.adminname,
+          }),
+          type: "post",
+          headers: {
+            Authorization: "Bearer " + store.state.user.token,
+          },
+          contentType: 'application/x-www-form-urlencoded'
+        });
+      });
+
+      Promise.all(updatePromises)
+        .then(responses => {
+          responses.forEach((response, index) => {
+            if (response.error_message === 'success') {
+              const companyId = selectedCompanies.value[index];
+              const companyToUpdate = companys.value.find(company => company.companyId === companyId);
+              if (companyToUpdate) {
+                companyToUpdate.adminname = editAdminForm.value.adminname;
+              }
+            } else {
+              ElMessage.error(`租户ID ${selectedCompanies.value[index]} 更新管理员失败`);
+            }
+          });
+          ElMessage.success('选中的租户管理员更新成功');
+          isEditAdminDialogVisible.value = false;
+          pullPage(current_page);
+        })
+        .catch(error => {
+          console.error('更新管理员过程中发生错误', error);
+          ElMessage.error('更新管理员失败');
+        });
+
+        selectedCompanies.value = [];
+    };
+
+    const resetEditAdminForm = () => {
+      editAdminForm.value = { adminname: '' };
+      isEditAdminDialogVisible.value = false;
     };
 
     const exportTenants = () => {
@@ -311,7 +422,6 @@ export default {
       resetFilters,
       selectAll,
       showAddTenantDialog,
-      editTenant,
       deleteTenant,
       exportTenants,
       editCompany,
@@ -322,7 +432,12 @@ export default {
       isAddTenantDialogVisible,
       handleDataUpdate,
       isModifyTenantDialogVisible, 
-      selectedCompany
+      selectedCompany,
+      showEditAdminDialog,
+      submitEditAdminForm,
+      resetEditAdminForm,
+      isEditAdminDialogVisible,
+      editAdminForm,
     };
   }
 }

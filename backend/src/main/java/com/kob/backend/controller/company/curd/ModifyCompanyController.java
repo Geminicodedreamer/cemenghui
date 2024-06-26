@@ -24,4 +24,9 @@ public class ModifyCompanyController {
         String note = map.get("note");
         return modifyCompanyService.modifycompany( companyId ,companyname, photo, ownername, telephone, note);
     }
+
+    @PostMapping("/company/modifyadmin")
+    public Map<String, String> modifyAdmin(@RequestParam Integer companyid, @RequestParam String adminname) {
+        return modifyCompanyService.modifyAdmin(companyid, adminname);
+    }
 }

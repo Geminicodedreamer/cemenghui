@@ -49,8 +49,8 @@ public class UploadUtil {
             return ALI_DOMAIN + newFileName;
 
         } catch (Exception e) {
-            logger.error("File upload failed", e);
-            throw new IOException("File upload failed", e);
+            logger.error("内存太大了无法上传", e);
+            throw new IOException("内存太大了无法上传", e);
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();

@@ -4,4 +4,6 @@ import java.util.Map;
 
 public interface ModifyCompanyService {
     public Map<String , String> modifycompany(Integer id , String companyname , String photo , String ownername , String telephone , String note);
+
+    public Map<String, String> modifyAdmin(Integer companyId, String adminname);
 }

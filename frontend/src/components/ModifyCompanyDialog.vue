@@ -5,7 +5,7 @@
         <el-input v-model="form.companyName" placeholder="请输入租户名称"></el-input>
       </el-form-item>
       <el-form-item label="租户图标" class="form-item">
-        <el-upload
+       <el-upload
           class="avatar-uploader"
           action="http://127.0.0.1:3000/upload"
           :show-file-list="false"
@@ -17,11 +17,11 @@
                 <Plus style="width:20px;color: #dcdfe6;"/>
               </div>
               <div v-if="form.photo" class="uploaded-image-container">
-                <img :src="form.photo" class="avatar">
-                <div class="image-actions">
-                  <el-button icon="el-icon-zoom-in" @click="previewImage"></el-button>
-                  <el-button icon="el-icon-delete" @click="deleteImage"></el-button>
-                </div>
+                <img :src="form.photo" class="avatar" @click="previewImage">
+                  <div class="image-actions">
+                    <ZoomIn @click.stop="previewImage" class="icon-button"/>
+                    <Delete @click.stop="deleteImage" class="icon-button"/>
+                  </div>
               </div>
             </div>
           </template>
@@ -57,19 +57,32 @@
         <el-button @click="resetForm">取消</el-button>
       </el-form-item>
     </el-form>
+
+
+     <el-image-viewer
+      v-if="imageViewerVisible"
+      :url-list="[form.photo]"
+      :initial-index="0"
+      @close="imageViewerVisible = false"
+    />
+
   </el-dialog>
 </template>
 
 <script>
 import { ElMessage, ElImageViewer } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue'; // 引入图标
+import { Plus, ZoomIn, Delete } from '@element-plus/icons-vue'; 
 import axios from 'axios';
 import $ from 'jquery';
 import { useStore } from 'vuex';
 
+
 export default {
   components: {
     Plus,
+    ZoomIn,
+    Delete,
+    ElImageViewer,
   },
   props: {
     dialogVisible: {
@@ -84,7 +97,7 @@ export default {
   data() {
     const store = useStore();
     return {
-        store,
+      store,
       internalDialogVisible: this.dialogVisible,
       form: {
         companyId: null,
@@ -122,7 +135,8 @@ export default {
             }
           }
         }
-      }
+      },
+      imageViewerVisible: false
     };
   },
   watch: {
@@ -134,16 +148,16 @@ export default {
     },
     company: {
       handler(newVal) {
-      if (newVal) {
-        this.form = { ...newVal }; // 将选中的公司信息填充到表单中
-        // 手动设置富文本编辑器内容
-        if (this.$refs.myQuillEditor) {
-          this.$refs.myQuillEditor.quill.root.innerHTML = newVal.note;
+        if (newVal) {
+          this.form = { ...newVal }; // 将选中的公司信息填充到表单中
+          // 手动设置富文本编辑器内容
+          if (this.$refs.myQuillEditor) {
+            this.$refs.myQuillEditor.quill.root.innerHTML = newVal.note;
+          }
+        } else {
+          this.resetForm();
         }
-      } else {
-        this.resetForm();
-      }
-    },
+      },
       immediate: true
     }
   },
@@ -185,11 +199,7 @@ export default {
       input.click();
     },
     previewImage() {
-      ElImageViewer({
-        images: [this.form.photo],
-        startPosition: 0,
-        onClose: () => {}
-      });
+      this.imageViewerVisible = true;
     },
     deleteImage() {
       this.form.photo = ''; // 清空 photo
@@ -201,10 +211,10 @@ export default {
       console.log('editor focus!', quill);
     },
     onEditorReady(quill) {
-        console.log('editor ready!', quill);
-        if (this.form.note) {
+      console.log('editor ready!', quill);
+      if (this.form.note) {
         this.$refs.myQuillEditor.quill.root.innerHTML = this.form.note;
-        }
+      }
     },
     handleAvatarSuccess(response) {
       this.form.photo = response.url; // 假设后端返回的图片 URL 在 response.url 中
@@ -222,42 +232,41 @@ export default {
       return isImage && isLt2M;
     },
     submitForm() {
-        console.log(this.form);
       if (this.form.companyName && this.form.ownername && this.form.telephone) {
         this.form.note = this.$refs.myQuillEditor.quill.root.innerHTML;
 
-       $.ajax({
-        url: 'http://127.0.0.1:3000/company/modify', // 后端修改公司信息的接口
-        type: 'POST',
-        data: {
-          companyid: this.form.companyId,
-          companyname: this.form.companyName,
-          photo: this.form.photo,
-          ownername: this.form.ownername,
-          telephone: this.form.telephone,
-          note: this.form.note
-        },
-        headers: {
-          Authorization: "Bearer " + this.store.state.user.token,
-        },
-        success: (response) => {
-          if (response.error_message === 'success') {
-            ElMessage.success('表单提交成功');
-            this.internalDialogVisible = false;
-            this.$emit('update');
-            this.resetForm();
-          } else {
-            ElMessage.error(response.error_message);
+        $.ajax({
+          url: 'http://127.0.0.1:3000/company/modify', // 后端修改公司信息的接口
+          type: 'POST',
+          data: {
+            companyid: this.form.companyId,
+            companyname: this.form.companyName,
+            photo: this.form.photo,
+            ownername: this.form.ownername,
+            telephone: this.form.telephone,
+            note: this.form.note
+          },
+          headers: {
+            Authorization: "Bearer " + this.store.state.user.token,
+          },
+          success: (response) => {
+            if (response.error_message === 'success') {
+              ElMessage.success('表单提交成功');
+              this.internalDialogVisible = false;
+              this.$emit('update');
+              this.resetForm();
+            } else {
+              ElMessage.error(response.error_message);
+            }
+          },
+          error: (error) => {
+            console.error(error);
+            ElMessage.error('提交失败');
           }
-        },
-        error: (error) => {
-          console.error(error);
-          ElMessage.error('提交失败');
-        }
-      });
-    } else {
-      ElMessage.error('请完整填写表单');
-    }
+        });
+      } else {
+        ElMessage.error('请完整填写表单');
+      }
     },
     resetForm() {
       this.form = {
@@ -275,7 +284,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .form-item {
   margin-bottom: 20px;
@@ -284,10 +292,11 @@ export default {
   text-align: right;
 }
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   display: block;
-  margin-top: 10px;
+  object-fit: cover;
+  cursor: pointer;
 }
 .upload-trigger {
   width: 120px;
@@ -301,20 +310,35 @@ export default {
   overflow: hidden;
 }
 
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.uploaded-image-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
 }
 
+.image-actions {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.icon-button {
+  margin-top: 40%;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+}
 
 .upload-description {
   margin-top: 10px;
   font-size: 12px;
   color: #888;
-  white-space: pre-line; 
+  white-space: pre-line;
 }
 .red-bold {
   color: red;

@@ -64,6 +64,27 @@ public class ModifyCompanyServiceImpl implements ModifyCompanyService {
         return map;
     }
 
+    @Override
+    public Map<String, String> modifyAdmin(Integer companyId, String adminname) {
+        Map<String, String> map = new HashMap<>();
+        if (adminname == null || adminname.trim().isEmpty()) {
+            map.put("error_message", "管理员名字不能为空");
+            return map;
+        }
+
+        Company company = companyMapper.selectById(companyId);
+        if (company == null) {
+            map.put("error_message", "公司不存在");
+            return map;
+        }
+
+        company.setAdminname(adminname);
+        companyMapper.updateById(company);
+
+        map.put("error_message", "success");
+        return map;
+    }
+
     public static Boolean isMobile(String mobile) {
         String regex = "^((13[0-9])|(14[579])|(15([0-3]|[5-9]))|(16[56])|(17[0-8])|(18[0-9])|(19[1589]))\\d{8}$";
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
