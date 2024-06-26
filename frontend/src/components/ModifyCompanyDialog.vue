@@ -40,7 +40,7 @@
         <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
       </el-form-item>
       <el-form-item label="管理员" :required="true" class="form-item">
-        <el-input v-model="form.adminname" placeholder="请输入管理员"></el-input>
+        <div>{{ form.adminname }}</div>
       </el-form-item>
       <el-form-item label="备注" class="form-item">
         <quill-editor
@@ -230,7 +230,7 @@ export default {
         url: 'http://127.0.0.1:3000/company/modify', // 后端修改公司信息的接口
         type: 'POST',
         data: {
-          id: this.form.companyId,
+          companyid: this.form.companyId,
           companyname: this.form.companyName,
           photo: this.form.photo,
           ownername: this.form.ownername,

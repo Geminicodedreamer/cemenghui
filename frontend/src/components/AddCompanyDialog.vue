@@ -34,6 +34,9 @@
       <el-form-item label="管理员" :required="true" class="form-item">
         <el-input v-model="form.adminname" placeholder="请输入管理员"></el-input>
       </el-form-item>
+      <el-form-item label="密码" class="form-item">
+        <div>默认密码为租户创建后的租户标识</div>
+      </el-form-item>
       <el-form-item label="备注" class="form-item">
           <quill-editor
             ref="myQuillEditor"

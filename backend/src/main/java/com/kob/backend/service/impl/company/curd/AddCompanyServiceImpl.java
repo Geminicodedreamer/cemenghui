@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AddCompanyServiceImpl implements AddCompanyService {
@@ -39,6 +41,11 @@ public class AddCompanyServiceImpl implements AddCompanyService {
 
         if (telephone == null) {
             map.put("error_message", "电话不能为空");
+            return map;
+        }
+
+        if (!isMobile(telephone)) {
+            map.put("error_message", "电话格式错误");
             return map;
         }
 
@@ -69,5 +76,12 @@ public class AddCompanyServiceImpl implements AddCompanyService {
 
         map.put("error_message", "success");
         return map;
+    }
+
+    public static Boolean isMobile(String mobile) {
+        String regex = "^((13[0-9])|(14[579])|(15([0-3]|[5-9]))|(16[56])|(17[0-8])|(18[0-9])|(19[1589]))\\d{8}$";
+        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(mobile);
+        return m.matches();
     }
 }

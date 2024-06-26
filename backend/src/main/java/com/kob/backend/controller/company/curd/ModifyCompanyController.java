@@ -2,13 +2,13 @@ package com.kob.backend.controller.company.curd;
 
 import com.kob.backend.service.company.curd.ModifyCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@Controller
+@RestController
 public class ModifyCompanyController {
     @Autowired
     private ModifyCompanyService modifyCompanyService;
