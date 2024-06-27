@@ -32,7 +32,7 @@ public class AddUserServiceImpl implements AddUserService {
             return map;
         }
         String passwordencoding = passwordEncoder.encode(password);
-        User user = new User(null , username , null , passwordencoding , photo , null , null , null , null , null , null , null , null , null);
+        User user = new User(null , username , null , passwordencoding , photo , null , null , null , null , null , null , null , null , null , null);
         userMapper.insert(user);
 
         map.put("error_message", "success");

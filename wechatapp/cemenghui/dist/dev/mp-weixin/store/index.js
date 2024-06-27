@@ -5,6 +5,8 @@ const store = common_vendor.createStore({
   getters: {},
   mutations: {},
   actions: {},
-  modules: {}
+  modules: {
+    // user: ModuleUser,
+  }
 });
 exports.store = store;

@@ -25,4 +25,5 @@ public class User {
     private String companyname;
     private String post;
     private String note;
+    private String createtime;
 }
