@@ -27,13 +27,29 @@
   text-align: center;
   padding: 20px;
 }
-.imgDiv.data-v-cdfe2409 {
-  width: 200rpx;
-  height: 200rpx;
-  margin: 50px auto;
+.form.data-v-cdfe2409 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.imgDiv image.data-v-cdfe2409 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+.form input.data-v-cdfe2409 {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.form button.data-v-cdfe2409 {
+  width: 80%;
+  padding: 10px;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.gohome.data-v-cdfe2409 {
+  margin-top: 20px;
+  color: #007aff;
+  cursor: pointer;
 }

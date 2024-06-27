@@ -9,27 +9,27 @@
       <view v-else>
         <van-image width="100%" height="100%" round class="myPhoto" src="/static/images/unlogin.png" @click="login">
         </van-image>
-        <text class="myInformation" @click="login">登录/注册</text>
+        <text class="myInformation" @click="login">登录</text>
       </view>
     </view>
     <view class="middle-num">
       <view class="oner">
         <view class="zi">
           <text class="zier">{{coupon}}<text class="zisan">%</text></text>
-          <text class="quan">计划进度</text>
+          <text class="quan">资料完善</text>
         </view>
       </view>
       <view class="twoer">|</view>
       <view class="three">
         <view class="zi">
           <text class="zier">{{integral}}\n</text>
-          <text class="quan">积分</text>
+          <text class="quan">活跃度</text>
         </view>
       </view>
     </view>
     <view class="mydingdan">
       <view class="row1">
-        <van-cell is-link url="" title="健身计划" value="展开" link-type="navigateTo"/>
+        <van-cell is-link url="" title="用户权益" value="展开" link-type="navigateTo"/>
       </view>
       <view class="zhifu">
         <van-grid :gutter="3" square column-num="5">
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -53,33 +54,40 @@ export default {
       integral: 300,
       icon: [],
       lbIcon:[],
-      is_login: false,
-      avatarUrl: '',
-      nickName: ''
+    }
+  },
+  computed: {
+    ...mapState('user', ['is_login', 'username', 'photo']),
+    avatarUrl() {
+      return this.photo;
+    },
+    nickName() {
+      return this.username;
     }
   },
   onLoad() {
-    this.getUserInfo();
+    this.checkLoginStatus();
     //支付导航
     this.tabBarIcon();
     //列表单元格
     this.liebiaoIcon();
   },
   onShow() {
-    // 页面显示时重新获取用户信息
-    this.getUserInfo();
+    this.checkLoginStatus();
   },
   methods: {
-    getUserInfo() {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (userInfo) {
-        this.avatarUrl = userInfo.avatarUrl;
-        this.nickName = userInfo.nickName;
-        this.is_login = true;
-      } else {
-        this.is_login = false;
-        this.avatarUrl = '';
-        this.nickName = '';
+    ...mapActions('user', ['getinfo', 'logout']),
+    checkLoginStatus() {
+      const token = wx.getStorageSync('jwt_token');
+     if(token) {
+        this.getinfo({
+          success: (res) => {
+            console.log('User info fetched successfully:', res);
+          },
+          error: (err) => {
+            console.error('Failed to fetch user info:', err);
+          }
+        });
       }
     },
     login() {
@@ -91,22 +99,22 @@ export default {
       var data = {
         "icons": [{
           "photoSrc": "/static/icons/record.png",
-          "text": "体重记录",
+          "text": "浏览记录",
           "toUrl": ""
         },
           {
             "photoSrc": "/static/icons/change.png",
-            "text": "体脂变化",
+            "text": "指标变化",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/icons/time.png",
-            "text": "锻炼时长",
+            "text": "在线时长",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/icons/achievement.png",
-            "text": "今日成果",
+            "text": "公司成果",
             "toUrl": ""
           },
           {
@@ -133,12 +141,12 @@ export default {
           },
           {
             "photoSrc": "/static/list/shopping.png",
-            "text": "商品购买",
+            "text": "商品采购",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/list/myspace.png",
-            "text": "我的空间",
+            "text": "我的职位",
             "toUrl": ""
           },
           {
