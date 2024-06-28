@@ -1,12 +1,14 @@
 package com.kob.backend.service.impl.user.curd;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.User;
-import com.kob.backend.service.user.curd.GetUserListService;
+import com.kob.backend.service.user.curd.SearchUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +16,40 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class GetUserListServiceImpl implements GetUserListService {
+public class SearchUserServiceImpl implements SearchUserService {
     @Autowired
     private UserMapper userMapper;
-
     @Override
-    public JSONObject getuserlist(Integer page) {
+    public JSONObject searchuserlist(Integer page , String companyname, String username, String telephone, Integer status, String starttime, String endtime) {
+        IPage<User> userIPage = new Page<>(page , 10);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if(companyname != null && !companyname.isEmpty())
+        {
+            queryWrapper.like("companyname" , companyname);
+        }
+        if(username != null && !username.isEmpty())
+        {
+            queryWrapper.like("username" , username);
+        }
+        if(telephone != null && !telephone.isEmpty())
+        {
+            queryWrapper.like("telephone" , telephone);
+        }
+        if(status != null)
+        {
+            queryWrapper.like("status" , status);
+        }
+        if(starttime != null && !starttime.isEmpty())
+        {
+            queryWrapper.ge("createtime" ,starttime);
+        }
+        if(endtime != null && !endtime.isEmpty())
+        {
+            queryWrapper.le("createtime" , endtime);
+        }
+
         queryWrapper.orderByAsc("userId");
-        List<User> userList = userMapper.selectList(queryWrapper);
+        List<User> userList = userMapper.selectPage(userIPage , queryWrapper).getRecords();
         JSONObject resp = new JSONObject();
         List<JSONObject> items = new LinkedList<>();
         for(User user : userList)
@@ -44,7 +71,9 @@ public class GetUserListServiceImpl implements GetUserListService {
             item.put("createtime" , user.getCreatetime());
             items.add(item);
         }
+
         resp.put("users" , items);
+        resp.put("user_count" , userMapper.selectCount(queryWrapper));
 
         return resp;
     }
