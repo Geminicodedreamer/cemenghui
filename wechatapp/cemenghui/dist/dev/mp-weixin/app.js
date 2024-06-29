@@ -23,6 +23,9 @@ const _sfc_main = {
   },
   methods: {
     checkLoginStatus() {
+      const userType = common_vendor.wx$1.getStorageSync("userType");
+      if (userType === "tourist")
+        return;
       const token = common_vendor.wx$1.getStorageSync("jwt_token");
       if (token) {
         common_vendor.wx$1.request({

@@ -6,6 +6,8 @@ const _sfc_main = {
     handleLogout() {
       this.logout();
       common_vendor.wx$1.removeStorageSync("jwt_token");
+      common_vendor.wx$1.removeStorageSync("userType");
+      common_vendor.wx$1.removeStorageSync("username");
       this.$store.commit("user/logout");
       common_vendor.wx$1.switchTab({
         url: "/pages/my/my"

@@ -3,7 +3,7 @@ const common_vendor = require("../../common/vendor.js");
 const _sfc_main = {
   data() {
     return {
-      // 页面数据
+      userType: null
     };
   },
   onShow() {
@@ -11,6 +11,9 @@ const _sfc_main = {
   },
   methods: {
     checkLoginStatus() {
+      this.userType = common_vendor.wx$1.getStorageSync("userType");
+      if (this.userType === "tourist")
+        return;
       const token = common_vendor.wx$1.getStorageSync("jwt_token");
       if (!token) {
         common_vendor.wx$1.navigateTo({

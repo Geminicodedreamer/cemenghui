@@ -2,7 +2,7 @@
   <view class="myContent">
     <view class="header">
       <image width="100%" height="100%" class="headbgImage" src="/static/images/weather.jpg"></image>
-      <view v-if="is_login">
+      <view v-if="is_login || userType === 'tourist'">
         <van-image width="100%" height="100%" round class="myPhoto" :src="avatarUrl"></van-image>
         <text class="myInformation">{{nickName}}</text>
       </view>
@@ -54,14 +54,17 @@ export default {
       integral: 300,
       icon: [],
       lbIcon:[],
+      userType: null,
     }
   },
   computed: {
     ...mapState('user', ['is_login', 'username', 'photo']),
     avatarUrl() {
+      if(this.userType === "tourist") return "/static/images/tourist.png";
       return this.photo;
     },
     nickName() {
+      if(this.userType === "tourist") return wx.getStorageSync('username');
       return this.username;
     }
   },
@@ -78,6 +81,8 @@ export default {
   methods: {
     ...mapActions('user', ['getinfo', 'logout']),
     checkLoginStatus() {
+      this.userType = wx.getStorageSync('userType');
+      if(this.userType === "tourist") return;
       const token = wx.getStorageSync('jwt_token');
      if(token) {
         this.getinfo({

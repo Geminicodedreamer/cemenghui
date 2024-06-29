@@ -14,6 +14,8 @@ export default {
       this.logout();
       // 清除本地存储的用户信息
       wx.removeStorageSync('jwt_token');
+      wx.removeStorageSync("userType");
+      wx.removeStorageSync("username");
       // 更新页面数据
       this.$store.commit('user/logout');
       // 跳转到登录页面

@@ -86,6 +86,8 @@ const actions = {
     },
     logout({ commit }) {
         wx.removeStorageSync("jwt_token");
+        wx.removeStorageSync("userType");
+        wx.removeStorageSync("username");
         commit("logout");
     }
 };

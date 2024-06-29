@@ -18,6 +18,8 @@ export default {
   },
   methods: {
     checkLoginStatus() {
+      const userType = wx.getStorageSync("userType");
+      if(userType === "tourist") return;
       const token = wx.getStorageSync('jwt_token');
       if (token) {
         wx.request({

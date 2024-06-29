@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      // 页面数据
+      userType: null,
     }
   },
   onShow() {
@@ -16,6 +16,8 @@ export default {
   },
   methods: {
     checkLoginStatus() {
+      this.userType = wx.getStorageSync('userType');
+      if(this.userType === "tourist") return;
       const token = wx.getStorageSync('jwt_token');
       if (!token) {
         wx.navigateTo({

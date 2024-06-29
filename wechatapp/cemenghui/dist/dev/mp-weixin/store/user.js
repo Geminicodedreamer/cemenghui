@@ -87,6 +87,8 @@ const actions = {
   },
   logout({ commit }) {
     common_vendor.wx$1.removeStorageSync("jwt_token");
+    common_vendor.wx$1.removeStorageSync("userType");
+    common_vendor.wx$1.removeStorageSync("username");
     commit("logout");
   }
 };

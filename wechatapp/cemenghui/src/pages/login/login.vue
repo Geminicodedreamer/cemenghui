@@ -6,6 +6,7 @@
       <button @click="handleLogin">登录</button>
     </view>
     <view class="gohome" @click="goHome">暂不登录</view>
+    <view class="gohome" @click="tourist">以游客方式登录</view>
   </view>
 </template>
 
@@ -24,6 +25,14 @@ export default {
     goHome() {
       wx.switchTab({
         url: '/pages/index/index'
+      });
+    },
+    tourist()
+    {
+      wx.setStorageSync("userType" , "tourist");
+      wx.setStorageSync("username" , "游客");
+      wx.switchTab({
+        url: '/pages/my/my'
       });
     },
     handleLogin() {  // 重命名此方法以避免与 Vuex action 冲突

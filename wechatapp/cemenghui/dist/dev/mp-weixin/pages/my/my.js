@@ -6,15 +6,20 @@ const _sfc_main = {
       coupon: 6,
       integral: 300,
       icon: [],
-      lbIcon: []
+      lbIcon: [],
+      userType: null
     };
   },
   computed: {
     ...common_vendor.mapState("user", ["is_login", "username", "photo"]),
     avatarUrl() {
+      if (this.userType === "tourist")
+        return "/static/images/tourist.png";
       return this.photo;
     },
     nickName() {
+      if (this.userType === "tourist")
+        return common_vendor.wx$1.getStorageSync("username");
       return this.username;
     }
   },
@@ -29,6 +34,9 @@ const _sfc_main = {
   methods: {
     ...common_vendor.mapActions("user", ["getinfo", "logout"]),
     checkLoginStatus() {
+      this.userType = common_vendor.wx$1.getStorageSync("userType");
+      if (this.userType === "tourist")
+        return;
       const token = common_vendor.wx$1.getStorageSync("jwt_token");
       if (token) {
         this.getinfo({
@@ -128,8 +136,8 @@ if (!Array) {
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: _ctx.is_login
-  }, _ctx.is_login ? {
+    a: _ctx.is_login || $data.userType === "tourist"
+  }, _ctx.is_login || $data.userType === "tourist" ? {
     b: common_vendor.p({
       width: "100%",
       height: "100%",

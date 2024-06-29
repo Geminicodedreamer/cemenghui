@@ -14,6 +14,13 @@ const _sfc_main = {
         url: "/pages/index/index"
       });
     },
+    tourist() {
+      common_vendor.wx$1.setStorageSync("userType", "tourist");
+      common_vendor.wx$1.setStorageSync("username", "游客");
+      common_vendor.wx$1.switchTab({
+        url: "/pages/my/my"
+      });
+    },
     handleLogin() {
       const { username, password } = this;
       this.login({
@@ -51,7 +58,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     c: $data.password,
     d: common_vendor.o(($event) => $data.password = $event.detail.value),
     e: common_vendor.o((...args) => $options.handleLogin && $options.handleLogin(...args)),
-    f: common_vendor.o((...args) => $options.goHome && $options.goHome(...args))
+    f: common_vendor.o((...args) => $options.goHome && $options.goHome(...args)),
+    g: common_vendor.o((...args) => $options.tourist && $options.tourist(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-cdfe2409"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/login/login.vue"]]);
