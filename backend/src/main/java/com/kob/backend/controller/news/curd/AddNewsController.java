@@ -15,6 +15,7 @@ public class AddNewsController {
 
     @PostMapping("/news/add")
     public Map<String,String> addNews(@RequestParam Map<String , String> map){
+        //System.out.println(map);
         String title=map.get("title");
         String summary= map.get("summary");
         String imagePath = map.get("imagePath");

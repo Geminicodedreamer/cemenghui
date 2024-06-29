@@ -28,7 +28,7 @@ public class GetNewsListServiceImpl implements GetNewsListService {
 
         for(News news : newsList){
             JSONObject item = new JSONObject();
-            item.put("newsId", news.getNewsid());
+            item.put("NewsId", news.getNewsid());
             item.put("title", news.getTitle());
             item.put("summary", news.getSummary());
             item.put("imagePath", news.getImagePath());

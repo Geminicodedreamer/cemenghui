@@ -25,6 +25,22 @@ public class SearchNewsServiceImpl implements SearchNewsService {
 
         //这里可以写后端的双重验证
 
+        if (title != null && !title.isEmpty()) {
+            queryWrapper.like("title", title);
+        }
+        if (imagePath != null && !imagePath.isEmpty()) {
+            queryWrapper.like("image_path", imagePath);
+        }
+        if (newsid != null) {
+            queryWrapper.eq("newsid", newsid);
+        }
+        if (author != null && !author.isEmpty()) {
+            queryWrapper.like("author", author);
+        }
+        if (summary != null && !summary.isEmpty()) {
+            queryWrapper.like("summary", summary);
+        }
+
         queryWrapper.orderByAsc("newsid");
         List<News> newsList = newsMapper.selectPage(newsIpage,queryWrapper).getRecords();
         JSONObject resp = new JSONObject();
@@ -32,12 +48,14 @@ public class SearchNewsServiceImpl implements SearchNewsService {
 
         for(News news:newsList){
             JSONObject item = new JSONObject();
-            item.put("title",news.getNewsid());
+            item.put("newsid" , news.getNewsid());
+            item.put("title",news.getTitle());
             item.put("summary",news.getSummary());
             item.put("imagePath",news.getImagePath());
             item.put("content",news.getContent());
             item.put("author",news.getAuthor());
             item.put("tenant",news.getTenant());
+            items.add(item);
         }
         resp.put("news",items);
         resp.put("news_count",newsMapper.selectCount(queryWrapper));

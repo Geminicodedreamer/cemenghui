@@ -17,6 +17,8 @@ public class GetNewsListController {
 
     @GetMapping("/news/list")
     public JSONObject getList(){
+//        JSONObject ob=getNewsListService.getnewslist();
+//        System.out.println("ob:"+ob);
         return getNewsListService.getnewslist();
     }
 }

@@ -13,7 +13,7 @@ public class DeleteNewsController {
     private DeleteNewsService deleteNewsService;
 
     @GetMapping("/news/del")
-    public JSONObject deletenews(@RequestParam("newsid")String Id){
+    public JSONObject deletenews(@RequestParam("id")String Id){
         Integer id = Integer.parseInt(Id);
         return deleteNewsService.deletenews(id);
     }

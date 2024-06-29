@@ -195,6 +195,7 @@ export default {
           Authorization: "Bearer " + store.state.user.token,
         },
         success(resp) {
+			console.log('从后端获取的companys:', resp.companys); // 调试输出
           companys.value = resp.companys;
           total_companys = resp.company_count;
           updatePages();
@@ -367,6 +368,7 @@ export default {
   };
 
     const editCompany = company => {
+		console.log('编辑按钮选中的company:', company); // 添加调试输出
       selectedCompany.value = { ...company }; // 传递当前选中的公司信息
       isModifyTenantDialogVisible.value = true;
       pullPage(current_page);

@@ -15,13 +15,17 @@ public class SearchNewsController {
     private SearchNewsService searchNewsService;
 
     @GetMapping("/news/search")
-    public JSONObject searchnews(@RequestParam Map<String,String> map){
-        Integer page = Integer.parseInt(map.get("page"));
+    public JSONObject searchnews(@RequestParam Map<String, String> map) {
+        Integer page = map.get("page") != null ? Integer.parseInt(map.get("page")) : 1;
         String title = map.get("title");
         String imagePath = map.get("imagePath");
-        Integer newsid = Integer.valueOf(map.get("newsid"));
+        Integer newsid = map.get("newsid") != null ? Integer.valueOf(map.get("newsid")) : null;
         String author = map.get("author");
         String summary = map.get("summary");
-        return searchNewsService.searchnews(page,title,imagePath, newsid,author,summary);
+
+        JSONObject ob = searchNewsService.searchnews(page, title, imagePath, newsid, author, summary);
+        System.out.println("ob:" + ob);
+
+        return ob;
     }
 }

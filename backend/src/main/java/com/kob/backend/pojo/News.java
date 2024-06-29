@@ -1,6 +1,7 @@
 package com.kob.backend.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class News {
     // 新闻简介
     private String summary;
     // 新闻图片路径
+    @TableField("imagePath")
     private String imagePath;
     // 新闻内容
     private String content;
