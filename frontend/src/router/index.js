@@ -8,6 +8,7 @@ import NotFound from '../views/error/NotFound'
 import CompanyAccountLoginView from '../views/company/account/CompanyAccountLoginView'
 import CompanyAccountRegisterView from '../views/company/account/CompanyAccountRegisterView'
 import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountLoginView.vue'
+import LessonAdd from'../views/Lesson/LessonAdd'
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 import CompanyListView from '../views/company/list/CompanyListView.vue'
@@ -18,6 +19,14 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/lesson/lessonAdd/",
+    name: "lessonAdd",
+    component: LessonAdd,
     meta: {
       requestAuth: true,
     }
