@@ -1,72 +1,68 @@
 <template>
   <view class="app">
-    <view class="imgDiv">
-      <image :src="userInfo.avatarUrl"></image>
+    <view class="form">
+      <input type="text" v-model="username" placeholder="用户名" />
+      <input type="password" v-model="password" placeholder="密码" />
+      <button @click="handleLogin">登录</button>
     </view>
-    <view>{{userInfo.nickName}}</view>
-    <button @click="getUserProfile">
-      微信登录
-    </button>
     <view class="gohome" @click="goHome">暂不登录</view>
+    <view class="gohome" @click="tourist">以游客方式登录</view>
   </view>
 </template>
 
 <script>
-const config = {
-  appid: 'wx1665b7f96eb29d8b',
-  appSecret: '10e511717ad8fe349211c7efc82812d9'
-}
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
-      userInfo: {}
+      username: '',
+      password: ''
     }
   },
   methods: {
+    ...mapActions('user', ['login', 'getinfo']),
     goHome() {
-      uni.switchTab({
+      wx.switchTab({
         url: '/pages/index/index'
       });
     },
-    async getUserProfile() {
-      wx.getUserProfile({
-        desc: "完善用户信息",
-        success: (infoRes) => {
-          const { userInfo } = infoRes;
-          this.userInfo = userInfo;
-          console.log(JSON.stringify(userInfo, null, 2));
-
-          // 存储用户信息到本地存储
-          wx.setStorageSync('userInfo', userInfo);
-
-          // 跳转到 my 页面
-          wx.switchTab({
-            url: '/pages/my/my'
+    tourist()
+    {
+      wx.setStorageSync("userType" , "tourist");
+      wx.setStorageSync("username" , "游客");
+      wx.switchTab({
+        url: '/pages/my/my'
+      });
+    },
+    handleLogin() {  // 重命名此方法以避免与 Vuex action 冲突
+      const {username, password} = this;
+      this.login({
+        username,
+        password,
+        success: (resp) => {
+          this.getinfo({
+            success: () => {
+              wx.switchTab({
+                url: '/pages/my/my'
+              });
+            },
+            error: () => {
+              wx.showToast({
+                title: '获取用户信息失败',
+                icon: 'none'
+              });
+            }
+          });
+        },
+        error: () => {
+          wx.showToast({
+            title: '登录失败',
+            icon: 'none'
           });
         }
       });
-    },
-    async getOpenId() {
-      const { appid, appSecret } = config;
-      const { code } = await wx.login();
-      // 微信服务地址
-      let url =
-          'https://api.weixin.qq.com/sns/jscode2session?appid=' +
-          appid +
-          '&secret=' + appSecret + '&js_code=' +
-          code + '&grant_type=authorization_code';
-
-      wx.request({
-        url,
-        success: result => {
-          const { openid } = result.data;
-          console.log('openid', openid);
-        },
-        fail(err) {
-          console.log(err.message)
-        }
-      });
-    },
+    }
   }
 }
 </script>
@@ -77,15 +73,33 @@ export default {
   padding: 20px;
 }
 
-.imgDiv {
-  width: 200rpx;
-  height: 200rpx;
-  margin: 50px auto;
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+  input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
+
+  button {
+    width: 80%;
+    padding: 10px;
+    background-color: #007aff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+.gohome {
+  margin-top: 20px;
+  color: #007aff;
+  cursor: pointer;
 }
 </style>

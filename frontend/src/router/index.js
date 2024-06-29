@@ -48,6 +48,14 @@ const routes = [
     }
   },
   {
+    path: "/company/list/",
+    name: "company",
+    component: CompanyListView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
     path: "/industry/",
     name: "industry",
     component: IndustryIndexView,

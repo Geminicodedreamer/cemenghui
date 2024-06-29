@@ -23,7 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
         map.put("id", user.getUserid().toString());
-        map.put("username", user.getUsername());
+        map.put("username", user.getNickname());
         map.put("photo", user.getPhoto());
         map.put("role" , user.getRole());
         return map;
