@@ -57,6 +57,7 @@ import { reactive, ref, onMounted } from 'vue';
 import router from '../../../router/index';
 import $ from 'jquery';
 import SIdentify from '../../../components/SIdentify.vue';
+import { ElMessage } from 'element-plus';
 
 export default {
     components: {
@@ -76,6 +77,7 @@ export default {
         const labelPosition = ref('right');
         const identifyCodes = "1234567890";
         const identifyCode = ref('3212');
+        const messagecode = ref('');
         const smsDisabled = ref(false);
         const smsButtonText = ref('获取短信验证码');
 
@@ -110,7 +112,21 @@ export default {
         };
 
         const sendSMSCode = () => {
-            // 发送短信验证码逻辑
+            $.ajax({
+                url: "http://127.0.0.1:3000/send/message",
+                type: "post",
+                data: {
+                    telephone:form.telephone,
+                },
+                success(resp) {
+                    if (resp.error_message === "success") {
+                        messagecode.value = resp.code;
+                        ElMessage.success("发送成功")
+                    } else {
+                        ElMessage.error(resp.error_message);
+                    }
+                },
+            });
             startSMSTimer();
         };
 
@@ -184,23 +200,28 @@ export default {
             if (!formEl) return;
             formEl.validate((valid) => {
                 if (valid) {
-                    $.ajax({
-                        url: "http://127.0.0.1:3000/company/account/register/",
-                        type: "post",
-                        data: {
-                            companyname: form.username,
-                            telephone: form.telephone,
-                            password: form.password,
-                            confirmedPassword: form.confirmedPassword,
-                        },
-                        success(resp) {
-                            if (resp.error_message === "success") {
-                                router.push({ name: "company_account_login" });
-                            } else {
-                                error_message.value = resp.error_message;
-                            }
-                        },
-                    });
+                    if(messagecode.value === form.textCode){
+                        $.ajax({
+                            url: "http://127.0.0.1:3000/company/account/register/",
+                            type: "post",
+                            data: {
+                                companyname: form.username,
+                                telephone: form.telephone,
+                                password: form.password,
+                                confirmedPassword: form.confirmedPassword,
+                            },
+                            success(resp) {
+                                if (resp.error_message === "success") {
+                                    router.push({ name: "company_account_login" });
+                                } else {
+                                    error_message.value = resp.error_message;
+                                }
+                            },
+                        });
+                    }
+                    else{
+                        error_message.value = '短信验证码错误';
+                    }
                 } else {
                     error_message.value = '请正确填写表单';
                 }

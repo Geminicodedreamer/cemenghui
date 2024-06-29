@@ -7,30 +7,46 @@ const _sfc_main = {
       integral: 300,
       icon: [],
       lbIcon: [],
-      is_login: false,
-      avatarUrl: "",
-      nickName: ""
+      userType: null
     };
   },
+  computed: {
+    ...common_vendor.mapState("user", ["is_login", "username", "photo"]),
+    avatarUrl() {
+      if (this.userType === "tourist")
+        return "/static/images/tourist.png";
+      return this.photo;
+    },
+    nickName() {
+      if (this.userType === "tourist")
+        return common_vendor.wx$1.getStorageSync("username");
+      return this.username;
+    }
+  },
   onLoad() {
-    this.getUserInfo();
+    this.checkLoginStatus();
     this.tabBarIcon();
     this.liebiaoIcon();
   },
   onShow() {
-    this.getUserInfo();
+    this.checkLoginStatus();
   },
   methods: {
-    getUserInfo() {
-      const userInfo = common_vendor.wx$1.getStorageSync("userInfo");
-      if (userInfo) {
-        this.avatarUrl = userInfo.avatarUrl;
-        this.nickName = userInfo.nickName;
-        this.is_login = true;
-      } else {
-        this.is_login = false;
-        this.avatarUrl = "";
-        this.nickName = "";
+    ...common_vendor.mapActions("user", ["getinfo", "logout"]),
+    checkLoginStatus() {
+      this.userType = common_vendor.wx$1.getStorageSync("userType");
+      if (this.userType === "tourist")
+        return;
+      const token = common_vendor.wx$1.getStorageSync("jwt_token");
+      if (token) {
+        this.getinfo({
+          success: (res) => {
+            console.log("User info fetched successfully:", res);
+          },
+          error: (err) => {
+            console.error("Failed to fetch user info:", err);
+          }
+        });
       }
     },
     login() {
@@ -43,22 +59,22 @@ const _sfc_main = {
         "icons": [
           {
             "photoSrc": "/static/icons/record.png",
-            "text": "体重记录",
+            "text": "浏览记录",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/icons/change.png",
-            "text": "体脂变化",
+            "text": "指标变化",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/icons/time.png",
-            "text": "锻炼时长",
+            "text": "在线时长",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/icons/achievement.png",
-            "text": "今日成果",
+            "text": "公司成果",
             "toUrl": ""
           },
           {
@@ -86,12 +102,12 @@ const _sfc_main = {
           },
           {
             "photoSrc": "/static/list/shopping.png",
-            "text": "商品购买",
+            "text": "商品采购",
             "toUrl": ""
           },
           {
             "photoSrc": "/static/list/myspace.png",
-            "text": "我的空间",
+            "text": "我的职位",
             "toUrl": ""
           },
           {
@@ -120,15 +136,15 @@ if (!Array) {
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: $data.is_login
-  }, $data.is_login ? {
+    a: _ctx.is_login || $data.userType === "tourist"
+  }, _ctx.is_login || $data.userType === "tourist" ? {
     b: common_vendor.p({
       width: "100%",
       height: "100%",
       round: true,
-      src: $data.avatarUrl
+      src: $options.avatarUrl
     }),
-    c: common_vendor.t($data.nickName)
+    c: common_vendor.t($options.nickName)
   } : {
     d: common_vendor.o($options.login),
     e: common_vendor.p({
@@ -144,7 +160,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     i: common_vendor.p({
       isLink: true,
       url: "",
-      title: "健身计划",
+      title: "用户权益",
       value: "展开",
       linkType: "navigateTo"
     }),

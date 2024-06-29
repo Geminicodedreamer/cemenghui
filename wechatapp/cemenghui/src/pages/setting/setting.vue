@@ -1,32 +1,34 @@
 <template>
   <view>
-    <button class="logout-btn" @click="logout">退出登录</button>
+    <button class="logout-btn" @click="handleLogout">退出登录</button>
   </view>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   methods: {
-    // 登出方法
-    logout() {
-      // 清除用户登录状态
-      wx.removeStorageSync('userInfo');
+    ...mapActions('user', ['logout']),
+    handleLogout() {
+      this.logout();
+      // 清除本地存储的用户信息
+      wx.removeStorageSync('jwt_token');
+      wx.removeStorageSync("userType");
+      wx.removeStorageSync("username");
       // 更新页面数据
-      this.is_login = false;
-      this.avatarUrl = '';
-      this.nickName = '';
+      this.$store.commit('user/logout');
       // 跳转到登录页面
       wx.switchTab({
         url: '/pages/my/my'
       });
-    },
+    }
   }
 }
 </script>
 
-
 <style scoped lang="scss">
-.logout-btn{
+.logout-btn {
   margin-top: 40px;
 }
 </style>

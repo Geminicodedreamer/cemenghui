@@ -1,7 +1,7 @@
 <template>
   <div>
     <ContentField>
-      课程列表
+      <h2>课程列表</h2>
       <div class="search-conditions">
         <div class="form-group">
           <label for="search-id">ID</label>
@@ -11,30 +11,34 @@
           <label for="search-name">课程名称</label>
           <input type="text" class="form-control" id="search-name" v-model="searchName" placeholder="输入课程名称">
         </div>
-        <button class="btn btn-primary" @click="filterList">查询</button>
-        <button class="btn btn-primary" @click="addCourse">新增</button>
-        <button class="btn btn-secondary" @click="exportToExcel">导出Excel</button>
-        <button class="btn btn-warning" @click="resetFilters">重置</button>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-danger btn-sm" @click="deleteTenant">删除</button>
+        <button class="btn btn-warning btn-sm" @click="resetFilters">重置</button>
+        <button class="btn btn-primary btn-sm" @click="showAddCourseDialog">新增课程</button>
+        <button class="btn btn-success btn-sm" @click="exportToExcel">导出Excel</button>
       </div>
       <table class="table">
         <thead>
           <tr>
+            <th><input type="checkbox" @change="selectAll" :checked="allSelected">&nbsp;全选</th>
             <th>ID</th>
             <th>课程名称</th>
             <th>课程简介</th>
+            <th>课程作者</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in paginatedList" :key="item.id">
+            <td><input type="checkbox" v-model="selectedLessons" :value="item.id"></td>
             <td>{{ item.id }}</td>
-            <td v-text="item.LessonName"></td>
-            <td>{{ item.LessonIntro }}</td>
+            <td>{{ item.lessonname }}</td>
+            <td>{{ item.lessonintro }}</td>
+            <td>{{ item.lessonauthor }}</td>
             <td>
-              <a href="#" @click.prevent="del(item.id)">删除</a>
-            </td>
-            <td>
-              <a href="#" @click.prevent="modify(item)">修改</a>
+              <button class="btn btn-primary btn-sm" @click.prevent="showModifyCourseDialog(item)">修改</button>
+              <button class="btn btn-danger btn-sm" @click.prevent="del(item.id)">删除</button>
             </td>
           </tr>
         </tbody>
@@ -53,88 +57,230 @@
         </ul>
       </nav>
     </ContentField>
+
+    <!-- 课程新增和修改对话框 -->
+    <AddCourseDialog v-model:dialogVisible="isAddCourseDialogVisible" @update="handleDataUpdate"/>
+    <ModifyCourseDialog v-model:dialogVisible="isModifyCourseDialogVisible" :lesson="currentLesson" @update="handleDataUpdate"/>
   </div>
 </template>
 
 <script>
 import ContentField from '../../components/ContentField.vue'
+import AddCourseDialog from '../../components/AddCourseDialog.vue';
+import ModifyCourseDialog from '../../components/ModifyCourseDialog.vue';
 import * as XLSX from 'xlsx';
+import { ref, computed, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import { useStore } from 'vuex';
+import $ from 'jquery';
+import { ElMessageBox } from 'element-plus';
 
 export default {
   components: {
-    ContentField
+    ContentField,
+    AddCourseDialog,
+    ModifyCourseDialog
   },
-  data() {
-    return {
-      list: [
-        { id: 1, LessonName: '高等数学', LessonIntro: '很牛逼的课程，真的巨牛逼，学不明白一点' },
-        { id: 2, LessonName: '大学英语', LessonIntro: '很牛逼的课程，真的巨牛逼，学不明白一点' },
-        { id: 3, LessonName: '大英二', LessonIntro: '很牛逼的课程，真的巨牛逼，学不明白一点' }
-      ],
-      searchId: '',
-      searchName: '',
-      currentPage: 1,
-      pageSize: 10
-    }
-  },
-  computed: {
-    filteredList() {
-      return this.list.filter(item => {
-        return (
-          (this.searchId === '' || item.id.toString().includes(this.searchId)) &&
-          (this.searchName === '' || item.LessonName.includes(this.searchName))
-        )
+  setup() {
+    const store = useStore();
+    const list = ref([]);
+    const searchId = ref('');
+    const searchName = ref('');
+    const currentPage = ref(1);
+    const pageSize = 10;
+    const selectedLessons = ref([]);
+    const isAddCourseDialogVisible = ref(false);
+    const isModifyCourseDialogVisible = ref(false);
+    const currentLesson = ref(null);
+
+    const fetchLessonList = () => {
+      $.ajax({
+        url: "http://127.0.0.1:3000/lesson/list",
+        type: "get",
+        headers: {
+          Authorization: "Bearer " + store.state.user.token,
+        },
+        success(resp) {
+          if (resp && resp.lessons) {
+            list.value = resp.lessons;
+          }
+        },
+        error(err) {
+          console.error(err);
+        }
       });
-    },
-    totalPages() {
-      return Math.ceil(this.filteredList.length / this.pageSize);
-    },
-    paginatedList() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = this.currentPage * this.pageSize;
-      return this.filteredList.slice(start, end);
-    }
-  },
-  methods: {
-    del(id) {
-      this.list = this.list.filter(item => item.id !== id)
-    },
-    modify(item) {
-      this.$router.push('lessonModify');
-      let newLessonName = prompt("修改课程名称", item.LessonName);
-      if (newLessonName !== null && newLessonName !== "") {
-        item.LessonName = newLessonName;
+    };
+
+    const resetFilters = () => {
+      searchId.value = '';
+      searchName.value = '';
+      fetchLessonList();
+    };
+
+    const deleteTenant = () => {
+      if (selectedLessons.value.length === 0) {
+        ElMessage.error('请至少选择一个课程进行删除');
+        return;
       }
-      let newLessonIntro = prompt("修改课程简介", item.LessonIntro);
-      if (newLessonIntro !== null && newLessonIntro !== "") {
-        item.LessonIntro = newLessonIntro;
+
+      ElMessageBox.confirm('确定删除选中的课程?')
+        .then(() => {
+          let deletePromises = selectedLessons.value.map(id => {
+            return $.ajax({
+              url: "http://127.0.0.1:3000/lesson/del/",
+              data: { id: id },
+              type: "get",
+              headers: {
+                Authorization: "Bearer " + store.state.user.token,
+              }
+            });
+          });
+
+          Promise.all(deletePromises)
+            .then(responses => {
+              responses.forEach((response, index) => {
+                if (response.error_message === 'success') {
+                  const lessonId = selectedLessons.value[index];
+                  const indexToRemove = list.value.findIndex(lesson => lesson.id === lessonId);
+                  if (indexToRemove !== -1) {
+                    list.value.splice(indexToRemove, 1);
+                  }
+                } else {
+                  ElMessage.error(`课程ID ${selectedLessons.value[index]} 删除失败`);
+                }
+              });
+              selectedLessons.value = []; // 清空选中的课程
+              ElMessage.success('选中的课程删除成功');
+              fetchLessonList();
+            })
+            .catch(error => {
+              console.error('删除过程中发生错误', error);
+              ElMessage.error('删除失败');
+            });
+        })
+        .catch(() => {});
+    };
+
+    const filteredList = computed(() => {
+      return list.value.filter(item => {
+        return (
+          (searchId.value === '' || item.id.toString().includes(searchId.value)) &&
+          (searchName.value === '' || item.lessonname.includes(searchName.value))
+        );
+      });
+    });
+
+    const totalPages = computed(() => {
+      return Math.ceil(filteredList.value.length / pageSize);
+    });
+
+    const paginatedList = computed(() => {
+      const start = (currentPage.value - 1) * pageSize;
+      const end = currentPage.value * pageSize;
+      return filteredList.value.slice(start, end);
+    });
+
+    const allSelected = computed(() => {
+      return paginatedList.value.length > 0 && paginatedList.value.every(item => selectedLessons.value.includes(item.id));
+    });
+
+    const del = id => {
+      $.ajax({
+        url: `http://127.0.0.1:3000/lesson/del`,
+        data: { id },
+        type: "get",
+        headers: {
+          Authorization: "Bearer " + store.state.user.token,
+        },
+        success: (resp) => {
+          if (resp.error_message === "success") {
+            list.value = list.value.filter(item => item.id !== id);
+            ElMessage({
+              message: '删除成功',
+              type: 'success',
+              duration: 2000
+            });
+          } else {
+            ElMessage.error('删除失败');
+          }
+        },
+        error: () => {
+          ElMessage.error('删除失败');
+        }
+      });
+    };
+
+    const showModifyCourseDialog = item => {
+      currentLesson.value = { ...item }; // 将选中的课程信息传递给对话框
+      isModifyCourseDialogVisible.value = true;
+    };
+
+    const showAddCourseDialog = () => {
+      isAddCourseDialogVisible.value = true;
+    };
+
+    const handleDataUpdate = () => {
+      fetchLessonList(); // 刷新课程列表
+    };
+
+    const changePage = page => {
+      if (page > 0 && page <= totalPages.value) {
+        currentPage.value = page;
       }
-    },
-    changePage(page) {
-      if (page > 0 && page <= this.totalPages) {
-        this.currentPage = page;
+    };
+
+    const selectAll = () => {
+      if (allSelected.value) {
+        paginatedList.value.forEach(item => {
+          const index = selectedLessons.value.indexOf(item.id);
+          if (index > -1) {
+            selectedLessons.value.splice(index, 1);
+          }
+        });
+      } else {
+        paginatedList.value.forEach(item => {
+          if (!selectedLessons.value.includes(item.id)) {
+            selectedLessons.value.push(item.id);
+          }
+        });
       }
-    },
-    filterList() {
-      this.currentPage = 1; // 查询后重置为第一页
-    },
-    resetFilters() {
-      this.searchId = '';
-      this.searchName = '';
-      this.filterList();
-    },
-    addCourse() {
-      this.$router.push('lessonAdd'); // 假设你已经在路由中配置了lesson-add路径
-    },
-    exportToExcel() {
-      const worksheet = XLSX.utils.json_to_sheet(this.filteredList);
+    };
+
+    const exportToExcel = () => {
+      const worksheet = XLSX.utils.json_to_sheet(filteredList.value);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "课程列表");
       XLSX.writeFile(workbook, "课程列表.xlsx");
-    }
-  },
-  mounted() {
-    this.filterList(); // 初始化时过滤列表
+    };
+
+    onMounted(() => {
+      fetchLessonList();
+    });
+
+    return {
+      list,
+      searchId,
+      searchName,
+      currentPage,
+      pageSize,
+      isAddCourseDialogVisible,
+      isModifyCourseDialogVisible,
+      currentLesson,
+      filteredList,
+      totalPages,
+      paginatedList,
+      del,
+      showModifyCourseDialog,
+      showAddCourseDialog,
+      handleDataUpdate,
+      changePage,
+      exportToExcel,
+      selectAll,
+      selectedLessons,
+      deleteTenant,
+      resetFilters,
+      allSelected
+    };
   }
 }
 </script>
@@ -142,8 +288,17 @@ export default {
 <style scoped>
 .search-conditions {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .search-conditions .form-group {
-  margin-bottom: 15px;
+  flex: 1;
+}
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 </style>

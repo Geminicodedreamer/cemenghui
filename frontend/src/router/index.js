@@ -8,8 +8,6 @@ import NotFound from '../views/error/NotFound'
 import CompanyAccountLoginView from '../views/company/account/CompanyAccountLoginView'
 import CompanyAccountRegisterView from '../views/company/account/CompanyAccountRegisterView'
 import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountLoginView.vue'
-import LessonAdd from'../views/Lesson/LessonAdd'
-import LessonModify from'../views/Lesson/LessonModify'
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 import CompanyListView from '../views/company/list/CompanyListView.vue'
@@ -25,25 +23,17 @@ const routes = [
     }
   },
   {
-    path: "/lesson/lessonAdd/",
-    name: "lessonAdd",
-    component: LessonAdd,
-    meta: {
-      requestAuth: true,
-    }
-  },
-  {
-    path: "/lesson/lessonModify/",
-    name: "lessonModify",
-    component: LessonModify,
-    meta: {
-      requestAuth: true,
-    }
-  },
-  {
     path: "/customer/",
     name: "customer",
     component: CustomerIndexView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/company/list/",
+    name: "company",
+    component: CompanyListView,
     meta: {
       requestAuth: true,
     }
