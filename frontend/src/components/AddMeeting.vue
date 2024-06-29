@@ -17,16 +17,40 @@
                     <!-- 会议封面 -->
                     <div class="form-group">
                         <label for="meetingCover">会议封面</label>
-                        <div class="meeting-cover">
-                            <img v-if="imageUrl" :src="imageUrl" alt="会议封面">
-                            <div v-else class="placeholder">请选择图片</div>
+                        <el-upload
+                          class="avatar-uploader"
+                          action="http://127.0.0.1:3000/upload"
+                          :show-file-list="false"
+                          :on-success="handleCoverSuccess"
+                          :before-upload="beforeCoverUpload">
+                          <template #trigger>
+                            <div class="upload-trigger">
+                              <div v-if="!imageUrl" class="placeholder">请选择图片</div>
+                              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                            </div>
+                          </template>
+                        </el-upload>
+                        <div class="upload-description">
+                            请上传 大小不超过 <span class="red-bold">2MB</span> 格式为
+                            <span class="red-bold">png/jpg/jpeg</span> 的文件
                         </div>
-                        <input type="file" class="form-control-file" id="meetingCover" accept="image/png, image/jpeg" @change="handleCoverChange">
                     </div>
                     <!-- 创建人 -->
                     <div class="form-group">
                         <label for="creator">创建人</label>
                         <input type="text" class="form-control" id="creator" v-model="creator">
+                    </div>
+                    <!-- 会议内容 -->
+                    <div class="form-group">
+                        <label for="meetingContent">会议内容</label>
+                        <quill-editor
+                            ref="quillEditorRef"
+                            v-model="meetingContent"
+                            :options="editorOption"
+                            @blur="onEditorBlur"
+                            @focus="onEditorFocus"
+                            @ready="onEditorReady"
+                        />
                     </div>
                     <!-- 开始时间 -->
                     <div class="form-group">
@@ -58,75 +82,143 @@
 
 <script>
 import { ref } from 'vue';
-import { ElDatePicker } from 'element-plus';
+import { ElMessage, ElDatePicker, ElUpload } from 'element-plus';
+import axios from 'axios';
+import { QuillEditor } from 'vue3-quill';
 
 export default {
     components: {
-        ElDatePicker
+        ElDatePicker,
+        ElUpload,
+        QuillEditor
     },
-    setup(props, { emit }) {
-        const meetingName = ref('');
-        const meetingContent = ref('');
-        const meetingCover = ref(null);
-        const creator = ref('');
-        const imageUrl = ref('');
-        const startTime = ref(new Date());
-        const endTime = ref(new Date());
-
-        const closeModal = () => {
-            emit('close');
+    data() {
+        return {
+            quillEditorRef: ref(null),
+            editorOption: {
+                modules: {
+                    toolbar: {
+                        container: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                            [{ 'script': 'sub' }, { 'script': 'super' }],
+                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                            [{ 'direction': 'rtl' }],
+                            [{ 'size': ['small', false, 'large', 'huge'] }],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'font': [] }],
+                            [{ 'align': [] }],
+                            ['image', 'video'],
+                            ['clean']
+                        ],
+                        handlers: {
+                            'image': () => {
+                                this.handleImageInsertion();
+                            }
+                        }
+                    }
+                }
+            },
+            meetingName: '',
+            meetingContent: '',
+            meetingCover: null,
+            creator: '',
+            imageUrl: '',
+            startTime: new Date(),
+            endTime: new Date(),
+            editorReady: false
         };
+    },
+    methods: {
+        uploadImage(file) {
+            const formData = new FormData();
+            formData.append('file', file);
 
-        const createMeeting = () => {
-            if (!meetingName.value || !creator.value || !meetingCover.value || !startTime.value || !endTime.value) {
-                alert('会议名称、会议封面、创建人、开始时间和结束时间不能为空！');
+            axios.post('http://127.0.0.1:3000/upload', formData)
+                .then(response => {
+                    const url = response.data.url; // 从服务器响应中获取图片 URL
+                    const range = this.quillEditorRef.getSelection();
+                    this.quillEditorRef.insertEmbed(range.index, 'image', url);
+                })
+                .catch(error => {
+                    console.error('Error uploading image: ', error);
+                    ElMessage.error('图片上传失败');
+                });
+        },
+        handleImageInsertion() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+            input.classList.add('ql-image');
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    this.uploadImage(file);
+                }
+                input.value = '';
+            });
+            input.click();
+        },
+        closeModal() {
+            this.$emit('close');
+        },
+        handleCoverSuccess(response) {
+            this.imageUrl = response.url; // 假设后端返回的图片 URL 在 response.url 中
+            this.meetingCover = response.url;
+        },
+        beforeCoverUpload(file) {
+            const isImage = file.type === 'image/jpeg' || file.type === 'image/png';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isImage) {
+                ElMessage.error('上传图片只能是 JPG/PNG 格式!');
+            }
+            if (!isLt2M) {
+                ElMessage.error('上传图片大小不能超过 2MB!');
+            }
+            return isImage && isLt2M;
+        },
+        createMeeting() {
+
+            if (!this.meetingName || !this.creator || !this.meetingCover || !this.startTime || !this.endTime) {
+                ElMessage.error('会议名称、会议封面、创建人、开始时间和结束时间不能为空！');
                 return;
             }
-        
-            if (new Date(endTime.value) <= new Date(startTime.value)) {
-                alert('结束时间必须在开始时间之后！');
+
+            if (new Date(this.endTime) <= new Date(this.startTime)) {
+                ElMessage.error('结束时间必须在开始时间之后！');
                 return;
             }
-        
+
             const formatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const startTimeStr = new Date(startTime.value).toLocaleDateString('zh-CN', formatOptions);
-            const endTimeStr = new Date(endTime.value).toLocaleDateString('zh-CN', formatOptions);
-        
+            const startTimeStr = new Date(this.startTime).toLocaleString('zh-CN', formatOptions);
+            const endTimeStr = new Date(this.endTime).toLocaleString('zh-CN', formatOptions);
+
+            if (this.quillEditorRef) {
+                this.meetingContent = this.quillEditorRef.root.innerHTML;
+            }
+
             const newMeeting = {
-                name: meetingName.value,
-                content: meetingContent.value,
-                cover: meetingCover.value,
-                creator: creator.value,
+                name: this.meetingName,
+                content: this.meetingContent,
+                cover: this.meetingCover,
+                creator: this.creator,
                 startTime: startTimeStr,
                 endTime: endTimeStr
             };
-            emit('create', newMeeting);
-            closeModal();
-        };
-
-
-
-        const handleCoverChange = (event) => {
-            meetingCover.value = event.target.files[0];
-            if (meetingCover.value) {
-                imageUrl.value = URL.createObjectURL(meetingCover.value);
-            } else {
-                imageUrl.value = '';
-            }
-        };
-
-        return {
-            meetingName,
-            meetingContent,
-            meetingCover,
-            creator,
-            imageUrl,
-            startTime,
-            endTime,
-            closeModal,
-            createMeeting,
-            handleCoverChange
-        };
+            console.log('New meeting to be created:', newMeeting);
+            this.$emit('create', newMeeting);
+            this.closeModal();
+        },
+        onEditorReady(quill) {
+            this.quillEditorRef = quill;
+            this.editorReady = true;
+            console.log('Editor is ready', quill);
+        }
     }
 };
 </script>
@@ -136,32 +228,46 @@ export default {
     max-width: 90%;
 }
 
-.meeting-cover {
-    width: 100%;
-    height: 200px;
-    border: 1px solid #ccc;
+.upload-trigger {
+    width: 300px; /* 固定宽度 */
+    height: 225px; /* 4:3 比例的高度 */
+    border: 1px dashed #dcdfe6;
     border-radius: 4px;
     overflow: hidden;
     position: relative;
+    background-color: #f0f0f0; /* 添加背景颜色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-.meeting-cover img {
+.upload-trigger .placeholder {
+    color: #909399;
+    font-size: 14px;
+    text-align: center;
+}
+
+.upload-trigger .avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f0f0f0;
-    color: #888;
+.upload-description {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 5px;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.red-bold {
+    color: #f56c6c;
+    font-weight: bold;
+}
+
+.meeting-content img {
+    max-width: 50px; /* 设置会议内容中图片的最大宽度 */
+    max-height: 50px; /* 设置会议内容中图片的最大高度 */
+    height: auto;
 }
 </style>
