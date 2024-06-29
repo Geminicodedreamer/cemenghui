@@ -15,9 +15,9 @@ public class Company {
     private String companyname;
     private String password;
     private String photo;
-    private String owner_name;
+    private String ownername;
     private String telephone;
-    private String admin_name;
+    private String adminname;
     private Integer symbol;
     private String note;
 }

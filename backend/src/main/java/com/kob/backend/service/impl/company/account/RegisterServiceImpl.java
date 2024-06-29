@@ -68,10 +68,10 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        String admin_name = "jj";
+        String adminname = "admin";
         Random random = new Random();
         Integer symbol = random.nextInt(900000000) + 100000000;
-        Company company = new Company(null, companyname, encodedPassword, null , "", telephone , admin_name , symbol , null);
+        Company company = new Company(null, companyname, encodedPassword, null , "", telephone , adminname , symbol , null);
         companyMapper.insert(company);
 
         map.put("error_message", "success");

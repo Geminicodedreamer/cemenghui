@@ -1,0 +1,161 @@
+[33mcommit cccd779073070ae866bd5b60003ecb19bd50837a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: chnzp <1983203677@qq.com>
+Date:   Sat Jun 22 17:09:35 2024 +0800
+
+    czp
+
+[33mcommit 9173940e606d8806121d2359d81f203c46aca8b6[m
+Author: yiqiufan <3581385570@qq.com>
+Date:   Sun Jun 23 14:36:11 2024 +0800
+
+    hdx分支合并
+
+[33mcommit 8fb6e00256520edd36ea8267f744c4f7c08f386e[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sun Jun 23 00:54:20 2024 +0800
+
+    将登录部分修改更加严谨
+
+[33mcommit e9d33fb57ac344ad5e59e79bee28950544da7ca5[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sun Jun 23 00:11:02 2024 +0800
+
+    更改要求
+
+[33mcommit 52ff47158ed182b95d0010155fe80465f6fcb46e[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sun Jun 23 00:08:03 2024 +0800
+
+    小程序小改动
+
+[33mcommit c363ce13eb8fa82cff24f0b2c5168c36cfd8c563[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 15:53:46 2024 +0800
+
+    框架写好
+
+[33mcommit d35ee75db247bb8079b572892ee3f1e94205ec16[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 15:41:13 2024 +0800
+
+    框架写好
+
+[33mcommit 71aa1b1c257802667ebdc164a15395dbf24218e1[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 15:35:02 2024 +0800
+
+    Delete wechatapp directory
+
+[33mcommit 264d0c9cc44841c9a8bcf32bd840427dcb756bec[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 15:16:21 2024 +0800
+
+    基础框架写完，分功能工作开始
+
+[33mcommit 38c22c075dd4754d11740df9b4ed214f1f7a01dc[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 15:11:41 2024 +0800
+
+    小程序端框架完成
+
+[33mcommit 1cbaf8f81367b07245bce6c1047f4f82ed5e7fe2[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 14:19:01 2024 +0800
+
+    小程序添加
+
+[33mcommit 2003d73165e6ee63c473bceabdc61186cea3f543[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 11:44:18 2024 +0800
+
+    双登录实现完毕
+
+[33mcommit 80a3b461e35bda1674ffe260666e8ab6012effd7[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sat Jun 22 00:48:40 2024 +0800
+
+    双登录实现
+
+[33mcommit a49bb876ab3afa0b82a0f8969d33ab1ec82b189b[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Thu Jun 20 16:26:39 2024 +0800
+
+    把User改成了Company
+
+[33mcommit 031874f81e348ccb47d089b6a97f07315ea197ce[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Wed Jun 19 14:06:41 2024 +0800
+
+    注册部分除了短信验证码以外完工
+
+[33mcommit 3b66567743d652f2de1549746243fce61d7b119e[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Wed Jun 19 12:12:23 2024 +0800
+
+    登录做完，完善NavBar bug
+
+[33mcommit 11fcb037f8702993ac25e0d922346bc79ba9a7ba[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Wed Jun 19 01:34:00 2024 +0800
+
+    登录界面完善+美化
+
+[33mcommit c6323b83c522314e13b35c50092fd7f65860ab85[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 15:38:17 2024 +0800
+
+    sql初始化语句
+
+[33mcommit 20d7d671b3950ca03494611fbbba6288257362c8[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 15:00:53 2024 +0800
+
+    炫酷背景
+
+[33mcommit 6213c7d5d5f9fd49ec0f5afbd69d5da73c2d6b79[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 14:25:53 2024 +0800
+
+    总路由写完
+
+[33mcommit 736d8ed40f1ec1dea7ee8d8454b8f856636c2927[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 11:01:23 2024 +0800
+
+    登录前端
+
+[33mcommit c2c40ebde25536d68cf97136185eeaa717da571b[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 00:59:20 2024 +0800
+
+    登录、注册请求
+
+[33mcommit aa7461e24d49273c9c70e2cb193a695268ce04b0[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Tue Jun 18 00:03:52 2024 +0800
+
+    总体的分工
+
+[33mcommit e27dc93efe544b2e27f9d9302f7208d1af854dfc[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Mon Jun 17 16:55:15 2024 +0800
+
+    改好了
+
+[33mcommit 83f364870be791dfe9a7082ef2d586588ef739a3[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Mon Jun 17 16:51:50 2024 +0800
+
+    前端组件模板+配置
+
+[33mcommit 5d278386f9ba99cbc604333fe6a5005b2e0a714d[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Mon Jun 17 14:24:50 2024 +0800
+
+    具体要求
+
+[33mcommit ad90cfa7ae1cf45c46cf948907ca15b4e4a5ebee[m
+Author: Geminicodedreamer <113080348+Geminicodedreamer@users.noreply.github.com>
+Date:   Sun Jun 16 22:41:05 2024 +0800
+
+    first commit

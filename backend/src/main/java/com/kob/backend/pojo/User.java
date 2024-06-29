@@ -17,9 +17,9 @@ public class User {
     private String password;
     private String photo;
     private String telephone;
-    private String apartment_name;
+    private String apartmentname;
     private String gender;
-    private int status;
+    private Integer status;
     private String email;
     private String role;
     private String companyname;
