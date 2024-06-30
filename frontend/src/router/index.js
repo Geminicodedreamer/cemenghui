@@ -11,6 +11,9 @@ import CustomerAccountLoginView from '../views/Customer/account/CustomerAccountL
 import HomeView from '../views/Home/HomeView'
 import store from '../store/index'
 import CompanyListView from '../views/company/list/CompanyListView.vue'
+import modifyPassword from '../views/modifyPassword/modifyPassword'
+import companyInformation from '../views/detailInformation/companyInformation'
+import userInformation from '../views/detailInformation/userInformation'
 // import AddMeeting from '../views/Meeting/AddMeeting'
 
 const routes = [
@@ -78,6 +81,33 @@ const routes = [
       requestAuth: true,
     }
   },
+  
+  {
+    path: "/company/account/info/",
+    name: "company_account_info",
+    component: companyInformation,
+    meta: {
+      requestAuth: true,
+    }
+  }
+  ,
+  {
+    path: "/user/account/info",
+    name: "user_account_info",
+    component: userInformation,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  
+  {
+    path: "/company/password",
+    name: "company_password",
+    component: modifyPassword,
+    meta: {
+      requestAuth: true,
+    }
+  },
   {
     path: "/company/account/login/",
     name: "company_account_login",
@@ -113,7 +143,7 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     redirect: "/404/"
-  },
+  }
   // {
   //   path: "/meeting/addMeeting/",
   //   name: "addMeeting",

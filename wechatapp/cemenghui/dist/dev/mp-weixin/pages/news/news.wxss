@@ -1,2 +1,52 @@
 
-/* 页面样式 */
+.container.data-v-e5b8984c {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+.myContent.data-v-e5b8984c {
+  flex: 1;
+}
+.search-bar.data-v-e5b8984c {
+  padding: 10px;
+  background-color: white;
+}
+.search-bar input.data-v-e5b8984c {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.news-list.data-v-e5b8984c {
+  flex: 1;
+  padding: 10px;
+}
+.news-item.data-v-e5b8984c {
+  display: flex;
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.news-image.data-v-e5b8984c {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.news-content.data-v-e5b8984c {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.news-title.data-v-e5b8984c {
+  font-size: 16px;
+  font-weight: bold;
+}
+.news-source.data-v-e5b8984c {
+  margin-top: 5px;
+  color: #999;
+  font-size: 12px;
+}

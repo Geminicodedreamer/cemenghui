@@ -38,5 +38,5 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {};
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-c9ec16af"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/tech/tech.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-c9ec16af"], ["__file", "C:/Users/李昊喆/Desktop/TheLast/cemenghui/wechatapp/cemenghui/src/pages/tech/tech.vue"]]);
 wx.createPage(MiniProgramPage);

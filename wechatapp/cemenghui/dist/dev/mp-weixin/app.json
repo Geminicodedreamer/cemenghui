@@ -6,6 +6,7 @@
     "pages/cooperation/cooperation",
     "pages/setting/setting",
     "pages/news/news",
+    "pages/news/newsDetail",
     "pages/tech/tech"
   ],
   "usingComponents": {

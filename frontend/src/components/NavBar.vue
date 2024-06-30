@@ -44,7 +44,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-                <router-link class="dropdown-item" :to="{name: '404'}">个人信息</router-link>
+                <router-link class="dropdown-item" :to="{name: 'company_account_info'}">个人信息</router-link><!-- user_account_info  company_account_info -->
             </li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item"  @click="logout">退出</a></li>

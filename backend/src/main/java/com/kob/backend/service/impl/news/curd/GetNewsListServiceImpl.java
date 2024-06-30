@@ -33,7 +33,7 @@ public class GetNewsListServiceImpl implements GetNewsListService {
             item.put("summary", news.getSummary());
             item.put("imagePath", news.getImagePath());
             item.put("content", news.getContent());
-            item.put("Author" , news.getAuthor());//前端需要什么这里就装什么
+            item.put("author" , news.getAuthor());//前端需要什么这里就装什么
             item.put("tenant", news.getTenant());
             items.add(item);
         }

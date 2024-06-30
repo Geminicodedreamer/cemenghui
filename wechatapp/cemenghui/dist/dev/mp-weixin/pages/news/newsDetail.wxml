@@ -1,0 +1,1 @@
+<view class="container"><scroll-view class="news-detail" scroll-y><view class="news-content"><text class="news-title">{{a}}</text><view class="spacer"></view><text class="news-source">来源: {{b}}</text><image class="news-image" src="{{c}}" mode="widthFix"/><view><rich-text nodes="{{d}}"/></view></view></scroll-view></view>
