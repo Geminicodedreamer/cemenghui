@@ -7,7 +7,10 @@
     "pages/setting/setting",
     "pages/news/news",
     "pages/news/newsDetail",
-    "pages/tech/tech"
+    "pages/tech/tech",
+    "pages/cooperation/meetingList",
+    "pages/cooperation/meetingDetail",
+    "pages/cooperation/receipt"
   ],
   "usingComponents": {
     "van-button": "/wxcomponents/vant/button/index",

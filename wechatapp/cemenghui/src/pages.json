@@ -51,6 +51,30 @@
 			"navigationBarTitleText": "技术",
 			"enablePullDownRefresh": true
 		  }
+		},
+		{
+			"path" : "pages/cooperation/meetingList",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/cooperation/meetingDetail",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/cooperation/receipt",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {

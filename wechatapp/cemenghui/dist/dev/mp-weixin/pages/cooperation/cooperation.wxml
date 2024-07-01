@@ -1,1 +1,1 @@
-<view class="myContent data-v-d3bc45b1"></view>
+<view class="myContent data-v-d3bc45b1"><view class="categoryGrid data-v-d3bc45b1"><view wx:for="{{a}}" wx:for-item="category" wx:key="d" class="categoryItem data-v-d3bc45b1" bindtap="{{category.e}}"><view class="categoryIcon data-v-d3bc45b1">{{category.a}}</view><view class="categoryInfo data-v-d3bc45b1"><text class="categoryName data-v-d3bc45b1">{{category.b}}</text><text class="categoryDescription data-v-d3bc45b1">{{category.c}}</text></view></view></view></view>

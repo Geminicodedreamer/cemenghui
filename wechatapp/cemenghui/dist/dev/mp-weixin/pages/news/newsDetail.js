@@ -37,5 +37,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     d: $data.processedContent
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/李昊喆/Desktop/TheLast/cemenghui/wechatapp/cemenghui/src/pages/news/newsDetail.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/news/newsDetail.vue"]]);
 wx.createPage(MiniProgramPage);

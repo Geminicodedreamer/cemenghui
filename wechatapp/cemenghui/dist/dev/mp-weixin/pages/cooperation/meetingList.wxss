@@ -1,0 +1,35 @@
+
+.meeting-list.data-v-5605a37e {
+  padding: 20px;
+}
+.meeting-item.data-v-5605a37e {
+  display: flex;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.meeting-photo.data-v-5605a37e {
+  width: 100px;
+  height: 100px;
+  margin-right: 15px;
+  border-radius: 5px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.meeting-info.data-v-5605a37e {
+  display: flex;
+  flex-direction: column;
+}
+.meeting-name.data-v-5605a37e {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.meeting-creator.data-v-5605a37e, .meeting-time.data-v-5605a37e {
+  font-size: 14px;
+  color: #666;
+}

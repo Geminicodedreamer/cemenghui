@@ -1,0 +1,56 @@
+
+.receipt-form.data-v-d086d0e7 {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.form-title.data-v-d086d0e7 {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.form-item.data-v-d086d0e7 {
+  margin-bottom: 15px;
+}
+.form-input.data-v-d086d0e7, .form-textarea.data-v-d086d0e7 {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
+}
+.form-textarea.data-v-d086d0e7 {
+  height: 100px;
+  resize: none;
+}
+.form-picker.data-v-d086d0e7 {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.picker.data-v-d086d0e7 {
+  font-size: 16px;
+  color: #666;
+}
+.submit-button.data-v-d086d0e7 {
+  width: 100%;
+  padding: 14px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.submit-button.data-v-d086d0e7:hover {
+  background-color: #0056b3;
+}

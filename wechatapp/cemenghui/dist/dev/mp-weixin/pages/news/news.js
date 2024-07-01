@@ -114,5 +114,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e5b8984c"], ["__file", "C:/Users/李昊喆/Desktop/TheLast/cemenghui/wechatapp/cemenghui/src/pages/news/news.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e5b8984c"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/news/news.vue"]]);
 wx.createPage(MiniProgramPage);

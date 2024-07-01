@@ -167,7 +167,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     j: common_vendor.f($data.icon, (item, key, i0) => {
       return {
         a: key,
-        b: "d0f6bc30-4-" + i0 + ",d0f6bc30-3",
+        b: "93cdf742-4-" + i0 + ",93cdf742-3",
         c: common_vendor.p({
           url: item.toUrl,
           text: item.text,
@@ -182,9 +182,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     l: common_vendor.f($data.lbIcon, (liebiao, key, i0) => {
       return {
-        a: "d0f6bc30-6-" + i0 + "," + ("d0f6bc30-5-" + i0),
+        a: "93cdf742-6-" + i0 + "," + ("93cdf742-5-" + i0),
         b: key,
-        c: "d0f6bc30-5-" + i0,
+        c: "93cdf742-5-" + i0,
         d: common_vendor.p({
           icon: liebiao.photoSrc,
           title: liebiao.text,
@@ -194,5 +194,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   });
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/李昊喆/Desktop/TheLast/cemenghui/wechatapp/cemenghui/src/pages/my/my.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/my/my.vue"]]);
 wx.createPage(MiniProgramPage);

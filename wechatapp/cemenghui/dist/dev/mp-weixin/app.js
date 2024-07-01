@@ -12,6 +12,9 @@ if (!Math) {
   "./pages/news/news.js";
   "./pages/news/newsDetail.js";
   "./pages/tech/tech.js";
+  "./pages/cooperation/meetingList.js";
+  "./pages/cooperation/meetingDetail.js";
+  "./pages/cooperation/receipt.js";
 }
 const _sfc_main = {
   onLaunch() {
@@ -61,7 +64,7 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {};
 }
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/李昊喆/Desktop/TheLast/cemenghui/wechatapp/cemenghui/src/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   app.use(store_index.store);
