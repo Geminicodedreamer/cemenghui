@@ -55,7 +55,7 @@ public class GetOrganizationServiceImpl implements GetOrganizationListService {
                 rootOrganizations.add(item);
             }
         }
-
+        resp.put("org" ,organizationList);
         resp.put("organizations", rootOrganizations);
         return resp;
     }

@@ -1,5 +1,8 @@
 <template>
   <view class="app">
+    <text style="font-family:STXingkai;font-size:260%;text-align:center;">
+      测盟汇
+    </text>
     <view class="form">
       <input type="text" v-model="username" placeholder="用户名" />
       <input type="password" v-model="password" placeholder="密码" />
@@ -70,7 +73,7 @@ export default {
 <style lang="scss" scoped>
 .app {
   text-align: center;
-  padding: 20px;
+  padding-top: 50%;
 }
 
 .form {

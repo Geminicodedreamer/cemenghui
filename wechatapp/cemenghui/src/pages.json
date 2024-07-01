@@ -53,6 +53,36 @@
 			"navigationBarTitleText": "课程详情",
 			"enablePullDownRefresh": true
 		  }
+		},
+		{
+			"path": "pages/news/newsDetail",
+			"style": {
+				"navigationBarTitleText": "新闻详情"
+			}
+		},
+		{
+			"path" : "pages/cooperation/meetingList",
+			"style" :
+			{
+				"navigationBarTitleText" : "会议列表",
+				"enablePullDownRefresh" : true
+			}
+		},
+		{
+			"path" : "pages/cooperation/meetingDetail",
+			"style" :
+			{
+				"navigationBarTitleText" : "会议详情",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/cooperation/receipt",
+			"style" :
+			{
+				"navigationBarTitleText" : "参会回执",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {
@@ -84,7 +114,7 @@
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "static/tabs/menu.png",
-				"selectedIconPath": "static/tabs/menu_select.png",
+				"selectedIconPath": "static/tabs/menu_select.png"
 			},
 			{
 				"pagePath": "pages/cooperation/cooperation",

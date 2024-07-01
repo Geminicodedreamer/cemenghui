@@ -3,7 +3,10 @@
   <div class="user-management">
     <div class="sidebar">
       <div class="organization-structure">
-        <el-input v-model="departmentSearch" placeholder="请输入部门名称" class="search-input" />
+        <div style="display: flex;">
+          <el-input v-model="departmentSearch" placeholder="请输入部门名称" class="search-input" />
+          <el-button type="primary" @click="searchDepartment" circle></el-button>
+        </div>
         <el-tree
           :data="treeData"
           :props="defaultProps"
@@ -38,7 +41,7 @@
         <el-button type="primary" @click="addUser">新增</el-button>
         <el-button type="success" @click="editUser">修改</el-button>
         <el-button type="danger" @click="deleteUser">删除</el-button>
-        <el-button type="info" >导入</el-button>
+        <el-button type="info">导入</el-button>
         <el-button type="warning" @click="exportUsers">导出</el-button>
       </div>
       
@@ -77,81 +80,152 @@
 
 <script>
 import ContentField from '@/components/ContentField.vue';
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import $ from 'jquery';
 
 export default {
-  components:{
+  components: {
     ContentField,
   },
-  data() {
-    return {
-      departmentSearch: '',
-      treeData: [
-        {
-          label: '深圳总公司',
-          children: [
-            { label: '研发部门' },
-            { label: '市场部门' },
-            { label: '测试部门' },
-            { label: '财务部门' },
-            { label: '运维部门' }
-          ]
-        },
-        {
-          label: '长沙分公司',
-          children: [
-            { label: '市场部门' },
-            { label: '财务部门' }
-          ]
-        }
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
-      filters: {
-        username: '',
-        phone: '',
-        status: '',
-        createdAt: []
-      },
-      users: [],
-      currentPage: 1,
-      pageSize: 10,
-      totalUsers: 0
+  setup() {
+    const store = useStore();
+    let treeData = ref([
+      {
+        label: '测盟会',
+        children: [],
+      }
+    ]);
+    let departmentSearch = ref('');
+    let filters = ref({
+      username: '',
+      phone: '',
+      status: '',
+      createdAt: []
+    });
+    let users = ref([]);
+    let currentPage = ref(1);
+    let pageSize = ref(10);
+    let totalUsers = ref(0);
+
+    const defaultProps = {
+      children: 'children',
+      label: 'label'
     };
-  },
-  methods: {
-    handleNodeClick(data) {
+
+    const fetchCompanies = () => {
+      return $.ajax({
+        url: "http://127.0.0.1:3000/company/list",
+        type: "get",
+        headers: {
+          Authorization: "Bearer " + store.state.user.token,
+        }
+      });
+    };
+
+    const fetchOrganizations = () => {
+      return $.ajax({
+        url: "http://127.0.0.1:3000/organization/list",
+        type: "get",
+        headers: {
+          Authorization: "Bearer " + store.state.user.token,
+        }
+      });
+    };
+
+    const initTreeData = async () => {
+      try {
+        const companiesResp = await fetchCompanies();
+        const companies = companiesResp.companys;
+
+        const organizationsResp = await fetchOrganizations();
+        const organizations = organizationsResp.org;
+
+        companies.forEach(company => {
+          const companyNode = {
+            label: company.companyName,
+            children: []
+          };
+
+          console.log(organizations);
+
+          organizations.forEach(org => {
+            console.log(org.uporganization + " " + company.companyName);
+            if (org.uporganization === company.companyName) {
+              companyNode.children.push({
+                label: org.organizationname
+              });
+            }
+          });
+
+          treeData.value[0].children.push(companyNode);
+        });
+      } catch (error) {
+        console.error("Error fetching tree data:", error);
+      }
+    };
+
+    onMounted(() => {
+      initTreeData();
+    });
+
+    const handleNodeClick = (data) => {
       console.log(data);
       // Handle node click to filter users by department
-    },
-    searchUsers() {
+    };
+
+    const searchUsers = () => {
       // Implement search logic here
-    },
-    resetFilters() {
-      this.filters = {
+    };
+
+    const resetFilters = () => {
+      filters.value = {
         username: '',
         phone: '',
         status: '',
         createdAt: []
       };
-      this.searchUsers();
-    },
-    addUser() {
+      searchUsers();
+    };
+
+    const addUser = () => {
       // Implement add user logic here
-    },
-    editUser(user) {
+    };
+
+    const editUser = (user) => {
       console.log(user);
-    },
-    deleteUser(user) {
+    };
+
+    const deleteUser = (user) => {
       console.log(user);
-    },
-    exportUsers() {
-    },
-    handlePageChange(page) {
-      this.currentPage = page;
-      this.searchUsers();
-    }
+    };
+
+    const exportUsers = () => {
+    };
+
+    const handlePageChange = (page) => {
+      currentPage.value = page;
+      searchUsers();
+    };
+
+    return {
+      departmentSearch,
+      treeData,
+      defaultProps,
+      filters,
+      users,
+      currentPage,
+      pageSize,
+      totalUsers,
+      handleNodeClick,
+      searchUsers,
+      resetFilters,
+      addUser,
+      editUser,
+      deleteUser,
+      exportUsers,
+      handlePageChange
+    };
   }
 };
 </script>
