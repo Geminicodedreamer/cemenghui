@@ -13,11 +13,11 @@
           :before-upload="beforeAvatarUpload">
           <template #trigger>
             <div class="upload-trigger">
-              <div v-if="!form.photo">
+              <div v-if="!form.imagePath">
                 <Plus style="width:20px;color: #dcdfe6;"/>
               </div>
-              <div v-if="form.photo" class="uploaded-image-container">
-                <img :src="form.photo" class="avatar" @click="previewImage">
+              <div v-if="form.imagePath" class="uploaded-image-container">
+                <img :src="form.imagePath" class="avatar" @click="previewImage">
                   <div class="image-actions">
                     <ZoomIn @click.stop="previewImage" class="icon-button"/>
                     <Delete @click.stop="deleteImage" class="icon-button"/>
@@ -61,7 +61,7 @@
 
      <el-image-viewer
       v-if="imageViewerVisible"
-      :url-list="[form.photo]"
+      :url-list="[form.imagePath]"
       :initial-index="0"
       @close="imageViewerVisible = false"
     />
@@ -151,6 +151,7 @@ export default {
         if (newVal) {
 			console.log('New News data received:', newVal); // 调试输出
           this.form = { ...newVal }; // 将选中的咨询信息填充到表单中
+          console.log(this.form); //
           // 手动设置富文本编辑器内容
           if (this.$refs.myQuillEditor) {
             this.$refs.myQuillEditor.quill.root.innerHTML = newVal.content;

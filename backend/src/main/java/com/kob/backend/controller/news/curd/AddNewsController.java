@@ -18,7 +18,7 @@ public class AddNewsController {
         //System.out.println(map);
         String title=map.get("title");
         String summary= map.get("summary");
-        String imagePath = map.get("imagePath");
+        String imagePath = map.get("photo");
         String content = map.get("content");
         String author = map.get("author");
         String tenant = map.get("tenant");

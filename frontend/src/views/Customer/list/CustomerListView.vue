@@ -3,12 +3,12 @@
   <div class="user-management">
     <div class="sidebar">
       <div class="organization-structure">
-        <div style="display: flex;">
-          <el-input v-model="departmentSearch" placeholder="请输入部门名称" class="search-input" />
-          <el-button type="primary" @click="searchDepartment" circle></el-button>
+        <div style="display: flex;padding-bottom:5%;">
+          <el-input v-model="departmentSearch" placeholder="请输入部门名称" class="search-input" />&nbsp;
+          <el-button type="primary" @click="searchDepartment" circle :icon="Search"></el-button>
         </div>
         <el-tree
-          :data="treeData"
+          :data="filteredTreeData"
           :props="defaultProps"
           @node-click="handleNodeClick"
           highlight-current
@@ -75,13 +75,16 @@
       </el-pagination>
     </div>
   </div>
-  </ContentField>
+</ContentField>
 </template>
 
 <script>
 import ContentField from '@/components/ContentField.vue';
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import {
+  Search,
+} from '@element-plus/icons-vue';
 import $ from 'jquery';
 
 export default {
@@ -96,6 +99,7 @@ export default {
         children: [],
       }
     ]);
+    let filteredTreeData = ref([...treeData.value]);
     let departmentSearch = ref('');
     let filters = ref({
       username: '',
@@ -147,10 +151,7 @@ export default {
             children: []
           };
 
-          console.log(organizations);
-
           organizations.forEach(org => {
-            console.log(org.uporganization + " " + company.companyName);
             if (org.uporganization === company.companyName) {
               companyNode.children.push({
                 label: org.organizationname
@@ -160,6 +161,7 @@ export default {
 
           treeData.value[0].children.push(companyNode);
         });
+        filteredTreeData.value = [...treeData.value]; // 初始化过滤后的数据
       } catch (error) {
         console.error("Error fetching tree data:", error);
       }
@@ -172,6 +174,29 @@ export default {
     const handleNodeClick = (data) => {
       console.log(data);
       // Handle node click to filter users by department
+    };
+
+    const searchDepartment = () => {
+      if (!departmentSearch.value) {
+        filteredTreeData.value = [...treeData.value];
+        return;
+      }
+
+      const filterNodes = (nodes) => {
+        return nodes.reduce((acc, node) => {
+          if (node.label.includes(departmentSearch.value)) {
+            acc.push(node);
+          } else if (node.children) {
+            const filteredChildren = filterNodes(node.children);
+            if (filteredChildren.length) {
+              acc.push({ ...node, children: filteredChildren });
+            }
+          }
+          return acc;
+        }, []);
+      };
+
+      filteredTreeData.value = filterNodes(treeData.value);
     };
 
     const searchUsers = () => {
@@ -211,6 +236,7 @@ export default {
     return {
       departmentSearch,
       treeData,
+      filteredTreeData,
       defaultProps,
       filters,
       users,
@@ -218,13 +244,15 @@ export default {
       pageSize,
       totalUsers,
       handleNodeClick,
+      searchDepartment,
       searchUsers,
       resetFilters,
       addUser,
       editUser,
       deleteUser,
       exportUsers,
-      handlePageChange
+      handlePageChange,
+      Search
     };
   }
 };
@@ -246,8 +274,7 @@ export default {
 }
 
 .search-input {
-  margin-bottom: 10px;
-  width: 100%;
+  width: calc(100% - 40px);
 }
 
 .tree-container {
