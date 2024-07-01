@@ -1,2 +1,35 @@
 
-/* 页面样式 */
+.myContent.data-v-c9ec16af {
+  padding: 10px;
+}
+.course-list.data-v-c9ec16af {
+  display: flex;
+  flex-wrap: wrap; /* 允许换行 */
+  justify-content: space-between; /* 在行间平均分布 */
+}
+.course-item.data-v-c9ec16af {
+  width: 45%; /* 每个课程项占据45%的宽度，保证一行能容纳两个 */
+  margin-bottom: 10px; /* 底部边距 */
+  border: 1px solid #ddd; /* 边框 */
+  border-radius: 8px; /* 圆角 */
+  overflow: hidden; /* 溢出隐藏 */
+  text-align: center; /* 居中文本 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  background-color: #fff; /* 背景颜色 */
+}
+.course-item.data-v-c9ec16af:nth-child(odd) {
+  margin-right: 4%; /* 确保每行两个课程的间距 */
+}
+.course-cover.data-v-c9ec16af {
+  width: 100%;
+  height: 120px; /* 固定高度 */
+}
+.course-info.data-v-c9ec16af {
+  padding: 10px;
+}
+.course-name.data-v-c9ec16af {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+  color: #333;
+}

@@ -1,14 +1,20 @@
 <template>
-    <ContentField> 欢迎进入测盟会 </ContentField>
+  <div>
+    <ContentField> 	
+	<ImageCarousel />
+	</ContentField>
+  </div>
 </template>
 
 <script>
 import ContentField from '../../components/ContentField.vue'
+import ImageCarousel from '../../components/ImageCarousel.vue'
 
 export default {
-    components: {
-        ContentField,
-    }
+  components: {
+    ContentField,
+    ImageCarousel,
+  }
 }
 </script>
 

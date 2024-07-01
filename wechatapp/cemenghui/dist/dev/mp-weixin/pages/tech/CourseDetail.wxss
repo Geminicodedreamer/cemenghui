@@ -1,0 +1,19 @@
+
+.course-detail.data-v-22ba86a4 {
+  padding: 20px;
+}
+.course-info.data-v-22ba86a4 {
+  margin-top: 20px;
+}
+.course-name.data-v-22ba86a4 {
+  font-size: 22px;
+  font-weight: bold;
+}
+.course-description.data-v-22ba86a4 {
+  margin-top: 10px;
+  color: #666;
+}
+.course-teacher.data-v-22ba86a4 {
+  margin-top: 10px;
+  color: #999;
+}

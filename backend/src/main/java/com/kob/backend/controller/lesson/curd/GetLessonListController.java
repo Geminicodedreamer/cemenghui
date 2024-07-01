@@ -1,7 +1,6 @@
 package com.kob.backend.controller.lesson.curd;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kob.backend.service.company.curd.GetCompanyListService;
 import com.kob.backend.service.lesson.curd.GetLessonListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

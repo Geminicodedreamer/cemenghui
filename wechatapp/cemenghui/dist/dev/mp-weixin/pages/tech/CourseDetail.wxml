@@ -1,0 +1,1 @@
+<view class="course-detail data-v-22ba86a4"><video class="data-v-22ba86a4" src="{{a}}" controls></video><view class="course-info data-v-22ba86a4"><text class="course-name data-v-22ba86a4">{{b}}</text><text class="course-description data-v-22ba86a4">{{c}}</text><text class="course-teacher data-v-22ba86a4">讲师: {{d}}</text></view></view>

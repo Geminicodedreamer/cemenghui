@@ -1,1 +1,1 @@
-<view class="myContent data-v-c9ec16af"></view>
+<view class="myContent data-v-c9ec16af"><view class="course-list data-v-c9ec16af"><view wx:for="{{a}}" wx:for-item="course" wx:key="c" class="course-item data-v-c9ec16af" bindtap="{{course.d}}"><image class="course-cover data-v-c9ec16af" src="{{course.a}}" mode="aspectFill"></image><view class="course-info data-v-c9ec16af"><text class="course-name data-v-c9ec16af">{{course.b}}</text></view></view></view></view>
