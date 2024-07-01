@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import CustomerIndexView from '../views/Customer/CustomerIndexView.vue'
+import CustomerListView from '../views/Customer/list/CustomerListView.vue'
 import IndustryIndexView from '../views/Industry/IndustryIndexView.vue'
 import LessonIndexView from '../views/Lesson/LessonIndexView'
 import MeetingIndexView from '../views/Meeting/MeetingIndexView'
@@ -26,17 +26,9 @@ const routes = [
     }
   },
   {
-    path: "/customer/",
+    path: "/customer/list/",
     name: "customer",
-    component: CustomerIndexView,
-    meta: {
-      requestAuth: true,
-    }
-  },
-  {
-    path: "/company/list/",
-    name: "company",
-    component: CompanyListView,
+    component: CustomerListView,
     meta: {
       requestAuth: true,
     }

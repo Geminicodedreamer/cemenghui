@@ -8,9 +8,6 @@
             <input type="text" v-model="filters.title" class="form-control" placeholder="请输入新闻标题">
           </div>
           <div class="col">
-            <input type="text" v-model="filters.imagePath" class="form-control" placeholder="请输入新闻图片路径">
-          </div>
-          <div class="col">
             <input type="text" v-model="filters.order" class="form-control" placeholder="请输入排序">
           </div>
           <div class="col">

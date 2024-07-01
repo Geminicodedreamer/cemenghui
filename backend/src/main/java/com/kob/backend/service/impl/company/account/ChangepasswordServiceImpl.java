@@ -23,7 +23,7 @@ public class ChangepasswordServiceImpl implements ChangepasswordService {
     public Map<String, String> changepassword(Integer id, String password, String newpassword , String confirmnewpassword) {
         Map<String , String> map = new HashMap<>();
 
-        if(newpassword.equals(confirmnewpassword)){
+        if(!newpassword.equals(confirmnewpassword)){
             map.put("error_message" , "两次密码输入不一致");
             return map;
         }
@@ -49,6 +49,6 @@ public class ChangepasswordServiceImpl implements ChangepasswordService {
         companyMapper.updateById(company);
 
         map.put("error_message" , "success");
-        return null;
+        return map;
     }
 }

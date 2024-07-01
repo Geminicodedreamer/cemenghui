@@ -1,2 +1,45 @@
 
-/* 页面样式 */
+.myContent.data-v-d3bc45b1 {
+  padding: 20px;
+  background-color: #f0f0f0; /* Light background color for the page */
+}
+.categoryGrid.data-v-d3bc45b1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px; /* Space between the grid items */
+}
+.categoryItem.data-v-d3bc45b1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 48%; /* Adjusted to fit two items per row with some gap */
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
+  padding: 20px; /* Increased padding for a more spacious look */
+  margin-bottom: 20px; /* Space between rows */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff; /* White background for the items */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better appearance */
+  text-align: center;
+}
+.categoryIcon.data-v-d3bc45b1 {
+  font-size: 36px;
+  margin-bottom: 15px; /* More space between the icon and the name */
+}
+.categoryInfo.data-v-d3bc45b1 {
+  width: 100%; /* Make info take the full width */
+}
+.categoryName.data-v-d3bc45b1 {
+  font-size: 20px; /* Larger font size for the name */
+  font-weight: bold;
+  margin-bottom: 10px; /* Space between the name and the description */
+  padding-bottom: 5px; /* Padding below the name */
+  display: block; /* Ensure it takes the full width */
+  text-align: center; /* Center the text */
+}
+.categoryDescription.data-v-d3bc45b1 {
+  font-size: 14px;
+  color: #666;
+  text-align: center; /* Center the description text */
+}

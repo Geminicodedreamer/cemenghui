@@ -38,13 +38,8 @@
 			"navigationBarTitleText": "动态",
 			"enablePullDownRefresh": true
 		  }
-		},
-		{
-			"path": "pages/news/newsDetail",
-			"style": {
-			"navigationBarTitleText": "新闻详情"
-			}
-		},
+		}
+		,
 		{
 		  "path": "pages/tech/tech",
 		  "style": {
@@ -89,7 +84,7 @@
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "static/tabs/menu.png",
-				"selectedIconPath": "static/tabs/menu_select.png"
+				"selectedIconPath": "static/tabs/menu_select.png",
 			},
 			{
 				"pagePath": "pages/cooperation/cooperation",
@@ -103,7 +98,6 @@
 				"iconPath": "static/tabs/news.png",
 				"selectedIconPath": "static/tabs/news_select.png"
 			},
-			
 			{
 				"pagePath": "pages/tech/tech",
 				"text": "技术",
