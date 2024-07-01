@@ -26,6 +26,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         map.put("username", user.getNickname());
         map.put("photo", user.getPhoto());
         map.put("role" , user.getRole());
+        map.put("userrealname" , user.getUsername());
+        map.put("telephone" , user.getTelephone());
+        map.put("apartmentname" , user.getApartmentname());
+        map.put("gender" , user.getGender());
+        map.put("email" , user.getEmail());
+        map.put("note" , user.getNote());
+        map.put("companyname" , user.getCompanyname());
+        map.put("post" , user.getPost());
+        map.put("createtime" , user.getCreatetime());
         return map;
     }
 }

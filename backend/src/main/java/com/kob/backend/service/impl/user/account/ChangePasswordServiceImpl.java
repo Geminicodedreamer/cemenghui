@@ -1,9 +1,10 @@
-package com.kob.backend.service.impl.company.account;
+package com.kob.backend.service.impl.user.account;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.kob.backend.mapper.CompanyMapper;
+import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.Company;
-import com.kob.backend.service.company.account.ChangepasswordService;
+import com.kob.backend.pojo.User;
+import com.kob.backend.service.user.account.ChangePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ChangepasswordServiceImpl implements ChangepasswordService {
+public class ChangePasswordServiceImpl implements ChangePasswordService {
     @Autowired
-    private CompanyMapper companyMapper;
+    private UserMapper userMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,25 +29,25 @@ public class ChangepasswordServiceImpl implements ChangepasswordService {
             return map;
         }
 
-        QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id" , id);
-        Company company = companyMapper.selectOne(queryWrapper);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId" , id);
+        User user = userMapper.selectOne(queryWrapper);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if(!encoder.matches(password , company.getPassword()))
+        if(!encoder.matches(password , user.getPassword()))
         {
             map.put("error_message" , "原密码错误");
             return map;
         }
 
-        if(encoder.matches(newpassword , company.getPassword()))
+        if(encoder.matches(newpassword , user.getPassword()))
         {
             map.put("error_message" , "新密码不能与原密码一致");
             return map;
         }
 
-        company.setPassword(passwordEncoder.encode(newpassword));
-        companyMapper.updateById(company);
+        user.setPassword(passwordEncoder.encode(newpassword));
+        userMapper.updateById(user);
 
         map.put("error_message" , "success");
         return map;
