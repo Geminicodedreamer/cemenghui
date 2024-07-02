@@ -7,9 +7,6 @@
       <el-form-item label="部门名称" :required="true" class="form-item">
         <el-input v-model="form.organizationname" placeholder="请输入部门名称"></el-input>
       </el-form-item>
-      <el-form-item label="显示排序" :required="true" class="form-item">
-        <el-input-number v-model="form.id" :min="1"></el-input-number>
-      </el-form-item>
       <el-form-item label="负责人" class="form-item">
         <el-input v-model="form.charger" placeholder="请输入负责人"></el-input>
       </el-form-item>
@@ -126,7 +123,6 @@ export default {
       this.form = {
         uporganization: '',
         organizationname: '',
-        id: 1,
         charger: '',
         telephone: '',
         email: '',

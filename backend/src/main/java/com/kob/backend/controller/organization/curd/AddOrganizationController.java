@@ -20,15 +20,13 @@ public class AddOrganizationController {
 
             String uporganization = map.get("uporganization");
             String organizationname = map.get("organizationname");
-            String idStr = map.get("id");
-            Integer id = Integer.parseInt(idStr);
             String charger = map.get("charger");
             String telephone = map.get("telephone");
             String email = map.get("email");
             String status = map.get("status");
             String creattime=map.get("creattime");
 
-        return addOrganizationService.addOrganization(uporganization, organizationname, id, charger, telephone, email,status,creattime);
+        return addOrganizationService.addOrganization(uporganization, organizationname, null, charger, telephone, email,status,creattime);
     }
 }
 

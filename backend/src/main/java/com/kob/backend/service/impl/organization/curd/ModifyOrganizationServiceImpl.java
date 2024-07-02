@@ -56,7 +56,7 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
 
 
 
-        Organization new_organization =new Organization(id,uporganization,organizationname,charger,telephone,email,status,null);
+        Organization new_organization =new Organization(null,uporganization,organizationname,charger,telephone,email,status,null);
         organizationMapper.updateById(new_organization);
 
         map.put("error_message","success");

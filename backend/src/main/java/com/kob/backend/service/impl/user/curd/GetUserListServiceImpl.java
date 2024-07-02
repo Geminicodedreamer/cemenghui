@@ -2,8 +2,6 @@ package com.kob.backend.service.impl.user.curd;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.User;
 import com.kob.backend.service.user.curd.GetUserListService;
@@ -19,7 +17,7 @@ public class GetUserListServiceImpl implements GetUserListService {
     private UserMapper userMapper;
 
     @Override
-    public JSONObject getuserlist(Integer page) {
+    public JSONObject getuserlist() {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByAsc("userId");
         List<User> userList = userMapper.selectList(queryWrapper);

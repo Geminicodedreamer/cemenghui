@@ -17,7 +17,6 @@ public class GetUserListController {
     @GetMapping("/user/list")
     public JSONObject getList(@RequestParam Map<String , String> map)
     {
-        Integer page = Integer.parseInt(map.get("page"));
-        return getUserListService.getuserlist(page);
+        return getUserListService.getuserlist();
     }
 }

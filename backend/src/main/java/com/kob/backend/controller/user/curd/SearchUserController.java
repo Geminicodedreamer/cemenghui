@@ -15,13 +15,16 @@ public class SearchUserController {
     private SearchUserService searchUserService;
 
     @GetMapping("/user/search")
-    public JSONObject searchuser(@RequestParam Map<String , String> map)
+    public JSONObject searchuser(@RequestParam("page")Integer page,@RequestParam Map<String , String> map)
     {
-        Integer page = Integer.parseInt(map.get("page"));
+        System.err.println(map);
         String companyname = map.get("companyname");
         String username= map.get("username");
         String telephone = map.get("telephone");
-        Integer status = Integer.parseInt(map.get("status"));
+        Integer status = null;
+        if(map.get("status") != null && !map.get("status").isEmpty()) {
+            status = Integer.parseInt(map.get("status"));
+        }
         String starttime = map.get("starttime");
         String endtime = map.get("endtime");
         return  searchUserService.searchuserlist(page , companyname , username , telephone , status , starttime , endtime);

@@ -66,12 +66,12 @@ public class AddUserServiceImpl implements AddUserService {
             return map;
         }
 
-        if(email != null && !isEmail(email)){
+        if(email != null && !email.isEmpty() && !isEmail(email)){
             map.put("error_message" , "邮箱格式错误");
             return map;
         }
 
-        if(telephone != null && !isMobile(telephone))
+        if(telephone != null && !telephone.isEmpty() && !isMobile(telephone))
         {
             map.put("error_message" , "电话格式错误");
             return map;

@@ -61,7 +61,7 @@ public class SearchUserServiceImpl implements SearchUserService {
             item.put("telephone" , user.getTelephone());
             item.put("apartmentname" , user.getApartmentname());
             item.put("gender" , user.getGender());
-            item.put("status" , user.getStatus());
+            item.put("status" , user.getStatus().toString());
             item.put("email" , user.getEmail());
             item.put("role" , user.getRole());
             item.put("note" , user.getNote());

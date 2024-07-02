@@ -31,7 +31,7 @@
 
       <!-- 表格区域 -->
       <div class="table-container">
-        <el-table :data=list style="width: 100%" row-key="id" ref="table"
+        <el-table :data="filteredTreeData" style="width: 100%" row-key="id" ref="table"
           @selection-change="handleSelectionChange"
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
           <el-table-column type="selection" width="50" />
@@ -41,7 +41,7 @@
           <el-table-column prop="creattime" label="创建时间" />
           <el-table-column label="操作" width="180">
             <template #default="scope">
-                          <div class="button-group">
+              <div class="button-group">
                 <el-button type="primary" @click="showModifyOrganizationDialog(scope.row)">
                   修改
                 </el-button>
@@ -90,8 +90,6 @@ export default {
     const isModifyOrganizationDialogVisible = ref(false);
     const currentorganization = ref(null);
 
-    const treeData = ref([]);
-
     const fetchOrganizationList = () => {
       $.ajax({
         url: "http://127.0.0.1:3000/organization/list",
@@ -102,8 +100,6 @@ export default {
         success(resp) {
           if (resp && resp.organizations) {
             list.value = resp.organizations;
-            
-            processOrganizationData(resp.organizations);
           }
         },
         error(err) {
@@ -112,31 +108,14 @@ export default {
       });
     };
 
-    const processOrganizationData = (organizations) => {
-      const orgMap = new Map();
-      organizations.forEach(org => {
-        orgMap.set(org.id, { ...org, children: [] });
-      });
-
-      const rootOrganizations = [];
-      organizations.forEach(org => {
-        if (org.uporganization) {
-          const parentOrg = orgMap.get(org.uporganization);
-          if (parentOrg) {
-            parentOrg.children.push(orgMap.get(org.id));
-          }
-        } else {
-          rootOrganizations.push(orgMap.get(org.id));
-        }
-      });
-
-      treeData.value = rootOrganizations;
-    };
-
     const resetFilters = () => {
       filters.value.searchName = '';
       filters.value.searchStatus = '';
       fetchOrganizationList();
+    };
+
+    const filterList = () => {
+      // This will automatically trigger computed property `filteredTreeData` to recalculate
     };
 
     const confirmDelete = (organization) => {
@@ -183,7 +162,7 @@ export default {
           })
           .filter(item => item !== null);
       };
-      return filterTree(treeData.value);
+      return filterTree(list.value);
     });
 
     const showModifyOrganizationDialog = item => {
@@ -222,8 +201,8 @@ export default {
       handleDataUpdate,
       selectedOrganizations,
       resetFilters,
+      filterList,
       confirmDelete,
-      treeData,
       filteredTreeData,
       handleSelectionChange,
     };

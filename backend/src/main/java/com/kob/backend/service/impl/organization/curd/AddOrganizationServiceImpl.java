@@ -50,6 +50,14 @@ public class AddOrganizationServiceImpl implements AddOrganizationService {
           return map;
       }
 
+        QueryWrapper<Organization> queryWrapper1 =new QueryWrapper<>();
+        queryWrapper1.eq("organizationname",uporganization);
+        if(!organizationMapper.selectList(queryWrapper1).isEmpty())
+        {
+            map.put("error_message","父公司/部门不存在");
+            return map;
+        }
+
         QueryWrapper<Organization> queryWrapper =new QueryWrapper<>();
         queryWrapper.eq("organizationname",organizationname);
         List<Organization> organizations =organizationMapper.selectList(queryWrapper);
@@ -60,7 +68,7 @@ public class AddOrganizationServiceImpl implements AddOrganizationService {
 
 
         creattime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        Organization organization =new Organization(id,uporganization,organizationname,charger,telephone,email,status,creattime);
+        Organization organization =new Organization(null,uporganization,organizationname,charger,telephone,email,status,creattime);
         organizationMapper.insert(organization);
         map.put("error_message","success");
 

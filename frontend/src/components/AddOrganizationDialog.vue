@@ -7,9 +7,6 @@
       <el-form-item label="部门名称" prop="organizationname" class="form-item">
         <el-input v-model="form.organizationname" placeholder="请输入部门名称"></el-input>
       </el-form-item>
-      <el-form-item label="显示排序" prop="id" class="form-item">
-        <el-input v-model="form.id" type="number" placeholder="显示排序"></el-input>
-      </el-form-item>
       <el-form-item label="负责人" prop="charger" class="form-item">
         <el-input v-model="form.charger" placeholder="请输入负责人"></el-input>
       </el-form-item>
@@ -63,7 +60,6 @@ export default {
       rules: {
         uporganization: [{ required: true, message: '请输入上级部门名称', trigger: 'blur' }],
         organizationname: [{ required: true, message: '请输入部门名称', trigger: 'blur' }],
-        id: [{ required: true, message: '请输入显示排序', trigger: 'blur' }],
         charger: [{ required: true, message: '请输入负责人', trigger: 'blur' }],
         telephone: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
         email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
@@ -95,6 +91,29 @@ export default {
               console.error(response.error_message);
               if (response.error_message === 'success') {
                 ElMessage.success('表单提交成功');
+                console.log(this.form.uporganization)
+                if(this.form.uporganization === "测盟会")
+                {
+                  $.ajax({
+                    url: 'http://127.0.0.1:3000/company/add/', // 后端添加公司信息的接口
+                    type: 'POST',
+                    data: {
+                      companyname: this.form.organizationname,
+                      ownername: "admin",
+                      telephone: "18624430996",
+                      adminname: "admin",
+                    },
+                    headers: {
+                      Authorization: "Bearer " + this.store.state.user.token,
+                    },
+                    success: (response) => {
+                      console.log(response);
+                    },
+                    error: (error) => {
+                      console.error(error);
+                    }
+                  });
+                }
                 this.internalDialogVisible = false;
                 this.$emit('update'); // 触发 update 事件
                 this.resetForm();
@@ -107,6 +126,9 @@ export default {
               ElMessage.error('提交失败');
             }
           });
+          
+          
+
         } else {
           ElMessage.error('请完整填写表单');
         }

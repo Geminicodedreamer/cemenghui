@@ -22,8 +22,8 @@
         <el-input v-model="filters.username" placeholder="请输入用户名" class="filter-input" />
         <el-input v-model="filters.phone" placeholder="请输入手机号" class="filter-input" />
         <el-select v-model="filters.status" placeholder="用户状态" class="filter-input">
-          <el-option label="Active" value="active"></el-option>
-          <el-option label="Inactive" value="inactive"></el-option>
+          <el-option label="正常" value="1"></el-option>
+          <el-option label="停用" value="0"></el-option>
         </el-select>
         <el-date-picker
           v-model="filters.createdAt"
@@ -38,30 +38,29 @@
       </div>
       
       <div class="button-group">
-        <el-button type="primary" @click="addUser">新增</el-button>
-        <el-button type="success" @click="editUser">修改</el-button>
-        <el-button type="danger" @click="deleteUser">删除</el-button>
+        <el-button type="success" @click="addUser">新增</el-button>
+        <el-button type="danger" @click="deleteSelectedUsers">删除</el-button>
         <el-button type="info">导入</el-button>
         <el-button type="warning" @click="exportUsers">导出</el-button>
       </div>
       
-      <el-table :data="users" style="width: 100%">
+      <el-table :data="users" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="用户编号" width="120"></el-table-column>
+        <el-table-column prop="userId" label="用户编号"></el-table-column>
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="nickname" label="用户昵称"></el-table-column>
-        <el-table-column prop="department" label="部门"></el-table-column>
-        <el-table-column prop="phone" label="手机号"></el-table-column>
+        <el-table-column prop="apartmentname" label="部门"></el-table-column>
+        <el-table-column prop="telephone" label="手机号"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template v-slot="scope">
-            <el-switch v-model="scope.row.status" active-value="active" inactive-value="inactive"></el-switch>
+            <el-switch :disabled="true" v-model="scope.row.status" active-value="1" inactive-value="0" ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="创建时间"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column label="操作">
           <template v-slot="scope">
             <el-button @click="editUser(scope.row)" type="text" size="small">修改</el-button>
-            <el-button @click="deleteUser(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="deleteUser(scope.row.userId)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,6 +73,23 @@
         :total="totalUsers">
       </el-pagination>
     </div>
+    
+    <AddUserDialog
+      :dialogVisible="addUserDialogVisible"
+      :selectedCompanyName="selectedCompanyName"
+      :apartmentchoose="apartmentchoose"
+      @update="searchUsers"
+      @close="closeAddUserDialog"
+    />
+
+    <ModifyUserDialog
+      :dialogVisible="modifyUserDialogVisible"
+      :user="selectedUser"
+      :apartmentchoose="apartmentchoose"
+      @update="searchUsers"
+      @close="closeModifyUserDialog"
+    />
+
   </div>
 </ContentField>
 </template>
@@ -82,14 +98,18 @@
 import ContentField from '@/components/ContentField.vue';
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import {
-  Search,
-} from '@element-plus/icons-vue';
+import { Search } from '@element-plus/icons-vue';
 import $ from 'jquery';
+import * as XLSX from 'xlsx';
+import { ElMessage , ElMessageBox } from 'element-plus';
+import AddUserDialog from '@/components/AddUserDialog.vue';
+import ModifyUserDialog from '@/components/ModifyUserDialog.vue';
 
 export default {
   components: {
     ContentField,
+    AddUserDialog,
+    ModifyUserDialog,
   },
   setup() {
     const store = useStore();
@@ -107,14 +127,46 @@ export default {
       status: '',
       createdAt: []
     });
+    const addUserDialogVisible = ref(false);
+    const selectedCompanyName = ref('');
+    const modifyUserDialogVisible =  ref(false);
+    const selectedUser = ref(null);
+    const apartmentchoose = ref('');
     let users = ref([]);
     let currentPage = ref(1);
     let pageSize = ref(10);
     let totalUsers = ref(0);
+    let selectedUsers = ref([]);
+
+    const handleSelectionChange = (selection) => {
+      selectedUsers.value = selection;
+    };
 
     const defaultProps = {
       children: 'children',
       label: 'label'
+    };
+
+    const openAddUserDialog = () => {
+      addUserDialogVisible.value = true;
+    };
+
+    const closeAddUserDialog = () => {
+      addUserDialogVisible.value = false;
+    };
+
+    const addUser = () => {
+      openAddUserDialog();
+    };
+
+    const editUser = (user) => {
+      console.log(user);
+      selectedUser.value = user;
+      modifyUserDialogVisible.value = true;
+    };
+    const closeModifyUserDialog = () => {
+      modifyUserDialogVisible.value = false;
+      selectedUser.value = null;
     };
 
     const fetchCompanies = () => {
@@ -161,24 +213,55 @@ export default {
 
           treeData.value[0].children.push(companyNode);
         });
-        filteredTreeData.value = [...treeData.value]; // 初始化过滤后的数据
+        filteredTreeData.value = JSON.parse(JSON.stringify(treeData.value)); // 初始化过滤后的数据
       } catch (error) {
         console.error("Error fetching tree data:", error);
       }
     };
 
+    const deleteSelectedUsers = () => {
+        if (selectedUsers.value.length === 0) {
+          ElMessage.warning('请至少选择一个用户进行删除');
+          return;
+        }
+
+        ElMessageBox.confirm('确定删除选中的用户?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(() => {
+          const deletePromises = selectedUsers.value.map(user => {
+            return $.ajax({
+              url: `http://127.0.0.1:3000/user/del`,
+              type: "get",
+              data: { id: user.userId },
+              headers: {
+                Authorization: "Bearer " + store.state.user.token,
+              }
+            });
+          });
+
+          Promise.all(deletePromises)
+            .then(() => {
+              ElMessage.success('选中的用户已成功删除');
+              searchUsers(); // 刷新用户列表
+            })
+            .catch(error => {
+              console.error('批量删除过程中发生错误', error);
+              ElMessage.error('批量删除失败');
+            });
+        }).catch(() => {});
+      };
+
+
     onMounted(() => {
       initTreeData();
     });
 
-    const handleNodeClick = (data) => {
-      console.log(data);
-      // Handle node click to filter users by department
-    };
 
     const searchDepartment = () => {
       if (!departmentSearch.value) {
-        filteredTreeData.value = [...treeData.value];
+        filteredTreeData.value = JSON.parse(JSON.stringify(treeData.value));
         return;
       }
 
@@ -200,8 +283,35 @@ export default {
     };
 
     const searchUsers = () => {
-      // Implement search logic here
+      const dateFormat = date => {
+        const d = new Date(date);
+        const yyyy = d.getFullYear();
+        const MM = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const hh = String(d.getHours()).padStart(2, '0');
+        const mm = String(d.getMinutes()).padStart(2, '0');
+        const ss = String(d.getSeconds()).padStart(2, '0');
+        return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
+      };
+
+      let starttime = '';
+      let endtime = '';
+
+      if (filters.value.createdAt && filters.value.createdAt.length === 2) {
+        starttime = dateFormat(filters.value.createdAt[0]);
+        endtime = dateFormat(filters.value.createdAt[1]);
+      }
+
+      pullPage(1, starttime, endtime);
     };
+
+
+    const handleNodeClick = (data) => {
+          selectedCompanyName.value = data.label;
+          apartmentchoose.value = data.children;
+          console.log(data);
+          searchUsers();
+        };
 
     const resetFilters = () => {
       filters.value = {
@@ -213,25 +323,121 @@ export default {
       searchUsers();
     };
 
-    const addUser = () => {
-      // Implement add user logic here
+    const pullPage = (page, starttime = '', endtime = '') => {
+      
+      $.ajax({
+        url: "http://127.0.0.1:3000/user/search/",
+        data: {
+          page,
+          ...filters.value,
+          companyname: selectedCompanyName.value,
+          starttime,
+          endtime
+        },
+        type: "get",
+        headers: {
+          Authorization: "Bearer " + store.state.user.token,
+        },
+        success(resp) {
+          console.log('从后端获取的users:', resp.users); // 调试输出
+          users.value = resp.users;
+          totalUsers.value = resp.user_count;
+        },
+        error(resp) {
+          console.log(resp);
+        }
+      });
     };
 
-    const editUser = (user) => {
-      console.log(user);
-    };
-
-    const deleteUser = (user) => {
-      console.log(user);
-    };
-
-    const exportUsers = () => {
-    };
 
     const handlePageChange = (page) => {
-      currentPage.value = page;
-      searchUsers();
+      pullPage(page);
     };
+
+    const deleteUser = (userId) => {
+      if (!userId) {
+        console.log("No user ID provided for deletion");
+        return;
+      }
+       ElMessageBox.confirm('确定删除?')
+          .then(() => {
+              $.ajax({
+                url: `http://127.0.0.1:3000/user/del`,
+                type: "get",
+                data:
+                {
+                  id: userId,
+                },
+                headers: {
+                  Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                  if (resp.error_message === 'success') {
+                    searchUsers(); // Refresh the user list after deletion
+                    ElMessage.success(`ID ${userId}的用户成功删除`);
+                  } else {
+                    ElMessage.error(`删除失败 ID ${userId}:`, resp.error_message);
+                  }
+                },
+                error(resp) {
+                  ElMessage.error(`发生错误 ID ${userId}:`, resp);
+                }
+              });}).catch(() => {});
+
+            };
+
+
+
+    const exportUsers = () => {
+      $.ajax({
+        url: 'http://127.0.0.1:3000/user/list/',
+        type: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + store.state.user.token,
+        },
+        success: function(resp) {
+          const data = resp.users.map(user => ({
+            'User ID': user.userId,
+            'Username': user.username,
+            'Nickname': user.nickname,
+            'Phone': user.telephone,
+            'Status': user.status,
+            'Created At': user.createtime
+          }));
+
+          // Convert JSON data to worksheet
+          const worksheet = XLSX.utils.json_to_sheet(data);
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+
+          // Generate buffer
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+          // Create a Blob object
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+          // Create URL for download
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'Users.xlsx');
+
+          // Append link to the body, trigger click, and remove it after download
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },
+        error: function(err) {
+          console.error('Error fetching user data:', err);
+        }
+      });
+    };
+
+    onMounted(() => {
+      searchUsers();
+    });
+
+    pullPage(currentPage);
 
     return {
       departmentSearch,
@@ -252,7 +458,17 @@ export default {
       deleteUser,
       exportUsers,
       handlePageChange,
-      Search
+      Search,
+      deleteSelectedUsers,
+      handleSelectionChange,
+      openAddUserDialog,
+      closeAddUserDialog,
+      addUserDialogVisible,
+      selectedCompanyName,
+      apartmentchoose,
+      modifyUserDialogVisible,
+      selectedUser,
+      closeModifyUserDialog
     };
   }
 };

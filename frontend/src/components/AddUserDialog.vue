@@ -1,10 +1,70 @@
 <template>
-  <el-dialog title="添加租户管理" v-model="internalDialogVisible" @close="resetForm">
+  <el-dialog title="添加用户" v-model="internalDialogVisible" @close="resetForm">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="租户名称" :required="true" class="form-item">
-        <el-input v-model="form.companyname" placeholder="请输入租户名称"></el-input>
+      <el-form-item label="用户名" :required="true" class="form-item">
+        <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="租户图标" class="form-item">
+      <el-form-item label="用户昵称" :required="true" class="form-item">
+        <el-input v-model="form.nickname" placeholder="请输入用户昵称"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号" :required="true" class="form-item">
+        <el-input v-model="form.telephone" placeholder="请输入手机号"></el-input>
+      </el-form-item>
+      <el-form-item label="归属部门" class="form-item">
+        <el-select v-model="form.apartmentname" placeholder="请选择归属部门">
+          <el-option
+            v-for="apartment in apartmentchoose"
+            :key="apartment.value"
+            :label="apartment.label"
+            :value="apartment.label"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="性别" class="form-item">
+        <el-select v-model="form.gender" placeholder="请选择性别">
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="状态" class="form-item">
+        <el-radio-group v-model="form.status">
+          <el-radio label="1">正常</el-radio>
+          <el-radio label="0">停用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="电子邮件" class="form-item">
+        <el-input v-model="form.email" placeholder="请输入电子邮件"></el-input>
+      </el-form-item>
+      <el-form-item label="角色" class="form-item">
+        <el-select v-model="form.role" placeholder="请选择角色">
+          <el-option label="租户管理员" value="租户管理员"></el-option>
+          <el-option label="超级管理员" value="超级管理员"></el-option>
+          <el-option label="普通用户" value="普通用户"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="岗位" class="form-item">
+        <el-select v-model="form.post" placeholder="请选择岗位">
+          <el-option label="项目经理" value="项目经理"></el-option>
+          <el-option label="大堂经理" value="大堂经理"></el-option>
+          <el-option label="企业老板" value="企业老板"></el-option>
+          <el-option label="普通员工" value="普通员工"></el-option>
+          <el-option label="工程师" value="工程师"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="备注" class="form-item">
+        <quill-editor
+          ref="myQuillEditor"
+          v-model="form.note"
+          :options="editorOption"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @ready="onEditorReady($event)"
+        />
+      </el-form-item>
+      <el-form-item label="所属公司名称" class="form-item">
+        <el-input v-model="form.companyname" :placeholder="selectedCompanyName" :disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="用户头像" class="form-item">
         <el-upload
           class="avatar-uploader"
           action="http://127.0.0.1:3000/upload"
@@ -13,8 +73,8 @@
           :before-upload="beforeAvatarUpload">
           <template #trigger>
             <div class="upload-trigger">
-              <div v-if="!form.photoUrl" ><Plus style="width:20px;color: #dcdfe6;"/></div>
-              <img v-if="form.photoUrl" :src="form.photoUrl" class="avatar">
+              <div v-if="!form.photo" ><Plus style="width:20px;color: #dcdfe6;"/></div>
+              <img v-if="form.photo" :src="form.photo" class="avatar">
             </div>
           </template>
         </el-upload>
@@ -24,28 +84,8 @@
           <span class="red-bold">png/jpg/jpeg/gif</span> 的文件
         </div>
       </el-form-item>
-      
-      <el-form-item label="联系人" :required="true" class="form-item">
-        <el-input v-model="form.ownername" placeholder="请输入联系人"></el-input>
-      </el-form-item>
-      <el-form-item label="电话" :required="true" class="form-item">
-        <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
-      </el-form-item>
-      <el-form-item label="管理员" :required="true" class="form-item">
-        <el-input v-model="form.adminname" placeholder="请输入管理员"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" class="form-item">
-        <div>默认密码为租户创建后的租户标识</div>
-      </el-form-item>
-      <el-form-item label="备注" class="form-item">
-          <quill-editor
-            ref="myQuillEditor"
-            v-model="form.note"
-            :options="editorOption"
-            @blur="onEditorBlur($event)"
-            @focus="onEditorFocus($event)"
-            @ready="onEditorReady($event)"
-          />
+      <el-form-item label="密码" :required="true" class="form-item">
+        <el-input v-model="form.password" type="password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item class="button-container">
         <el-button type="primary" @click="submitForm">提交</el-button>
@@ -62,7 +102,6 @@ import $ from 'jquery';
 import { Plus } from '@element-plus/icons-vue'; // 引入图标
 import axios from 'axios';
 
-
 export default {
   components: {
     Plus,
@@ -71,6 +110,14 @@ export default {
     dialogVisible: {
       type: Boolean,
       required: true
+    },
+    selectedCompanyName: {
+      type: String,
+      required: true
+    },
+    apartmentchoose: {
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -78,29 +125,27 @@ export default {
     return {
       internalDialogVisible: this.dialogVisible,
       form: {
-        companyname: '',
-        photoUrl: '', // 用于存储上传后的图片URL
-        ownername: '',
+        username: '',
+        nickname: '',
         telephone: '',
-        adminname: '',
-        note: ''
-      },
-      orgform: {
-        uporganization: '',
-        organizationname: '',
-        id: '',
-        charger: '',
-        telephone: '',
+        apartmentname: '',
+        gender: '',
+        status: "1",
         email: '',
-        status: '正常',
-        creattime: ''
+        role: '',
+        note: '',
+        companyname: this.selectedCompanyName,
+        post: '',
+        createtime: '',
+        photo: '',
+        password: ''
       },
+      organizationOptions: [], // 存储组织结构数据
       store,
-      editorOption: { // Move the editorOption initialization here
+      editorOption: {
         modules: {
           toolbar: {
             container: [
-              // include other toolbar items
               ['bold', 'italic', 'underline', 'strike'],
               ['blockquote', 'code-block'],
               [{ 'header': 1 }, { 'header': 2 }],
@@ -181,7 +226,7 @@ export default {
       console.log('editor ready!', quill);
     },
     handleAvatarSuccess(response) {
-      this.form.photoUrl = response.url; // 假设后端返回的图片 URL 在 response.url 中
+      this.form.photo = response.url; // 假设后端返回的图片 URL 在 response.url 中
     },
     beforeAvatarUpload(file) {
       const isImage = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
@@ -196,18 +241,34 @@ export default {
       return isImage && isLt2M;
     },
     submitForm() {
-      if (this.form.companyname && this.form.ownername && this.form.telephone && this.form.adminname) {
+      if (this.form.username && this.form.nickname && this.form.telephone && this.form.password) {
         this.form.note = this.$refs.myQuillEditor.quill.root.innerHTML;
+        const currentDatetime = new Date();
+        const yyyy = currentDatetime.getFullYear();
+        const MM = String(currentDatetime.getMonth() + 1).padStart(2, '0');
+        const dd = String(currentDatetime.getDate()).padStart(2, '0');
+        const hh = String(currentDatetime.getHours()).padStart(2, '0');
+        const mm = String(currentDatetime.getMinutes()).padStart(2, '0');
+        const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
+        this.form.createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
         $.ajax({
-          url: 'http://127.0.0.1:3000/company/add/', // 后端添加公司信息的接口
+          url: 'http://127.0.0.1:3000/user/add/', // 后端添加用户信息的接口
           type: 'POST',
           data: {
-            companyname: this.form.companyname,
-            photo: this.form.photoUrl, // 使用上传后的图片 URL
-            ownername: this.form.ownername,
+            username: this.form.username,
+            nickname: this.form.nickname,
+            password: this.form.password,
             telephone: this.form.telephone,
-            adminname: this.form.adminname,
-            note: this.form.note
+            apartmentname: this.form.apartmentname,
+            gender: this.form.gender,
+            status: this.form.status,
+            email: this.form.email,
+            role: this.form.role,
+            note: this.form.note,
+            companyname: this.form.companyname,
+            post: this.form.post,
+            photo: this.form.photo,
+            createtime: this.form.createtime
           },
           headers: {
             Authorization: "Bearer " + this.store.state.user.token,
@@ -215,32 +276,7 @@ export default {
           success: (response) => {
             console.log(response);
             if (response.error_message === 'success') {
-              ElMessage.success('表单提交成功');
-              const currentDatetime = new Date();
-              const yyyy = currentDatetime.getFullYear();
-              const MM = String(currentDatetime.getMonth() + 1).padStart(2, '0');
-              const dd = String(currentDatetime.getDate()).padStart(2, '0');
-              const hh = String(currentDatetime.getHours()).padStart(2, '0');
-              const mm = String(currentDatetime.getMinutes()).padStart(2, '0');
-              const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
-              const createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
-              $.ajax({
-                url: 'http://127.0.0.1:3000/organization/add',
-                type: 'POST',
-                data: {
-                  uporganization: '测盟会',
-                  organizationname: this.form.companyname,
-                  id: '',
-                  charger: this.form.ownername,
-                  telephone: this.form.telephone,
-                  email: '无',
-                  status: '正常',
-                  creattime: createtime,
-                },
-                headers: {
-                  Authorization: "Bearer " + this.store.state.user.token,
-                },
-              });
+              ElMessage.success('用户添加成功');
               this.internalDialogVisible = false;
               this.$emit('update');
               this.resetForm();
@@ -258,10 +294,26 @@ export default {
       }
     },
     resetForm() {
-      this.$refs.form.resetFields();
-      this.internalDialogVisible = false;
-    }
-  }
+        this.$refs.form.resetFields(); // 重置表单字段
+        this.form = {
+        username: '',
+        nickname: '',
+        telephone: '',
+        apartmentname: '',
+        gender: '',
+        status: 1, // 设置为默认值
+        email: '',
+        role: '',
+        note: '',
+        companyname: this.selectedCompanyName, // 设置为默认公司名
+        post: '',
+        createtime: '',
+        photo: '',
+        password: ''
+        };
+        this.internalDialogVisible = false; // 关闭对话框
+    },
+  },
 };
 </script>
 
@@ -290,14 +342,12 @@ export default {
   overflow: hidden;
 }
 
-
 .avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
 
 .upload-description {
   margin-top: 10px;
