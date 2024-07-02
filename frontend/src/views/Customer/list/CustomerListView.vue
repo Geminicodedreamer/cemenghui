@@ -37,7 +37,7 @@
         <el-button @click="resetFilters">重置</el-button>
       </div>
       
-      <div class="button-group">
+      <div v-if="(userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === selectedCompanyName || store.state.user.companyname === selectedCompanyName"  class="button-group">
         <el-button type="success" @click="addUser">新增</el-button>
         <el-button type="danger" @click="deleteSelectedUsers">删除</el-button>
         <el-button type="info">导入</el-button>
@@ -57,7 +57,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column v-if="(userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === selectedCompanyName || store.state.user.companyname === selectedCompanyName" label="操作">
           <template v-slot="scope">
             <el-button @click="editUser(scope.row)" type="text" size="small">修改</el-button>
             <el-button @click="deleteUser(scope.row.userId)" type="text" size="small">删除</el-button>
@@ -112,6 +112,7 @@ export default {
     ModifyUserDialog,
   },
   setup() {
+    const userType = localStorage.getItem("userType");
     const store = useStore();
     let treeData = ref([
       {
@@ -147,6 +148,10 @@ export default {
       label: 'label'
     };
 
+    const addUser = () => {
+        openAddUserDialog();
+      };
+
     const openAddUserDialog = () => {
       addUserDialogVisible.value = true;
     };
@@ -155,9 +160,12 @@ export default {
       addUserDialogVisible.value = false;
     };
 
-    const addUser = () => {
-      openAddUserDialog();
-    };
+    const handleNodeClick = (data) => {
+        selectedCompanyName.value = data.label;
+        apartmentchoose.value = data.children;
+        console.log(selectedCompanyName.value);
+        searchUsers();
+      };
 
     const editUser = (user) => {
       console.log(user);
@@ -304,14 +312,6 @@ export default {
 
       pullPage(1, starttime, endtime);
     };
-
-
-    const handleNodeClick = (data) => {
-          selectedCompanyName.value = data.label;
-          apartmentchoose.value = data.children;
-          console.log(data);
-          searchUsers();
-        };
 
     const resetFilters = () => {
       filters.value = {
@@ -468,7 +468,9 @@ export default {
       apartmentchoose,
       modifyUserDialogVisible,
       selectedUser,
-      closeModifyUserDialog
+      closeModifyUserDialog,
+      store,
+      userType
     };
   }
 };

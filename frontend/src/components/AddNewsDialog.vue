@@ -220,8 +220,14 @@ export default {
       }
     },
     resetForm() {
-      this.$refs.form.resetFields();
-      this.internalDialogVisible = false;
+this.$refs.form.resetFields();
+this.form.title= '';
+this.form.summary= '';
+this.form.imagePath= ''; // 用于存储上传后的图片URL
+this.form.content='';
+this.form.author= '';
+this.form.tenant= '';
+this.internalDialogVisible = false;
     }
   }
 };

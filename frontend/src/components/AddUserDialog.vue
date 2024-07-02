@@ -174,10 +174,13 @@ export default {
   watch: {
     dialogVisible(val) {
       this.internalDialogVisible = val;
+      if (val) {
+        this.form.companyname = this.selectedCompanyName; // 在对话框打开时更新公司名称
+      }
     },
     internalDialogVisible(val) {
       this.$emit('update:dialogVisible', val);
-    }
+    },
   },
   computed: {
     editor() {

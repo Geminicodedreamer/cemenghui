@@ -8,6 +8,8 @@ export default {
         token: "",
         is_login: false,
         pulling_info: true,  // 是否正在从云端拉取信息
+        role: "",
+        companyname: "",
     },
     getters: {
     },
@@ -17,6 +19,8 @@ export default {
             state.username = user.username;
             state.photo = user.photo;
             state.is_login = user.is_login;
+            state.role = user.role;
+            state.companyname = user.companyname;
         },
         updateToken(state, token) {
             state.token = token;
@@ -27,6 +31,8 @@ export default {
             state.photo = "";
             state.token = "";
             state.is_login = false;
+            state.role = "";
+            state.companyname = "";
         },
         updatePullingInfo(state, pulling_info) {
             state.pulling_info = pulling_info;

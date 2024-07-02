@@ -43,12 +43,12 @@
             {{ $store.state.user.username }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-                <router-link class="dropdown-item" :to="{name: 'company_account_info'}">个人信息</router-link><!-- user_account_info  company_account_info -->
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item"  @click="logout">退出</a></li>
-          </ul>
+              <li>
+                <a class="dropdown-item" @click="handleAccountInfoRoute">详细信息</a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item"  @click="logout">退出</a></li>
+            </ul>
         </li>
       </ul>
       <ul class="navbar-nav" v-else-if="!$store.state.user.pulling_info">
@@ -90,9 +90,16 @@ export default {
           router.push({name : 'home'});
         }
 
+        const handleAccountInfoRoute = () => {
+          const userType = localStorage.getItem("userType");
+          const routeName = userType === "user" ? 'user_account_info' : 'company_account_info';
+          router.push({ name: routeName });
+        }
+
         return {
             route_name,
-            logout
+            logout,
+            handleAccountInfoRoute
         }
     }
 }

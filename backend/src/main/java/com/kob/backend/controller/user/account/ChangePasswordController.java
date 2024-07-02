@@ -16,6 +16,7 @@ public class ChangePasswordController {
     @PostMapping("/user/password")
     public Map<String , String> changepassword(@RequestParam Map<String , String> map)
     {
+        System.err.println(map);
         Integer id = Integer.parseInt(map.get("id"));
         String password = map.get("password");
         String newpassword = map.get("newpassword");

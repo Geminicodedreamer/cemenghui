@@ -185,6 +185,7 @@ export default {
     });
 
     const del = id => {
+      ElMessageBox.confirm('是否删除').then(() =>{
       $.ajax({
         url: `http://127.0.0.1:3000/lesson/del`,
         data: { id },
@@ -207,7 +208,7 @@ export default {
         error: () => {
           ElMessage.error('删除失败');
         }
-      });
+      });});
     };
 
     const showModifyCourseDialog = item => {

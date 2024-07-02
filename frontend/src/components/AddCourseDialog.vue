@@ -175,6 +175,12 @@ export default {
     },
     resetForm() {
       this.$refs.form.resetFields();
+      this.form.id= '';
+      this.form.lessonname= '';
+      this.form.lessonintro= '';
+      this.form.lessonauthor= '';
+      this.form.photoUrl= ''; // 用于存储上传后的图片URL
+      this.form.videoUrl= '';
       this.internalDialogVisible = false;
     }
   }

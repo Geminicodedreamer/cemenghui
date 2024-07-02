@@ -41,17 +41,18 @@
           <el-table-column prop="creattime" label="创建时间" />
           <el-table-column label="操作" width="180">
             <template #default="scope">
-              <div class="button-group">
-                <el-button type="primary" @click="showModifyOrganizationDialog(scope.row)">
+              <div v-if="((userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === scope.row.organizationname || store.state.user.companyname === scope.row.organizationname || store.state.user.username === scope.row.uporganization || store.state.user.companyname === scope.row.uporganization)" class="button-group">
+
+                  <el-button v-if="scope.row.uporganization !== null" type="primary" @click="showModifyOrganizationDialog(scope.row)">
                   修改
                 </el-button>
                 <el-button type="success" @click="showAddOrganizationDialog(scope.row)">
                   新增
                 </el-button>
-                <el-button type="danger" @click="confirmDelete(scope.row)">
+                <el-button v-if="scope.row.uporganization !== null" type="danger" @click="confirmDelete(scope.row)">
                   删除
                 </el-button>
-              </div>
+                </div>
             </template>
           </el-table-column>
         </el-table>
@@ -80,6 +81,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const userType = localStorage.getItem("userType");
     const list = ref([]);
     const filters = ref({
       searchName: '',
@@ -205,6 +207,8 @@ export default {
       confirmDelete,
       filteredTreeData,
       handleSelectionChange,
+      store,
+      userType
     };
   }
 };

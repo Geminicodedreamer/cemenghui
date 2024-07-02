@@ -24,7 +24,7 @@
       </div>
 
       <!-- Button Action Section -->
-      <div class="button-actions my-3">
+      <div v-if="userType === 'user' && store.state.user.role === '超级管理员'" class="button-actions my-3">
         <button @click="showAddTenantDialog" class="btn btn-success">新增</button>
         &nbsp;
         <button @click="showEditAdminDialog" class="btn btn-warning">修改管理员</button>
@@ -45,7 +45,7 @@
             <th>电话</th>
             <th>租户名称</th>
             <th>管理员</th>
-            <th>操作</th>
+            <th v-if="userType === 'user' && store.state.user.role === '超级管理员'">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -57,7 +57,7 @@
             <td>{{ company.telephone }}</td>
             <td>{{ company.companyName }}</td>
             <td>{{ company.adminname }}</td>
-            <td>
+            <td v-if="userType === 'user' && store.state.user.role === '超级管理员'">
                <el-button @click="editCompany(company)" type="primary" :icon="Edit" circle />
               <el-button @click="deleteCompany(company.companyId)" type="danger" :icon="Delete" circle />
             </td>
@@ -121,6 +121,7 @@ export default {
     ModifyCompanyDialog, 
   },
   setup() {
+    const userType = localStorage.getItem('userType');
     const store = useStore();
     let companys = ref([]);
     let selectedCompanies = ref([]);
@@ -440,6 +441,8 @@ export default {
       resetEditAdminForm,
       isEditAdminDialogVisible,
       editAdminForm,
+      userType,
+      store
     };
   }
 }

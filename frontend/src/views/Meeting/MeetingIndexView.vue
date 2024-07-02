@@ -105,7 +105,7 @@ import AddMeeting from '../../components/AddMeeting.vue';
 import EditMeeting from '../../components/EditMeeting.vue';
 import MeetingDetail from '../../components/MeetingDetail.vue'; // 新增
 import { ref, computed, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
+import { ElMessage , ElMessageBox} from 'element-plus';
 import $ from 'jquery';
 import { useStore } from 'vuex';
 
@@ -185,6 +185,7 @@ export default {
         };
 
         const deleteMeeting = (id) => {
+            ElMessageBox.confirm('是否删除').then(() =>{
             $.ajax({
                 url: `http://127.0.0.1:3000/meeting/del`,
                 type: "GET",
@@ -212,7 +213,7 @@ export default {
                 error: () => {
                     ElMessage.error('未成功删除');
                 }
-            });
+            });});
         };
 
         const deleteSelectedMeetings = () => {
