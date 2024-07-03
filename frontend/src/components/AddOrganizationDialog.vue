@@ -40,6 +40,10 @@ export default {
     dialogVisible: {
       type: Boolean,
       required: true
+    },
+    company: {
+      type: String,
+      default: null,
     }
   },
   data() {
@@ -73,6 +77,10 @@ export default {
     },
     internalDialogVisible(val) {
       this.$emit('update:dialogVisible', val);
+    },
+    company(val)
+    {
+      this.form.uporganization = val;
     }
   },
   methods: {

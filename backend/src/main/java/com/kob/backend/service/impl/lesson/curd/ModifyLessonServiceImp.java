@@ -17,7 +17,7 @@ public class ModifyLessonServiceImp implements ModifyLessonService {
     @Autowired
     private LessonMapper lessonMapper;
     @Override
-    public Map<String, String> modifylesson(Integer id, String lessonname, String lessonintro, String lessonauthor, String photo, String video) {
+    public Map<String, String> modifylesson(Integer id, String lessonname, String lessonintro, String lessonauthor, String photo, String video , String companyname) {
         Map<String , String> map = new HashMap<>();
         if(id==null){
             map.put("error_message", "课程id不能为空");
@@ -54,7 +54,7 @@ public class ModifyLessonServiceImp implements ModifyLessonService {
             return map;
         }
 
-        Lesson new_lesson = new Lesson(id, lessonname, lessonintro, lessonauthor,photo, video);
+        Lesson new_lesson = new Lesson(id, lessonname, lessonintro, lessonauthor,photo, video , companyname);
         lessonMapper.updateById(new_lesson);
 
         map.put("error_message" , "success");

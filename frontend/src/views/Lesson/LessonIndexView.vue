@@ -31,14 +31,15 @@
         </thead>
         <tbody>
           <tr v-for="item in paginatedList" :key="item.id">
-            <td><input type="checkbox" v-model="selectedLessons" :value="item.id"></td>
+            <td><input v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === item.companyname) || (userType === 'user' && store.state.user.companyname === item.companyname)" type="checkbox" v-model="selectedLessons" :value="item.id"></td>
             <td>{{ item.id }}</td>
             <td>{{ item.lessonname }}</td>
             <td>{{ item.lessonintro }}</td>
             <td>{{ item.lessonauthor }}</td>
             <td>
-              <button class="btn btn-primary btn-sm" @click.prevent="showModifyCourseDialog(item)">修改</button>
-              <button class="btn btn-danger btn-sm" @click.prevent="del(item.id)">删除</button>
+              <button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === item.companyname) || (userType === 'user' && store.state.user.companyname === item.companyname)" class="btn btn-primary btn-sm" @click.prevent="showModifyCourseDialog(item)">修改</button>
+              &nbsp;
+              <button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === item.companyname) || (userType === 'user' && store.state.user.companyname === item.companyname)" class="btn btn-danger btn-sm" @click.prevent="del(item.id)">删除</button>
             </td>
           </tr>
         </tbody>
@@ -92,6 +93,7 @@ export default {
     const isAddCourseDialogVisible = ref(false);
     const isModifyCourseDialogVisible = ref(false);
     const currentLesson = ref(null);
+    const userType = localStorage.getItem("userType");
 
     const fetchLessonList = () => {
       $.ajax({
@@ -103,6 +105,7 @@ export default {
         success(resp) {
           if (resp && resp.lessons) {
             list.value = resp.lessons;
+            console.error(list.value);
           }
         },
         error(err) {
@@ -212,6 +215,7 @@ export default {
     };
 
     const showModifyCourseDialog = item => {
+      console.error(item);
       currentLesson.value = { ...item }; // 将选中的课程信息传递给对话框
       isModifyCourseDialogVisible.value = true;
     };
@@ -280,7 +284,9 @@ export default {
       selectedLessons,
       deleteTenant,
       resetFilters,
-      allSelected
+      allSelected,
+      userType,
+      store,
     };
   }
 }

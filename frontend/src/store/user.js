@@ -10,6 +10,7 @@ export default {
         pulling_info: true,  // 是否正在从云端拉取信息
         role: "",
         companyname: "",
+        userrealname: "",
     },
     getters: {
     },
@@ -21,6 +22,7 @@ export default {
             state.is_login = user.is_login;
             state.role = user.role;
             state.companyname = user.companyname;
+            state.userrealname = user.userrealname;
         },
         updateToken(state, token) {
             state.token = token;
@@ -33,6 +35,7 @@ export default {
             state.is_login = false;
             state.role = "";
             state.companyname = "";
+            state.userrealname = "";
         },
         updatePullingInfo(state, pulling_info) {
             state.pulling_info = pulling_info;
@@ -72,12 +75,12 @@ export default {
                 },
                 success(resp) {
                     if (resp.error_message === "success") {
-                        if((resp.role === "超级管理员" || resp.role === "租户管理员") && resp.status === "1"){
+                        if ((resp.role === "超级管理员" || resp.role === "租户管理员") && resp.status === "1") {
                             localStorage.setItem("jwt_token", resp.token);
                             localStorage.setItem("userType", "user");
                             context.commit("updateToken", resp.token);
                             data.success(resp);
-                        }else{
+                        } else {
                             data.error(resp);
                         }
                     } else {
@@ -93,7 +96,7 @@ export default {
 
             let userType = localStorage.getItem("userType");
 
-            if(userType === "company") {
+            if (userType === "company") {
                 $.ajax({
                     url: "http://127.0.0.1:3000/company/account/info/",
                     type: "get",

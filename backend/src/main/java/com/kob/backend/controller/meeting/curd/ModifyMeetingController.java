@@ -23,6 +23,7 @@ public class ModifyMeetingController {
         String starttime = map.get("startTime");
         String endtime = map.get("endTime");
         String photo = map.get("photo");
-        return modifyMeetingService.modifymeeting(meetingid,meetingname,creator,content,starttime,endtime,photo);
+        String companyname = map.get("companyname");
+        return modifyMeetingService.modifymeeting(meetingid,meetingname,creator,content,starttime,endtime,photo , companyname);
     }
 }

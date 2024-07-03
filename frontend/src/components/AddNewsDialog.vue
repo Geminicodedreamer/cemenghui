@@ -41,10 +41,17 @@
       <el-form-item label="新闻简介" :required="true" class="form-item">
         <el-input v-model="form.summary" placeholder="请输入新闻简介"></el-input>
       </el-form-item>
-      <el-form-item label="选择租户" :required="true" class="form-item">
-        <el-input v-model="form.tenant" placeholder="请选择"></el-input><!-- 这里应该是下拉框 -->
+      <el-form-item v-if="userType === 'user' && store.state.user.role === '超级管理员'" label="选择租户" :required="true" class="form-item">
+        <el-select v-model="form.tenant" placeholder="请选择租户">
+          <el-option
+            v-for="tenant in tenantchoose"
+            :key="tenant.companyId"
+            :label="tenant.companyName"
+            :value="tenant.companyName">
+          </el-option>
+        </el-select>
       </el-form-item>
-      
+
       <el-form-item class="button-container">
         <el-button type="primary" @click="submitForm">确定</el-button>
         <el-button @click="resetForm">取消</el-button>
@@ -56,6 +63,7 @@
 <script>
 import { ElMessage } from 'element-plus';
 import { useStore } from 'vuex';
+import { ref, onMounted } from 'vue';
 import $ from 'jquery';
 import { Plus } from '@element-plus/icons-vue'; // 引入图标
 import axios from 'axios';
@@ -111,6 +119,33 @@ export default {
           }
         }
       }
+    };
+  },
+  setup() {
+    const store = useStore();
+    const tenantchoose = ref([]);
+    const userType = localStorage.getItem("userType");
+
+    const fetchTenants = () => {
+      $.ajax({
+        url: 'http://127.0.0.1:3000/company/list/',
+        type: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + store.state.user.token,
+        },
+        success(resp) {
+          tenantchoose.value = resp.companys;
+        }
+      });
+    };
+
+    onMounted(() => {
+      fetchTenants();
+    });
+
+    return {
+      tenantchoose,
+      userType
     };
   },
   watch: {
@@ -183,6 +218,8 @@ export default {
       return isImage && isLt2M;
     },
     submitForm() {
+      if(this.userType === 'user' && this.store.state.user.role === '租户管理员') this.form.tenant = this.store.state.user.companyname;
+      if(this.userType === 'companyname') this.form.tenant = this.store.state.user.username;
       if (this.form.title && this.form.author && this.form.summary && this.form.tenant) {
         this.form.content = this.$refs.myQuillEditor.quill.root.innerHTML;
         $.ajax({
@@ -220,14 +257,14 @@ export default {
       }
     },
     resetForm() {
-this.$refs.form.resetFields();
-this.form.title= '';
-this.form.summary= '';
-this.form.imagePath= ''; // 用于存储上传后的图片URL
-this.form.content='';
-this.form.author= '';
-this.form.tenant= '';
-this.internalDialogVisible = false;
+      this.$refs.form.resetFields();
+      this.form.title= '';
+      this.form.summary= '';
+      this.form.imagePath= ''; // 用于存储上传后的图片URL
+      this.form.content='';
+      this.form.author= '';
+      this.form.tenant= '';
+      this.internalDialogVisible = false;
     }
   }
 };

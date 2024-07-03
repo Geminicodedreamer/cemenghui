@@ -37,7 +37,7 @@
                         <SIdentify @click="refreshCode" :identifyCode="identifyCode" class="identify-element" />
                     </div>
                 </el-form-item>
-                <el-form-item label="短信验证码" prop="text">
+                <el-form-item label="短信验证码" prop="textCode">
                     <div class="container">
                         <el-input style="flex: 1; width:50%;" v-model="form.textCode" placeholder="短信验证码" />
                         <el-button style="flex: 1; width:30%; margin-left:10%;" :disabled="smsDisabled" @click="sendSMSCode">{{ smsButtonText }}</el-button>
@@ -58,6 +58,7 @@ import router from '../../../router/index';
 import $ from 'jquery';
 import SIdentify from '../../../components/SIdentify.vue';
 import { ElMessage } from 'element-plus';
+import { useStore } from 'vuex';
 
 export default {
     components: {
@@ -80,7 +81,7 @@ export default {
         const messagecode = ref('');
         const smsDisabled = ref(false);
         const smsButtonText = ref('获取短信验证码');
-
+        const store = useStore();
         const randomNum = (min, max) => {
             return Math.floor(Math.random() * (max - min) + min);
         };
@@ -177,8 +178,10 @@ export default {
         };
 
         const validateTextCode = (rule, value, callback) => {
-            if (!value) {
+            if (!value || value === '') {
                 return callback(new Error('短信验证码不能为空'));
+            } else if (value !== messagecode.value) {
+                return callback(new Error('短信验证码不正确'));
             }
             callback();
         };
@@ -212,7 +215,54 @@ export default {
                             },
                             success(resp) {
                                 if (resp.error_message === "success") {
-                                    router.push({ name: "company_account_login" });
+                                    store.dispatch('login', {
+                                        companyname: form.username,
+                                        password: form.password,
+                                        success() {
+                                        store.dispatch('getinfo', {
+                                            success() {
+                                                const currentDatetime = new Date();
+                                                const yyyy = currentDatetime.getFullYear();
+                                                const MM = String(currentDatetime.getMonth() + 1).padStart(2, '0');
+                                                const dd = String(currentDatetime.getDate()).padStart(2, '0');
+                                                const hh = String(currentDatetime.getHours()).padStart(2, '0');
+                                                const mm = String(currentDatetime.getMinutes()).padStart(2, '0');
+                                                const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
+                                                const createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
+                                                $.ajax({
+                                                    url: 'http://127.0.0.1:3000/organization/add',
+                                                    type: 'POST',
+                                                        data: {
+                                                        uporganization: '测盟会',
+                                                        organizationname: form.username,
+                                                        id: '',
+                                                        charger: "admin",
+                                                        telephone: form.telephone,
+                                                        email: '无',
+                                                        status: '正常',
+                                                        creattime: createtime,
+                                                    },
+                                                    headers: {
+                                                    Authorization: "Bearer " + store.state.user.token,
+                                                    },
+                                                    success(resp)
+                                                    {
+                                                        console.error(resp);
+                                                    },
+                                                    error(resp)
+                                                    {
+                                                        console.error(resp);
+                                                    }
+                                                });
+                                                router.push({ name: 'home' });
+                                            }
+                                        });
+                                        },
+                                        error() {
+                                        error_message.value = '企业名称或密码错误';
+                                        }
+                                    });
+                                    
                                 } else {
                                     error_message.value = resp.error_message;
                                 }

@@ -18,7 +18,7 @@ public class ModifyMeetingServiceImpl implements ModifyMeetingService {
 
 
     @Override
-    public Map<String, String> modifymeeting(Integer meetingid, String meetingname, String creator, String content, String starttime, String endtime, String photo) {
+    public Map<String, String> modifymeeting(Integer meetingid, String meetingname, String creator, String content, String starttime, String endtime, String photo, String companyname) {
         //System.err.println(meetingid+meetingname+creator+content+starttime+endtime+photo);
         Map<String, String> map = new HashMap<>();
         if(meetingname == null){
@@ -57,7 +57,7 @@ public class ModifyMeetingServiceImpl implements ModifyMeetingService {
         }
 
 
-        Meeting new_meeting = new Meeting(meetingid,meetingname,creator,content,starttime,endtime,photo);
+        Meeting new_meeting = new Meeting(meetingid,meetingname,creator,content,starttime,endtime,photo,companyname);
         meetingMapper.updateById(new_meeting);
 
         map.put("error_message","success");

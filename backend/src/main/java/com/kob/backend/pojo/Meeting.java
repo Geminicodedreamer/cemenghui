@@ -20,4 +20,5 @@ public class Meeting {
     private String starttime;
     private String endtime;
     private String photo;
+    private String companyname;
 }

@@ -19,7 +19,7 @@ public class AddMeetingServiceImpl implements AddMeetingService {
     private MeetingMapper meetingMapper;
 
     @Override
-    public Map<String, String> addMeeting(String meetingname, String creator, String content, String starttime, String endtime, String photo) {
+    public Map<String, String> addMeeting(String meetingname, String creator, String content, String starttime, String endtime, String photo, String companyname) {
         System.err.println(content.length());
         Map<String, String> map = new HashMap<>();
         if(meetingname == null){
@@ -57,7 +57,7 @@ public class AddMeetingServiceImpl implements AddMeetingService {
             return map;
         }
 
-        Meeting meeting = new Meeting(null,meetingname,creator,content,starttime,endtime,photo);
+        Meeting meeting = new Meeting(null,meetingname,creator,content,starttime,endtime,photo,companyname);
         meetingMapper.insert(meeting);
 
         // 获取插入后的会议ID

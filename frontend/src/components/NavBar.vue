@@ -87,7 +87,7 @@ export default {
 
         const logout = () => {
           store.dispatch("logout");
-          router.push({name : 'home'});
+          router.push({name : 'user_account_login'});
         }
 
         const handleAccountInfoRoute = () => {

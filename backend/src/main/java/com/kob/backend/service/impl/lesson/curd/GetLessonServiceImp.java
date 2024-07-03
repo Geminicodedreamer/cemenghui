@@ -31,6 +31,7 @@ public class GetLessonServiceImp implements GetLessonListService {
             item.put("lessonauthor" , lesson.getLessonauthor());
             item.put("photo" , lesson.getPhoto());
             item.put("video" , lesson.getVideo());
+            item.put("companyname" , lesson.getCompanyname());
             items.add(item);
         }
         resp.put("lessons", items);

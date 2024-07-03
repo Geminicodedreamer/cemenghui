@@ -17,7 +17,7 @@ public class AddLessonServiceImp implements AddLessonService {
 @Autowired
 private LessonMapper lessonMapper;
     @Override
-    public Map<String, String> addLesson(Integer id, String lessonname, String lessonintro, String lessonauthor, String photo, String video) {
+    public Map<String, String> addLesson(Integer id, String lessonname, String lessonintro, String lessonauthor, String photo, String video , String companyname) {
         Map<String , String> map = new HashMap<>();
         if(id==null){
             map.put("error_message", "课程id不能为空");
@@ -50,7 +50,7 @@ private LessonMapper lessonMapper;
             map.put("error_message", "课程名称已存在");
             return map;
         }
-        Lesson lesson = new Lesson(id, lessonname, lessonintro, lessonauthor,photo, video);
+        Lesson lesson = new Lesson(id, lessonname, lessonintro, lessonauthor,photo, video , companyname);
         lessonMapper.insert(lesson);
 
         map.put("error_message", "success");

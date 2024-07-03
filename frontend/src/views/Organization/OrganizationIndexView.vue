@@ -25,8 +25,8 @@
         </div>
       </div>
       <!-- 按钮操作区域 -->
-      <div class="button-actions my-3">
-        <button @click="showAddOrganizationDialog" class="btn btn-success">新增</button>
+      <div  v-if="(userType === 'user' && store.state.user.role === '超级管理员')"  class="button-actions my-3">
+        <button @click="showAddOrganizationDialogCompany(null)" class="btn btn-success">新增</button>
       </div>
 
       <!-- 表格区域 -->
@@ -41,12 +41,11 @@
           <el-table-column prop="creattime" label="创建时间" />
           <el-table-column label="操作" width="180">
             <template #default="scope">
-              <div v-if="((userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === scope.row.organizationname || store.state.user.companyname === scope.row.organizationname || store.state.user.username === scope.row.uporganization || store.state.user.companyname === scope.row.uporganization)" class="button-group">
-
-                  <el-button v-if="scope.row.uporganization !== null" type="primary" @click="showModifyOrganizationDialog(scope.row)">
+              <div v-if="(userType === 'user' && store.state.user.role === '超级管理员') ||( userType === 'company' && store.state.user.username === scope.row.organizationname )||( userType === 'user' && store.state.user.companyname === scope.row.organizationname) || ( userType === 'company' && store.state.user.username === scope.row.uporganization) || ( userType === 'user' && store.state.user.companyname === scope.row.uporganization)" class="button-group">
+                <el-button v-if="scope.row.uporganization !== null" type="primary" @click="showModifyOrganizationDialog(scope.row)">
                   修改
                 </el-button>
-                <el-button type="success" @click="showAddOrganizationDialog(scope.row)">
+                <el-button type="success" @click="showAddOrganizationDialogCompany(scope.row)">
                   新增
                 </el-button>
                 <el-button v-if="scope.row.uporganization !== null" type="danger" @click="confirmDelete(scope.row)">
@@ -59,7 +58,7 @@
       </div>
     </ContentField>
 
-    <AddOrganizationDialog v-model:dialogVisible="isAddOrganizationDialogVisible" @update="handleDataUpdate"/>
+    <AddOrganizationDialog v-model:dialogVisible="isAddOrganizationDialogVisible" :company="selectcompany" @update="handleDataUpdate"/>
     <ModifyOrganizationDialog v-model:dialogVisible="isModifyOrganizationDialogVisible" :organization="currentorganization" @update="handleDataUpdate"/>
   </div>
 </template>
@@ -91,7 +90,7 @@ export default {
     const isAddOrganizationDialogVisible = ref(false);
     const isModifyOrganizationDialogVisible = ref(false);
     const currentorganization = ref(null);
-
+    const selectcompany = ref(null);
     const fetchOrganizationList = () => {
       $.ajax({
         url: "http://127.0.0.1:3000/organization/list",
@@ -174,6 +173,12 @@ export default {
       });
     };
 
+    const showAddOrganizationDialogCompany = item =>{
+      if(item !== null) selectcompany.value = item.organizationname;
+      else selectcompany.value = "";
+      showAddOrganizationDialog();
+    }
+
     const showAddOrganizationDialog = () => {
       nextTick(() => {
         isAddOrganizationDialogVisible.value = true;
@@ -208,7 +213,9 @@ export default {
       filteredTreeData,
       handleSelectionChange,
       store,
-      userType
+      userType,
+      showAddOrganizationDialogCompany,
+      selectcompany
     };
   }
 };

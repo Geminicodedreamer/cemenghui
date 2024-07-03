@@ -126,7 +126,8 @@ export default {
         photo: '',
         lessonintro: '',
         lessonauthor: '',
-        video: ''
+        video: '',
+        companyname:'',
       },
       imageViewerVisible: false,
       videoViewerVisible: false
@@ -208,6 +209,7 @@ export default {
     },
     submitForm() {
       if (this.form.lessonname && this.form.lessonauthor) {
+        console.error(this.form);
         $.ajax({
           url: 'http://127.0.0.1:3000/lesson/modify', // 后端修改公司信息的接口
           type: 'POST',
@@ -217,7 +219,8 @@ export default {
             photo: this.form.photo,
             lessonintro: this.form.lessonintro,
             lessonauthor: this.form.lessonauthor,
-            video: this.form.video
+            video: this.form.video,
+            companyname: this.form.companyname,
           },
           headers: {
             Authorization: "Bearer " + this.store.state.user.token,

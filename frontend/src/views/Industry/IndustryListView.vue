@@ -46,13 +46,13 @@
         </thead>
         <tbody>
           <tr v-for="News in Newss" :key="News.newsid">
-            <td><input type="checkbox" v-model="selectedNewsIds" :value="News.newsid"></td>
+            <td><input v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === News.tenant) || (userType === 'user' && store.state.user.companyname === News.tenant)" type="checkbox" v-model="selectedNewsIds" :value="News.newsid"></td>
             <td>{{ News.title }}</td>
             <td>{{ News.author }}</td>
             <td>{{ News.summary }}</td>
             <td>
-              <el-button @click="editNews(News)" type="primary" :icon="Edit" circle />
-              <el-button @click="deleteNews(News.newsid)" type="danger" :icon="Delete" circle />
+              <el-button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === News.tenant) || (userType === 'user' && store.state.user.companyname === News.tenant)" @click="editNews(News)" type="primary" :icon="Edit" circle />
+              <el-button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === News.tenant) || (userType === 'user' && store.state.user.companyname === News.tenant)" @click="deleteNews(News.newsid)" type="danger" :icon="Delete" circle />
             </td>
           </tr>
         </tbody>
@@ -103,6 +103,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const userType = localStorage.getItem("userType");
     let Newss = ref([]);
     let selectedNewsIds = ref([]);
     let allSelected = ref(false);
@@ -358,6 +359,8 @@ export default {
       handleDataUpdate,
       isModifyNewsDialogVisible,
       selectedNews,
+      store,
+      userType
     };
   },
 };

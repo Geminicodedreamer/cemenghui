@@ -52,7 +52,7 @@ public class AddOrganizationServiceImpl implements AddOrganizationService {
 
         QueryWrapper<Organization> queryWrapper1 =new QueryWrapper<>();
         queryWrapper1.eq("organizationname",uporganization);
-        if(!organizationMapper.selectList(queryWrapper1).isEmpty())
+        if(organizationMapper.selectList(queryWrapper1).isEmpty())
         {
             map.put("error_message","父公司/部门不存在");
             return map;

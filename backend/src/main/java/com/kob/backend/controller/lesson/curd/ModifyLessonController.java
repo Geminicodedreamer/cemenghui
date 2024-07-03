@@ -22,6 +22,7 @@ public class ModifyLessonController {
         String lessonauthor=map.get("lessonauthor");
         String photo=map.get("photo");
         String video=map.get("video");
-        return modifyLessonService.modifylesson(id,lessonname,lessonintro,lessonauthor,photo,video);
+        String companyname = map.get("companyname");
+        return modifyLessonService.modifylesson(id,lessonname,lessonintro,lessonauthor,photo,video , companyname);
     }
 }

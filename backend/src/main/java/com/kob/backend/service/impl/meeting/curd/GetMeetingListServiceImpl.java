@@ -37,6 +37,7 @@ public class GetMeetingListServiceImpl implements GetMeetingListService {
             item.put("starttime",meeting.getStarttime());
             item.put("endtime",meeting.getEndtime());
             item.put("photo",meeting.getPhoto());
+            item.put("companyname" , meeting.getCompanyname());
             items.add(item);
         }
         resp.put("meetings",items);

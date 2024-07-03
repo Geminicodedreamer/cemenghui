@@ -89,7 +89,8 @@ export default {
         lessonintro: '',
         lessonauthor: '',
         photoUrl: '', // 用于存储上传后的图片URL
-        videoUrl: '' // 用于存储上传后的视频URL
+        videoUrl: '', // 用于存储上传后的视频URL
+        companyname: '',
       },
       store,
     };
@@ -140,6 +141,10 @@ export default {
     submitForm() {
       if (this.form.id && this.form.lessonname && this.form.lessonintro && this.form.lessonauthor) {
       console.log('即将提交的表单数据:', this.form);
+      let companyname = null;
+      const userType = localStorage.getItem("userType");
+      if(userType === 'user') companyname = this.store.state.user.companyname;
+      else companyname = this.store.user.username;
         $.ajax({
           url: 'http://127.0.0.1:3000/lesson/add', // 后端添加课程信息的接口
           type: 'POST',
@@ -149,7 +154,8 @@ export default {
             lessonintro: this.form.lessonintro,
             lessonauthor: this.form.lessonauthor,
             photo: this.form.photoUrl, // 使用上传后的图片 URL
-            video: this.form.videoUrl // 使用上传后的视频 URL
+            video: this.form.videoUrl, // 使用上传后的视频 URL
+            companyname: companyname,
           },
           headers: {
             Authorization: "Bearer " + this.store.state.user.token,

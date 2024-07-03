@@ -138,7 +138,6 @@ export default {
             if (quillEditorRef.value) {
                 meetingForm.content = quillEditorRef.value.root.innerHTML;
             }
-
             emit('update', { ...meetingForm });
             closeModal();
         };

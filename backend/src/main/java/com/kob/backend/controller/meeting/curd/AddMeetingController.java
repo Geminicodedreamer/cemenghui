@@ -21,7 +21,8 @@ public class AddMeetingController {
         String starttime = map.get("starttime");
         String endtime = map.get("endtime");
         String photo = map.get("photo");
-        return addMeetingService.addMeeting(meetingname, creator, content, starttime, endtime, photo);
+        String companyname = map.get("companyname");
+        return addMeetingService.addMeeting(meetingname, creator, content, starttime, endtime, photo , companyname);
     }
 
 }

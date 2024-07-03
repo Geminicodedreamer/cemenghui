@@ -16,4 +16,5 @@ public class Lesson {
     private String lessonauthor;
     private String photo;
     private String video;
+    private String companyname;
 }

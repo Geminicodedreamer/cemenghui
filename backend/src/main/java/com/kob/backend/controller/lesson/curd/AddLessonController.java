@@ -21,7 +21,8 @@ public class AddLessonController {
         String lessonauthor=map.get("lessonauthor");
         String photo=map.get("photo");
         String video=map.get("video");
-        return  addLessonService.addLesson(id,lessonnname,lessonintro,lessonauthor,photo,video);
+        String companyname = map.get("companyname");
+        return  addLessonService.addLesson(id,lessonnname,lessonintro,lessonauthor,photo,video , companyname);
 
 
 

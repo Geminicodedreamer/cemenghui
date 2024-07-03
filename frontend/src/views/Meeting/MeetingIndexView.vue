@@ -54,17 +54,18 @@
                 </thead>
                 <tbody>
                     <tr v-for="(meeting, index) in currentPageData" :key="index">
-                        <td><input type="checkbox" v-model="selectedMeetings" :value="meeting.id"></td>
+                        <td><input v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === meeting.companyname) || (userType === 'user' && store.state.user.companyname === meeting.companyname)" type="checkbox" v-model="selectedMeetings" :value="meeting.id"></td>
                         <th scope="row">{{ meeting.id }}</th>
                         <td>{{ meeting.name }}</td>
                         <td>{{ meeting.creator }}</td>
                         <td>{{ getStatus(meeting.startTime, meeting.endTime) }}</td>
-                        <td><button @click="showMeetingDetail(meeting)" class="btn btn-outline-info btn-sm">查看详情</button></td>
+                        <td ><button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === meeting.companyname) || (userType === 'user' && store.state.user.companyname === meeting.companyname)" @click="showMeetingDetail(meeting)" class="btn btn-outline-info btn-sm">查看详情</button></td>
                         <td>{{ formatDate(meeting.startTime) }}</td>
                         <td>{{ formatDate(meeting.endTime) }}</td>
                         <td>
-                            <button @click="editMeeting(meeting)" class="btn btn-outline-primary btn-sm">修改</button>
-                            <button @click="deleteMeeting(meeting.id)" class="btn btn-outline-danger btn-sm">删除</button>
+                            <button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === meeting.companyname) || (userType === 'user' && store.state.user.companyname === meeting.companyname)" @click="editMeeting(meeting)" class="btn btn-outline-primary btn-sm">修改</button>
+                            &nbsp;
+                            <button v-if="(userType === 'user' && store.state.user.role === '超级管理员') || (userType === 'company' && store.state.user.username === meeting.companyname) || (userType === 'user' && store.state.user.companyname === meeting.companyname)" @click="deleteMeeting(meeting.id)" class="btn btn-outline-danger btn-sm">删除</button>
                         </td>
                     </tr>
                 </tbody>
@@ -118,6 +119,7 @@ export default {
     },
     setup() {
         const store = useStore();
+        const userType = localStorage.getItem("userType");
         const meetings = ref([]);
         const currentPage = ref(1);
         const pageSize = ref(10);
@@ -166,6 +168,7 @@ export default {
                             startTime: meeting.starttime,
                             endTime: meeting.endtime,
                             photo: meeting.photo,
+                            companyname: meeting.companyname,
                         }));
                     } else {
                         ElMessage.error('获取会议列表失败');
@@ -223,6 +226,9 @@ export default {
 
         const addMeeting = (meeting) => {
             console.log(meeting)
+            let companyname = null;
+            if(userType === 'user') companyname = store.state.user.companyname;
+            else companyname = store.state.user.username;
             const formData = new FormData();
             formData.append('meetingname', meeting.name);
             formData.append('content', meeting.content); // 确保内容被正确添加
@@ -230,6 +236,7 @@ export default {
             formData.append('creator', meeting.creator);
             formData.append('starttime', meeting.startTime);
             formData.append('endtime', meeting.endTime);
+            formData.append('companyname', companyname);
         
             console.log('FormData to be sent:', {
                 meetingname: meeting.name,
@@ -237,7 +244,8 @@ export default {
                 photo: meeting.cover,
                 creator: meeting.creator,
                 starttime: meeting.startTime,
-                endtime: meeting.endTime
+                endtime: meeting.endTime,
+                companyname: companyname,
             });
         
             $.ajax({
@@ -260,6 +268,7 @@ export default {
                             startTime: meeting.startTime,
                             endTime: meeting.endTime,
                             photo: meeting.cover,
+                            companyname: meeting.companyname,
                         });
                         showModal.value = false;
                         ElMessage({
@@ -280,11 +289,14 @@ export default {
         };
 
         const editMeeting = (meeting) => {
+            console.error(meeting);
             editedMeeting.value = { ...meeting };
             showEditModal.value = true;
         };
 
         const handleUpdateMeeting = (updatedMeeting) => {
+            console.error(updatedMeeting);
+            
             $.ajax({
                 url: `http://127.0.0.1:3000/meeting/modify`,
                 type: 'POST',
@@ -305,6 +317,7 @@ export default {
                                 startTime: updatedMeeting.starttime,
                                 endTime: updatedMeeting.endtime,
                                 photo: updatedMeeting.photo,
+                                companyname: updatedMeeting.companyname,
                             });
                         }
 						
@@ -442,6 +455,8 @@ export default {
             showAddMeetingModal,
             showMeetingDetail,
             handleCreateMeeting,
+            userType,
+            store,
         };
     }
 };

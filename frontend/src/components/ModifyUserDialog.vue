@@ -38,7 +38,7 @@
       <el-form-item label="角色" class="form-item">
         <el-select v-model="form.role" placeholder="请选择角色">
           <el-option label="租户管理员" value="租户管理员"></el-option>
-          <el-option label="超级管理员" value="超级管理员"></el-option>
+          <el-option v-if="store.state.user.role === '超级管理员'" label="超级管理员" value="超级管理员"></el-option>
           <el-option label="普通用户" value="普通用户"></el-option>
         </el-select>
       </el-form-item>

@@ -37,7 +37,7 @@
         <el-button @click="resetFilters">重置</el-button>
       </div>
       
-      <div v-if="(userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === selectedCompanyName || store.state.user.companyname === selectedCompanyName"  class="button-group">
+      <div v-if="(userType === 'user' && store.state.user.role === '超级管理员') ||(userType === 'company' && store.state.user.username === selectedCompanyName )||(userType === 'user' && store.state.user.companyname === selectedCompanyName)"  class="button-group">
         <el-button type="success" @click="addUser">新增</el-button>
         <el-button type="danger" @click="deleteSelectedUsers">删除</el-button>
         <el-button type="info">导入</el-button>
@@ -57,10 +57,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column v-if="(userType === 'user' && store.state.user.role === '超级管理员') || store.state.user.username === selectedCompanyName || store.state.user.companyname === selectedCompanyName" label="操作">
+        <el-table-column v-if="(userType === 'user' && store.state.user.role === '超级管理员') ||(userType === 'company' && store.state.user.username === selectedCompanyName )||(userType === 'user' && store.state.user.companyname === selectedCompanyName)" label="操作">
           <template v-slot="scope">
-            <el-button @click="editUser(scope.row)" type="text" size="small">修改</el-button>
-            <el-button @click="deleteUser(scope.row.userId)" type="text" size="small">删除</el-button>
+            <el-button v-if="(userType === 'user' && store.state.user.userrealname !== scope.row.username && (store.state.user.role === '超级管理员' || (store.state.user.role !== '超级管理员' && scope.row.role !== '超级管理员'))) || (userType === 'company' && scope.row.role !== '超级管理员')"
+            @click="editUser(scope.row)" type="text" size="small">修改</el-button>
+            <el-button v-if="(userType === 'user' && store.state.user.userrealname !== scope.row.username && (store.state.user.role === '超级管理员' || (store.state.user.role !== '超级管理员' && scope.row.role !== '超级管理员'))) || (userType === 'company' && scope.row.role !== '超级管理员')"
+            @click="deleteUser(scope.row.userId)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -324,13 +326,15 @@ export default {
     };
 
     const pullPage = (page, starttime = '', endtime = '') => {
-      
+      let companyname = null;
+      if(selectedCompanyName.value === null || selectedCompanyName.value === '测盟会' || selectedCompanyName.value === '') companyname = '';
+      else companyname = selectedCompanyName.value;
       $.ajax({
         url: "http://127.0.0.1:3000/user/search/",
         data: {
           page,
           ...filters.value,
-          companyname: selectedCompanyName.value,
+          companyname: companyname,
           starttime,
           endtime
         },
