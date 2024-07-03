@@ -17,7 +17,6 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
     @Autowired
     private OrganizationMapper organizationMapper;
 
-
     @Override
     public Map<String, String> modifyorganization(Integer id,String uporganization, String organizationname, String charger, String telephone, String email, String status) {
         Map<String ,String> map =new HashMap<>();
@@ -54,11 +53,9 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
             return map;
         }
 
+        Organization new_organization =new Organization(id,uporganization,organizationname,charger,telephone,email,status,null);
 
-
-        Organization new_organization =new Organization(null,uporganization,organizationname,charger,telephone,email,status,null);
         organizationMapper.updateById(new_organization);
-
         map.put("error_message","success");
         return map;
     }

@@ -219,7 +219,7 @@ export default {
     },
     submitForm() {
       if(this.userType === 'user' && this.store.state.user.role === '租户管理员') this.form.tenant = this.store.state.user.companyname;
-      if(this.userType === 'companyname') this.form.tenant = this.store.state.user.username;
+      if(this.userType === 'company') this.form.tenant = this.store.state.user.username;
       if (this.form.title && this.form.author && this.form.summary && this.form.tenant) {
         this.form.content = this.$refs.myQuillEditor.quill.root.innerHTML;
         $.ajax({

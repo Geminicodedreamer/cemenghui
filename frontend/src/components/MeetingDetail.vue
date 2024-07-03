@@ -65,7 +65,8 @@ export default {
       handler(newVal) {
         this.meetingForm = { ...newVal };
         if (this.quillEditorRef && this.quillEditorRef.root) {
-          this.setEditorContent(newVal.content);
+          if(newVal.content === "<p><br></p>") this.setEditorContent("无");
+          else this.setEditorContent(newVal.content);
         }
       },
       deep: true,

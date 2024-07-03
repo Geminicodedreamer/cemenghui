@@ -100,7 +100,7 @@ export default {
             Authorization: "Bearer " + this.store.state.user.token,
           },
           success: (response) => {
-            console.log('hhh');
+            console.error(response);
             if (response.error_message === 'success') {
               ElMessage.success('表单提交成功');
               this.internalDialogVisible = false;

@@ -276,6 +276,7 @@ export default {
                             type: 'success',
                             duration: 2000
                         });
+                        fetchMeetings();
                     } else {
                         console.error('Error message from server:', resp.error_message);
                         ElMessage.error('发生错误: ' + resp.error_message);

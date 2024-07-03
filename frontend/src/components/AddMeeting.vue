@@ -183,7 +183,6 @@ export default {
             return isImage && isLt2M;
         },
         createMeeting() {
-
             if (!this.meetingName || !this.creator || !this.meetingCover || !this.startTime || !this.endTime) {
                 ElMessage.error('会议名称、会议封面、创建人、开始时间和结束时间不能为空！');
                 return;
@@ -218,6 +217,10 @@ export default {
             this.quillEditorRef = quill;
             this.editorReady = true;
             console.log('Editor is ready', quill);
+        },
+        onEditorFocus(quill){
+            this.quillEditorRef = quill;
+            this.meetingContent = this.quillEditorRef.root.innerHTML;
         }
     }
 };

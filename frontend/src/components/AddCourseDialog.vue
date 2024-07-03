@@ -144,7 +144,7 @@ export default {
       let companyname = null;
       const userType = localStorage.getItem("userType");
       if(userType === 'user') companyname = this.store.state.user.companyname;
-      else companyname = this.store.user.username;
+      else companyname = this.store.state.user.username;
         $.ajax({
           url: 'http://127.0.0.1:3000/lesson/add', // 后端添加课程信息的接口
           type: 'POST',
