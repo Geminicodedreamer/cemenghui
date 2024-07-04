@@ -2,7 +2,9 @@ package com.kob.backend.service.impl.company.curd;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.CompanyMapper;
+import com.kob.backend.mapper.OrganizationMapper;
 import com.kob.backend.pojo.Company;
+import com.kob.backend.pojo.Organization;
 import com.kob.backend.service.company.curd.ModifyCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.regex.Pattern;
 public class ModifyCompanyServiceImpl implements ModifyCompanyService {
     @Autowired
     private CompanyMapper companyMapper;
+
+    @Autowired
+    private OrganizationMapper organizationMapper;
 
     @Override
     public Map<String, String> modifycompany(Integer id, String companyname, String photo, String ownername, String telephone, String note) {
@@ -59,6 +64,12 @@ public class ModifyCompanyServiceImpl implements ModifyCompanyService {
 
         Company new_company = new Company(id , companyname , company.getPassword() , photo , ownername , telephone , company.getAdminname(), company.getSymbol() , note);
         companyMapper.updateById(new_company);
+
+        QueryWrapper<Organization> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("organizationname" , company.getCompanyname());
+        Organization organization = organizationMapper.selectOne(queryWrapper2);
+        Organization new_organization = new Organization(organization.getId() , organization.getUporganization() , companyname , organization.getCharger() , organization.getTelephone() , organization.getEmail() , organization.getStatus() , organization.getCreattime());
+        organizationMapper.updateById(new_organization);
 
         map.put("error_message" , "success");
         return map;

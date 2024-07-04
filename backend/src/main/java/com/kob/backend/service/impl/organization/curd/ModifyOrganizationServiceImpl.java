@@ -1,7 +1,9 @@
 package com.kob.backend.service.impl.organization.curd;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.kob.backend.mapper.CompanyMapper;
 import com.kob.backend.mapper.OrganizationMapper;
+import com.kob.backend.pojo.Company;
 import com.kob.backend.pojo.Organization;
 import com.kob.backend.service.organization.curd.ModifyOrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ import java.util.Objects;
 public class ModifyOrganizationServiceImpl implements ModifyOrganizationService {
     @Autowired
     private OrganizationMapper organizationMapper;
+
+    @Autowired
+    private CompanyMapper companyMapper;
 
     @Override
     public Map<String, String> modifyorganization(Integer id,String uporganization, String organizationname, String charger, String telephone, String email, String status) {
@@ -53,9 +58,20 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
             return map;
         }
 
+        if(uporganization.equals("测盟会"))
+        {
+            QueryWrapper<Company> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("companyname" , organization.getOrganizationname());
+            System.err.println(organization.getOrganizationname());
+            Company company = companyMapper.selectOne(queryWrapper2);
+            Company new_company = new Company(company.getId() , organizationname , company.getPassword() , company.getPhoto() , company.getOwnername() , company.getTelephone() , company.getAdminname() , company.getSymbol() , company.getNote());
+            companyMapper.updateById(new_company);
+        }
+
         Organization new_organization =new Organization(id,uporganization,organizationname,charger,telephone,email,status,null);
 
         organizationMapper.updateById(new_organization);
+
         map.put("error_message","success");
         return map;
     }
