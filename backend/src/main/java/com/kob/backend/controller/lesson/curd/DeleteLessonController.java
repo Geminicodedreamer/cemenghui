@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeleteLessonController {
     @Autowired
     private DeleteLessonService deleteLessonService;
-    @GetMapping("/lesson/del")
+    @GetMapping("/api/lesson/del")
     public JSONObject deletelesson(@RequestParam("id")String Id){
         Integer id=Integer.parseInt(Id);
         return deleteLessonService.deletelesson(id);

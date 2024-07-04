@@ -67,7 +67,7 @@
       <el-form-item label="用户头像" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -192,7 +192,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url; // URL from server response
@@ -255,7 +255,7 @@ export default {
         const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
         this.form.createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
         $.ajax({
-          url: 'http://127.0.0.1:3000/user/add/', // 后端添加用户信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/user/add/', // 后端添加用户信息的接口
           type: 'POST',
           data: {
             username: this.form.username,

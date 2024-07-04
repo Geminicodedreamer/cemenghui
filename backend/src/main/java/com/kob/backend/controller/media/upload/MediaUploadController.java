@@ -21,7 +21,7 @@ public class MediaUploadController {
     MediaUpload mediaUpload;
     private static final Logger logger = LoggerFactory.getLogger(MediaUploadController.class);
 
-    @PostMapping("/upload")
+    @PostMapping("/api/upload")
     public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, String> response = new HashMap<>();
         try {

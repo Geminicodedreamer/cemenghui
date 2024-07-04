@@ -13,7 +13,7 @@ public class ModifyCompanyController {
     @Autowired
     private ModifyCompanyService modifyCompanyService;
 
-    @PostMapping("/company/modify")
+    @PostMapping("/api/company/modify")
     public Map<String , String> modifycompany(@RequestParam Map<String , String> map)
     {
         Integer companyId = Integer.parseInt(map.get("companyid"));
@@ -25,7 +25,7 @@ public class ModifyCompanyController {
         return modifyCompanyService.modifycompany( companyId ,companyname, photo, ownername, telephone, note);
     }
 
-    @PostMapping("/company/modifyadmin")
+    @PostMapping("/api/company/modifyadmin")
     public Map<String, String> modifyAdmin(@RequestParam Integer companyid, @RequestParam String adminname) {
         return modifyCompanyService.modifyAdmin(companyid, adminname);
     }

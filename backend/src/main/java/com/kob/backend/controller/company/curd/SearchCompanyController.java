@@ -14,7 +14,7 @@ public class SearchCompanyController {
     @Autowired
     private SearchCompanyService searchCompanyService;
 
-    @GetMapping("/company/search")
+    @GetMapping("/api/company/search")
     public JSONObject searchcompany(@RequestParam Map<String , String> map)
     {
         Integer page = Integer.parseInt(map.get("page"));

@@ -12,7 +12,7 @@ public class DeleteCompanyController {
     @Autowired
     private DeleteCompanyService deleteCompanyService;
 
-    @GetMapping("/company/del")
+    @GetMapping("/api/company/del")
     public JSONObject deletecompany(@RequestParam("id")String Id)
     {
         Integer id = Integer.parseInt(Id);

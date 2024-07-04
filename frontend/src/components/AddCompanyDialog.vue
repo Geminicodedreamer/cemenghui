@@ -7,7 +7,7 @@
       <el-form-item label="租户图标" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -144,7 +144,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url; // URL from server response
@@ -199,7 +199,7 @@ export default {
       if (this.form.companyname && this.form.ownername && this.form.telephone && this.form.adminname) {
         this.form.note = this.$refs.myQuillEditor.quill.root.innerHTML;
         $.ajax({
-          url: 'http://127.0.0.1:3000/company/add/', // 后端添加公司信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/company/add/', // 后端添加公司信息的接口
           type: 'POST',
           data: {
             companyname: this.form.companyname,
@@ -225,7 +225,7 @@ export default {
               const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
               const createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
               $.ajax({
-                url: 'http://127.0.0.1:3000/organization/add',
+                url: 'https://app6457.acapp.acwing.com.cn/api/organization/add',
                 type: 'POST',
                 data: {
                   uporganization: '测盟会',

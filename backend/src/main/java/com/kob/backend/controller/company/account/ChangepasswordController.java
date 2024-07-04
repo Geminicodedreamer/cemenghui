@@ -14,7 +14,7 @@ public class ChangepasswordController {
     @Autowired
     private ChangepasswordService changepasswordService;
 
-    @PostMapping("/company/password")
+    @PostMapping("/api/company/password")
     public Map<String , String> changepassword(@RequestParam Map<String , String> map)
     {
         Integer id = Integer.parseInt(map.get("id"));

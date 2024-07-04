@@ -13,7 +13,7 @@ public class ChangePasswordController {
     @Autowired
     private ChangePasswordService changePasswordService;
 
-    @PostMapping("/user/password")
+    @PostMapping("/api/user/password")
     public Map<String , String> changepassword(@RequestParam Map<String , String> map)
     {
         System.err.println(map);

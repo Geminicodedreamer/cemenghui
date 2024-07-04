@@ -153,7 +153,7 @@ export default {
         const fetchMeetings = () => {
 			console.log("dsfasasdasd")
             $.ajax({
-                url: 'http://127.0.0.1:3000/meeting/list',
+                url: 'https://app6457.acapp.acwing.com.cn/api/meeting/list',
                 type: 'GET',
                 headers: {
                     Authorization: `Bearer ${store.state.user.token}`,
@@ -190,7 +190,7 @@ export default {
         const deleteMeeting = (id) => {
             ElMessageBox.confirm('是否删除').then(() =>{
             $.ajax({
-                url: `http://127.0.0.1:3000/meeting/del`,
+                url: `https://app6457.acapp.acwing.com.cn/api/meeting/del`,
                 type: "GET",
                 data: { meetingid: id },
                 headers: {
@@ -249,7 +249,7 @@ export default {
             });
         
             $.ajax({
-                url: 'http://127.0.0.1:3000/meeting/add/',  // 确保路径正确
+                url: 'https://app6457.acapp.acwing.com.cn/api/meeting/add/',  // 确保路径正确
                 type: 'POST',
                 headers: {
                     Authorization: `Bearer ${store.state.user.token}`,
@@ -299,7 +299,7 @@ export default {
             console.error(updatedMeeting);
             
             $.ajax({
-                url: `http://127.0.0.1:3000/meeting/modify`,
+                url: `https://app6457.acapp.acwing.com.cn/api/meeting/modify`,
                 type: 'POST',
                 headers: {
                     Authorization: `Bearer ${store.state.user.token}`,

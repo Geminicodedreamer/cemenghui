@@ -13,7 +13,7 @@ public class ModifyMeetingController {
     @Autowired
     private ModifyMeetingService modifyMeetingService;
 
-    @PostMapping("/meeting/modify")
+    @PostMapping("/api/meeting/modify")
     public Map<String, String> modifymeeting(@RequestParam Map<String, String> map)
     {
         Integer meetingid = Integer.valueOf(map.get("id"));

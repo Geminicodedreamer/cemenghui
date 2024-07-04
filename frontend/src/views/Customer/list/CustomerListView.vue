@@ -181,7 +181,7 @@ export default {
 
     const fetchCompanies = () => {
       return $.ajax({
-        url: "http://127.0.0.1:3000/company/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/company/list",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token,
@@ -191,7 +191,7 @@ export default {
 
     const fetchOrganizations = () => {
       return $.ajax({
-        url: "http://127.0.0.1:3000/organization/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/organization/list",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token,
@@ -242,7 +242,7 @@ export default {
         }).then(() => {
           const deletePromises = selectedUsers.value.map(user => {
             return $.ajax({
-              url: `http://127.0.0.1:3000/user/del`,
+              url: `https://app6457.acapp.acwing.com.cn/api/user/del`,
               type: "get",
               data: { id: user.userId },
               headers: {
@@ -330,7 +330,7 @@ export default {
       if(selectedCompanyName.value === null || selectedCompanyName.value === '测盟会' || selectedCompanyName.value === '') companyname = '';
       else companyname = selectedCompanyName.value;
       $.ajax({
-        url: "http://127.0.0.1:3000/user/search/",
+        url: "https://app6457.acapp.acwing.com.cn/api/user/search/",
         data: {
           page,
           ...filters.value,
@@ -366,7 +366,7 @@ export default {
        ElMessageBox.confirm('确定删除?')
           .then(() => {
               $.ajax({
-                url: `http://127.0.0.1:3000/user/del`,
+                url: `https://app6457.acapp.acwing.com.cn/api/user/del`,
                 type: "get",
                 data:
                 {
@@ -394,7 +394,7 @@ export default {
 
     const exportUsers = () => {
       $.ajax({
-        url: 'http://127.0.0.1:3000/user/list/',
+        url: 'https://app6457.acapp.acwing.com.cn/api/user/list/',
         type: 'GET',
         headers: {
           Authorization: 'Bearer ' + store.state.user.token,

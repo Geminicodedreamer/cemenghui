@@ -164,7 +164,7 @@ export default {
     const pullPage = (page) => {
       current_page = page;
       $.ajax({
-        url: 'http://127.0.0.1:3000/news/search/',
+        url: 'https://app6457.acapp.acwing.com.cn/api/news/search/',
         data: {
           page: page.toString(), // 确保 page 参数为字符串形式的整数
           title: filters.value.title,
@@ -211,7 +211,7 @@ export default {
         .then(() => {
           let deletePromises = selectedNewsIds.value.map((newsid) => {
             return $.ajax({
-              url: 'http://127.0.0.1:3000/news/del/',
+              url: 'https://app6457.acapp.acwing.com.cn/api/news/del/',
               data: { id: newsid },
               type: 'get',
               headers: {
@@ -246,7 +246,7 @@ export default {
 
     const exportNewss = () => {
       $.ajax({
-        url: 'http://127.0.0.1:3000/news/list/',
+        url: 'https://app6457.acapp.acwing.com.cn/api/news/list/',
         type: 'GET',
         headers: {
           Authorization: 'Bearer ' + store.state.user.token,
@@ -300,7 +300,7 @@ export default {
       ElMessageBox.confirm('确定删除?')
         .then(() => {
           $.ajax({
-            url: 'http://127.0.0.1:3000/news/del/',
+            url: 'https://app6457.acapp.acwing.com.cn/api/news/del/',
             data: { id },
             type: 'get',
             headers: {

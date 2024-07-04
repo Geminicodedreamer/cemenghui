@@ -7,7 +7,7 @@
       <el-form-item label="新闻图片路径" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -128,7 +128,7 @@ export default {
 
     const fetchTenants = () => {
       $.ajax({
-        url: 'http://127.0.0.1:3000/company/list/',
+        url: 'https://app6457.acapp.acwing.com.cn/api/company/list/',
         type: 'GET',
         headers: {
           Authorization: 'Bearer ' + store.state.user.token,
@@ -166,7 +166,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url; // URL from server response
@@ -223,7 +223,7 @@ export default {
       if (this.form.title && this.form.author && this.form.summary && this.form.tenant) {
         this.form.content = this.$refs.myQuillEditor.quill.root.innerHTML;
         $.ajax({
-          url: 'http://127.0.0.1:3000/news/add/', // 后端添加资讯信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/news/add/', // 后端添加资讯信息的接口
           type: 'POST',
           data: {
             title: this.form.title,

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeleteUserController {
     @Autowired
     private DeleteUserService deleteUserService;
-    @GetMapping("/user/del")
+    @GetMapping("/api/user/del")
     public JSONObject deleteuser(@RequestParam("id")String Id)
     {
         Integer id = Integer.parseInt(Id);

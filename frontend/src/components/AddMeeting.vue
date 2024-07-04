@@ -19,7 +19,7 @@
                         <label for="meetingCover">会议封面</label>
                         <el-upload
                           class="avatar-uploader"
-                          action="http://127.0.0.1:3000/upload"
+                          action="https://app6457.acapp.acwing.com.cn/api/upload"
                           :show-file-list="false"
                           :on-success="handleCoverSuccess"
                           :before-upload="beforeCoverUpload">
@@ -137,7 +137,7 @@ export default {
             const formData = new FormData();
             formData.append('file', file);
 
-            axios.post('http://127.0.0.1:3000/upload', formData)
+            axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
                 .then(response => {
                     const url = response.data.url; // 从服务器响应中获取图片 URL
                     const range = this.quillEditorRef.getSelection();

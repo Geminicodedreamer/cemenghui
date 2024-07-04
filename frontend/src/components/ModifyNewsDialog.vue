@@ -7,7 +7,7 @@
       <el-form-item label="新闻图片" class="form-item">
        <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -173,7 +173,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url; // URL from server response
@@ -239,7 +239,7 @@ export default {
 		console.log('提交的表单数据:', this.form); // 检查表单数据
 
         $.ajax({
-          url: 'http://127.0.0.1:3000/news/modify', // 后端修改资讯信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/news/modify', // 后端修改资讯信息的接口
           type: 'POST',
           data: {
             newsid: this.form.newsid,

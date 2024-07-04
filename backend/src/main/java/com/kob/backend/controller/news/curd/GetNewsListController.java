@@ -15,7 +15,7 @@ public class GetNewsListController {
     @Autowired
     private GetNewsListService getNewsListService;
 
-    @GetMapping("/news/list")
+    @GetMapping("/api/news/list")
     public JSONObject getList(){
 //        JSONObject ob=getNewsListService.getnewslist();
 //        System.out.println("ob:"+ob);

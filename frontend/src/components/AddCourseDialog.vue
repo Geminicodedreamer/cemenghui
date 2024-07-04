@@ -16,7 +16,7 @@
       <el-form-item label="课程封面" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :on-error="handleUploadError"
@@ -37,7 +37,7 @@
       <el-form-item label="课程视频" class="form-item">
         <el-upload
           class="video-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleVideoSuccess"
           :on-error="handleUploadError"
@@ -146,7 +146,7 @@ export default {
       if(userType === 'user') companyname = this.store.state.user.companyname;
       else companyname = this.store.state.user.username;
         $.ajax({
-          url: 'http://127.0.0.1:3000/lesson/add', // 后端添加课程信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/lesson/add', // 后端添加课程信息的接口
           type: 'POST',
           data: {
             id: this.form.id,

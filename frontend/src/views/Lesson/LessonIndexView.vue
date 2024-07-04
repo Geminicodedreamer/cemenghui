@@ -97,7 +97,7 @@ export default {
 
     const fetchLessonList = () => {
       $.ajax({
-        url: "http://127.0.0.1:3000/lesson/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/lesson/list",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token,
@@ -130,7 +130,7 @@ export default {
         .then(() => {
           let deletePromises = selectedLessons.value.map(id => {
             return $.ajax({
-              url: "http://127.0.0.1:3000/lesson/del/",
+              url: "https://app6457.acapp.acwing.com.cn/api/lesson/del/",
               data: { id: id },
               type: "get",
               headers: {
@@ -190,7 +190,7 @@ export default {
     const del = id => {
       ElMessageBox.confirm('是否删除').then(() =>{
       $.ajax({
-        url: `http://127.0.0.1:3000/lesson/del`,
+        url: `https://app6457.acapp.acwing.com.cn/api/lesson/del`,
         data: { id },
         type: "get",
         headers: {

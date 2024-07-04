@@ -14,7 +14,7 @@ public class ModifyUserController {
     @Autowired
     private ModifyUserService modifyUserService;
 
-    @PostMapping("/user/modify")
+    @PostMapping("/api/user/modify")
     public Map<String , String> modifyuser(@RequestParam Map<String , String> map)
     {
         Integer id = Integer.parseInt(map.get("userid"));

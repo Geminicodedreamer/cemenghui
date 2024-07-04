@@ -37,7 +37,7 @@
               <el-form-item label="公司图片" class="form-item">
                 <el-upload
                   class="avatar-uploader"
-                  action="http://127.0.0.1:3000/upload"
+                  action="https://app6457.acapp.acwing.com.cn/api/upload"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
@@ -125,7 +125,7 @@ export default {
       const token = store.state.user.token;
       if (token) {
         $.ajax({
-          url: "http://127.0.0.1:3000/company/account/info/",
+          url: "https://app6457.acapp.acwing.com.cn/api/company/account/info/",
           type: "get",
           headers: {
             Authorization: 'Bearer ' + store.state.user.token,
@@ -147,7 +147,7 @@ export default {
 
     const submitForm = () => {
       $.ajax({
-        url: 'http://127.0.0.1:3000/company/modify',
+        url: 'https://app6457.acapp.acwing.com.cn/api/company/modify',
         type: 'POST',
         data: {
           companyid: form.value.id,
@@ -177,7 +177,7 @@ export default {
 
     const submitPasswordForm = () => {
       $.ajax({
-        url: 'http://127.0.0.1:3000/company/password',
+        url: 'https://app6457.acapp.acwing.com.cn/api/company/password',
         type: 'POST',
         data: {
           id: company.value.id,

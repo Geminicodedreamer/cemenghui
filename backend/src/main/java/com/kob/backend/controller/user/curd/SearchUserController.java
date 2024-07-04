@@ -14,7 +14,7 @@ public class SearchUserController {
     @Autowired
     private SearchUserService searchUserService;
 
-    @GetMapping("/user/search")
+    @GetMapping("/api/user/search")
     public JSONObject searchuser(@RequestParam("page")Integer page,@RequestParam Map<String , String> map)
     {
         System.err.println(map);

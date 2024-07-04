@@ -13,7 +13,7 @@ public class AddMeetingController {
     @Autowired
     private AddMeetingService addMeetingService;
 
-    @PostMapping("/meeting/add/")
+    @PostMapping("/api/meeting/add/")
     public Map<String, String> addMeeting(@RequestParam Map<String, String> map) {
         String meetingname = map.get("meetingname");
         String creator = map.get("creator");

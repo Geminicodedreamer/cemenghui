@@ -68,7 +68,7 @@ export default {
         return;
       }
       wx.request({
-        url: 'http://127.0.0.1:3000/lesson/list', // 替换为你的实际接口地址
+        url: 'https://app6457.acapp.acwing.com.cn/api/lesson/list', // 替换为你的实际接口地址
         method: 'GET',
         header: {
           'Authorization': `Bearer ${token}` // 添加Token到请求头

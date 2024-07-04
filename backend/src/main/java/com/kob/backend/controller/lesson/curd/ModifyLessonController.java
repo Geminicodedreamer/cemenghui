@@ -14,7 +14,7 @@ public class ModifyLessonController {
     @Autowired
     private ModifyLessonService modifyLessonService;
 
-    @PostMapping("/lesson/modify")
+    @PostMapping("/api/lesson/modify")
     public Map<String,String> modifylesson(@RequestParam Map<String,String> map){
         Integer id=Integer.parseInt(map.get("id"));
         String  lessonname=map.get("lessonname");

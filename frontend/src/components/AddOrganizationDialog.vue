@@ -89,7 +89,7 @@ export default {
         if (valid) {
           this.form.creattime = new Date().toISOString().slice(0, 19).replace('T', ' ');
           $.ajax({
-            url: 'http://127.0.0.1:3000/organization/add',
+            url: 'https://app6457.acapp.acwing.com.cn/api/organization/add',
             type: 'POST',
             data: this.form,
             headers: {
@@ -103,7 +103,7 @@ export default {
                 if(this.form.uporganization === "测盟会")
                 {
                   $.ajax({
-                    url: 'http://127.0.0.1:3000/company/add/', // 后端添加公司信息的接口
+                    url: 'https://app6457.acapp.acwing.com.cn/api/company/add/', // 后端添加公司信息的接口
                     type: 'POST',
                     data: {
                       companyname: this.form.organizationname,

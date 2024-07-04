@@ -11,7 +11,7 @@ public class GetMeetingListController {
     @Autowired
     private GetMeetingListService getMeetingListService;
 
-    @GetMapping("/meeting/list")
+    @GetMapping("/api/meeting/list")
     public JSONObject getList() {
         return getMeetingListService.getmeetinglist();
     }

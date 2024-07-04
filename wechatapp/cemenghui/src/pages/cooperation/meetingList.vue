@@ -73,7 +73,7 @@ export default {
       if (userType === "tourist") return;
 
       wx.request({
-        url: "http://127.0.0.1:3000/meeting/list/",
+        url: "https://app6457.acapp.acwing.com.cn/api/meeting/list/",
         method: "GET",
         header: {
           Authorization: `Bearer ${wx.getStorageSync("jwt_token")}`

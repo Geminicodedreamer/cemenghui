@@ -15,7 +15,7 @@ public class AddOrganizationController {
     @Autowired
     private AddOrganizationService addOrganizationService;
 
-    @PostMapping("/organization/add")
+    @PostMapping("/api/organization/add")
     public Map<String, String> addOrganization(@RequestParam Map<String, String> map) {
 
             String uporganization = map.get("uporganization");

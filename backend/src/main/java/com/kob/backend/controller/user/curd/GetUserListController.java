@@ -14,7 +14,7 @@ public class GetUserListController {
     @Autowired
     private GetUserListService getUserListService;
 
-    @GetMapping("/user/list")
+    @GetMapping("/api/user/list")
     public JSONObject getList(@RequestParam Map<String , String> map)
     {
         return getUserListService.getuserlist();

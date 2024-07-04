@@ -14,7 +14,7 @@ public class GetCompanyListController {
     @Autowired
     private GetCompanyListService getCompanyListService;
 
-    @GetMapping("/company/list")
+    @GetMapping("/api/company/list")
     public JSONObject getList()
     {
         return getCompanyListService.getcompanylist();

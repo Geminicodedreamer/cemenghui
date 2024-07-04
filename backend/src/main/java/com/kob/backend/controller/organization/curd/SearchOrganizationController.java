@@ -16,7 +16,7 @@ public class SearchOrganizationController {
     @Autowired
     private SearchOrganizationService searchOrganizationService;
 
-    @GetMapping("/organization/search")
+    @GetMapping("/api/organization/search")
     public JSONObject searchorganization(@RequestParam Map<String,String> map)
     {
         Integer page =Integer.parseInt(map.get("page"));

@@ -12,7 +12,7 @@ public class DeleteMeetingController {
     @Autowired
     DeleteMeetingService deleteMeetingService;
 
-    @GetMapping("/meeting/del")
+    @GetMapping("/api/meeting/del")
     public JSONObject deletemeeting(@RequestParam("meetingid")String meetingId)
     {
         Integer meetingid = Integer.parseInt(meetingId);

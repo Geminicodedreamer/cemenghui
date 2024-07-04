@@ -85,7 +85,7 @@ export default {
     submitForm() {
       if (this.form.organizationname && this.form.id && this.form.uporganization && this.form.telephone && this.form.charger && this.form.email && this.form.status) {
         $.ajax({
-          url: 'http://127.0.0.1:3000/organization/modify', 
+          url: 'https://app6457.acapp.acwing.com.cn/api/organization/modify', 
           type: 'POST',
           data: {
             id: this.form.id,

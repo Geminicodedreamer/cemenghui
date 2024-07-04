@@ -13,7 +13,7 @@ public class AddNewsController {
     @Autowired
     private AddNewsService addNewsService;
 
-    @PostMapping("/news/add")
+    @PostMapping("/api/news/add")
     public Map<String,String> addNews(@RequestParam Map<String , String> map){
         //System.out.println(map);
         String title=map.get("title");

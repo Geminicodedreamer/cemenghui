@@ -14,7 +14,7 @@ public class SearchNewsController {
     @Autowired
     private SearchNewsService searchNewsService;
 
-    @GetMapping("/news/search")
+    @GetMapping("/api/news/search")
     public JSONObject searchnews(@RequestParam Map<String, String> map) {
         Integer page = map.get("page") != null ? Integer.parseInt(map.get("page")) : 1;
         String title = map.get("title");

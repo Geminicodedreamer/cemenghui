@@ -95,7 +95,7 @@ export default {
       }
 
       wx.request({
-        url: 'http://localhost:3000/news/list',
+        url: 'https://app6457.acapp.acwing.com.cn/api/news/list',
         method: 'GET',
         header: {
           Authorization: `Bearer ${token}`

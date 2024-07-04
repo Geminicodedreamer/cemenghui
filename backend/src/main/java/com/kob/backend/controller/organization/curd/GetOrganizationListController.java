@@ -11,7 +11,7 @@ public class GetOrganizationListController {
     @Autowired
     private GetOrganizationListService getOrganizationListService;
 
-    @GetMapping("/organization/list")
+    @GetMapping("/api/organization/list")
 
     public JSONObject getList(){
 

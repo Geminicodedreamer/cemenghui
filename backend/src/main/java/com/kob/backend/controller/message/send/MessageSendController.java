@@ -14,7 +14,7 @@ public class MessageSendController {
     @Autowired
     private MessageSendService messageSendService;
 
-    @PostMapping("/send/message")
+    @PostMapping("/api/send/message")
     public Map<String , String> sendmessage(@RequestParam String telephone) throws Exception {
         return messageSendService.sendmessage(telephone);
     }

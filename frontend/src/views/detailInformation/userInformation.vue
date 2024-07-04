@@ -116,7 +116,7 @@ export default {
     const fetchUserData = () => {
       const token = store.state.user.token;
       if (token) {
-        axios.get('http://127.0.0.1:3000/user/account/info/', {
+        axios.get('https://app6457.acapp.acwing.com.cn/api/user/account/info/', {
           headers: {
             Authorization: 'Bearer ' + token,
           },
@@ -137,7 +137,7 @@ export default {
 
     const submitForm = () => {
        $.ajax({
-          url: 'http://127.0.0.1:3000/user/modify',
+          url: 'https://app6457.acapp.acwing.com.cn/api/user/modify',
           type: 'POST',
           data: {
             userid: form.value.id,
@@ -173,7 +173,7 @@ export default {
     const submitPasswordForm = () => {
 
       $.ajax({
-          url: 'http://127.0.0.1:3000/user/password',
+          url: 'https://app6457.acapp.acwing.com.cn/api/user/password',
           type: 'POST',
           data: {
             id: user.value.id,

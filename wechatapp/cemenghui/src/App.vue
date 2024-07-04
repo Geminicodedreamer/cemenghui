@@ -23,7 +23,7 @@ export default {
       const token = wx.getStorageSync('jwt_token');
       if (token) {
         wx.request({
-          url: 'http://127.0.0.1:3000/user/account/info/',
+          url: 'https://app6457.acapp.acwing.com.cn/api/user/account/info/',
           method: 'GET',
           header: {
             Authorization: `Bearer ${token}`

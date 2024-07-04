@@ -44,7 +44,7 @@ export default {
     actions: {
         login(context, data) {
             $.ajax({
-                url: "http://127.0.0.1:3000/company/account/token/",
+                url: "https://app6457.acapp.acwing.com.cn/api/company/account/token/",
                 type: "post",
                 data: {
                     companyname: data.companyname,
@@ -67,7 +67,7 @@ export default {
         },
         user_login(context, data) {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/account/token/",
+                url: "https://app6457.acapp.acwing.com.cn/api/user/account/token/",
                 type: "post",
                 data: {
                     username: data.username,
@@ -98,7 +98,7 @@ export default {
 
             if (userType === "company") {
                 $.ajax({
-                    url: "http://127.0.0.1:3000/company/account/info/",
+                    url: "https://app6457.acapp.acwing.com.cn/api/company/account/info/",
                     type: "get",
                     headers: {
                         Authorization: "Bearer " + context.state.token,
@@ -121,7 +121,7 @@ export default {
             }
             else if (userType === "user") {
                 $.ajax({
-                    url: "http://127.0.0.1:3000/user/account/info/",
+                    url: "https://app6457.acapp.acwing.com.cn/api/user/account/info/",
                     type: "get",
                     headers: {
                         Authorization: "Bearer " + context.state.token,

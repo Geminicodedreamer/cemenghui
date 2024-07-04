@@ -64,7 +64,7 @@
       <el-form-item label="用户图像" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -212,7 +212,7 @@ export default {
   methods: {
     fetchOrganizations() {
       return $.ajax({
-        url: "http://127.0.0.1:3000/organization/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/organization/list",
         type: "get",
         headers: {
           Authorization: "Bearer " + this.store.state.user.token,
@@ -231,7 +231,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url;
@@ -296,7 +296,7 @@ export default {
         this.form.note = this.$refs.myQuillEditor.quill.root.innerHTML;
 
         $.ajax({
-          url: 'http://127.0.0.1:3000/user/modify',
+          url: 'https://app6457.acapp.acwing.com.cn/api/user/modify',
           type: 'POST',
           data: {
             userid: this.form.userid,

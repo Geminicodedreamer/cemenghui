@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GetLessonListController {
     @Autowired
     private GetLessonListService getLessonListService;
-    @GetMapping("/lesson/list")
+    @GetMapping("/api/lesson/list")
     public JSONObject getList()
     {
         return getLessonListService.getlessonlist();

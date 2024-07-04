@@ -7,7 +7,7 @@
       <el-form-item label="租户图标" class="form-item">
        <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -171,7 +171,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           const range = this.$refs.myQuillEditor.quill.getSelection();
           const url = response.data.url; // URL from server response
@@ -236,7 +236,7 @@ export default {
         this.form.note = this.$refs.myQuillEditor.quill.root.innerHTML;
 
         $.ajax({
-          url: 'http://127.0.0.1:3000/company/modify', // 后端修改公司信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/company/modify', // 后端修改公司信息的接口
           type: 'POST',
           data: {
             companyid: this.form.companyId,

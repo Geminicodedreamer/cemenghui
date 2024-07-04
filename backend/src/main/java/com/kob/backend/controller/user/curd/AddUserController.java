@@ -13,7 +13,7 @@ public class AddUserController {
     @Autowired
     private AddUserService addUserService;
 
-    @PostMapping("/user/add")
+    @PostMapping("/api/user/add")
     public Map<String , String> addUser(@RequestParam Map<String , String> map)
     {
         String username = map.get("username");

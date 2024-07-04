@@ -14,7 +14,7 @@ public class ModifyNewsController {
     @Autowired
     private ModifyNewsService modifyNewsService;
 
-    @PostMapping("/news/modify")
+    @PostMapping("/api/news/modify")
     public Map<String,String> modifynews(@RequestParam Map<String,String> map){
         System.out.println("Received parameters: " + map); // 调试输出
         Integer newsId=Integer.parseInt(map.get("newsid"));

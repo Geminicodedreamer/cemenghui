@@ -114,7 +114,7 @@ export default {
 
         const sendSMSCode = () => {
             $.ajax({
-                url: "http://127.0.0.1:3000/send/message",
+                url: "https://app6457.acapp.acwing.com.cn/api/send/message",
                 type: "post",
                 data: {
                     telephone:form.telephone,
@@ -205,7 +205,7 @@ export default {
                 if (valid) {
                     if(messagecode.value === form.textCode){
                         $.ajax({
-                            url: "http://127.0.0.1:3000/company/account/register/",
+                            url: "https://app6457.acapp.acwing.com.cn/api/company/account/register/",
                             type: "post",
                             data: {
                                 companyname: form.username,
@@ -230,7 +230,7 @@ export default {
                                                 const ss = String(currentDatetime.getSeconds()).padStart(2, '0');
                                                 const createtime = `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
                                                 $.ajax({
-                                                    url: 'http://127.0.0.1:3000/organization/add',
+                                                    url: 'https://app6457.acapp.acwing.com.cn/api/organization/add',
                                                     type: 'POST',
                                                         data: {
                                                         uporganization: '测盟会',

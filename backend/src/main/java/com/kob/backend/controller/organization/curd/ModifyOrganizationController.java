@@ -13,7 +13,7 @@ import java.util.Map;
 public class ModifyOrganizationController {
     @Autowired
     private ModifyOrganizationService modifyOrganizationService;
-    @PostMapping("/organization/modify")
+    @PostMapping("/api/organization/modify")
     private Map<String ,String > modifyorganization(@RequestParam Map<String ,String > map)
     {
         String organizationname =map.get("organizationname");

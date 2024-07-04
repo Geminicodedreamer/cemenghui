@@ -13,7 +13,7 @@ public class DeleteOrganizationController {
     @Autowired
     private DeleteOrganizationService deleteOrganizationService;
 
-    @GetMapping("/organization/del")
+    @GetMapping("/api/organization/del")
     public JSONObject deleteorganization(@RequestParam("id")String Id)
     {
         Integer id =Integer.parseInt(Id);

@@ -7,7 +7,7 @@
       <el-form-item label="课程图标" class="form-item">
         <el-upload
           class="avatar-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -45,7 +45,7 @@
       <el-form-item label="课程视频" class="form-item">
         <el-upload
           class="video-uploader"
-          action="http://127.0.0.1:3000/upload"
+          action="https://app6457.acapp.acwing.com.cn/api/upload"
           :show-file-list="false"
           :on-success="handleVideoSuccess"
           :before-upload="beforeVideoUpload">
@@ -156,7 +156,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
 
-      axios.post('http://127.0.0.1:3000/upload', formData)
+      axios.post('https://app6457.acapp.acwing.com.cn/api/upload', formData)
         .then(response => {
           this.form.photo = response.data.url;
         })
@@ -211,7 +211,7 @@ export default {
       if (this.form.lessonname && this.form.lessonauthor) {
         console.error(this.form);
         $.ajax({
-          url: 'http://127.0.0.1:3000/lesson/modify', // 后端修改公司信息的接口
+          url: 'https://app6457.acapp.acwing.com.cn/api/lesson/modify', // 后端修改公司信息的接口
           type: 'POST',
           data: {
             id: this.form.id,

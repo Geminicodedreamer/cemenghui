@@ -13,7 +13,7 @@ public class AddLessonController {
     @Autowired
     private AddLessonService addLessonService;
 
-    @PostMapping("/lesson/add")
+    @PostMapping("/api/lesson/add")
     public Map<String,String> addLesson(@RequestParam Map<String , String> map){
         Integer id= Integer.valueOf(map.get("id"));
         String lessonnname=map.get("lessonname");

@@ -93,7 +93,7 @@ export default {
     const selectcompany = ref(null);
     const fetchOrganizationList = () => {
       $.ajax({
-        url: "http://127.0.0.1:3000/organization/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/organization/list",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token,
@@ -123,7 +123,7 @@ export default {
       ElMessageBox.confirm('确定删除该部门?')
         .then(() => {
           $.ajax({
-            url: `http://127.0.0.1:3000/organization/del`,
+            url: `https://app6457.acapp.acwing.com.cn/api/organization/del`,
             type: "get",
             data: { id: organization.id },
             headers: {

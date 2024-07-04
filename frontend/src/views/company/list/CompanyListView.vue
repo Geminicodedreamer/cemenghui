@@ -186,7 +186,7 @@ export default {
     const pullPage = page => {
       current_page = page;
       $.ajax({
-        url: "http://127.0.0.1:3000/company/search/",
+        url: "https://app6457.acapp.acwing.com.cn/api/company/search/",
         data: {
           page,
           ...filters.value
@@ -239,7 +239,7 @@ export default {
         .then(() => {
           let deletePromises = selectedCompanies.value.map(companyId => {
             return $.ajax({
-              url: "http://127.0.0.1:3000/company/del/",
+              url: "https://app6457.acapp.acwing.com.cn/api/company/del/",
               data: { id: companyId },
               type: "get",
               headers: {
@@ -280,7 +280,7 @@ export default {
 
       const updatePromises = selectedCompanies.value.map(companyId => {
         return $.ajax({
-          url: "http://127.0.0.1:3000/company/modifyadmin/",
+          url: "https://app6457.acapp.acwing.com.cn/api/company/modifyadmin/",
           data: $.param({
             companyid: companyId,
             adminname: editAdminForm.value.adminname,
@@ -325,7 +325,7 @@ export default {
 
     const exportTenants = () => {
     $.ajax({
-        url: 'http://127.0.0.1:3000/company/list/',
+        url: 'https://app6457.acapp.acwing.com.cn/api/company/list/',
         type: 'GET',
         headers: {
           Authorization: 'Bearer ' + store.state.user.token,
@@ -379,7 +379,7 @@ export default {
           ElMessageBox.confirm('确定删除?')
           .then(() => {
             $.ajax({
-          url: "http://127.0.0.1:3000/company/del/",
+          url: "https://app6457.acapp.acwing.com.cn/api/company/del/",
           data: { id },
           type: "get", 
           headers: {

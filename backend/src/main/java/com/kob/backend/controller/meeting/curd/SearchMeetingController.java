@@ -15,7 +15,7 @@ public class SearchMeetingController {
     @Autowired
     private SearchMeetingService searchMeetingService;
 
-    @GetMapping("/meeting/search")
+    @GetMapping("/api/meeting/search")
     public JSONObject searchmeeting(@RequestParam Map<String, String> map)
     {
         Integer page = Integer.parseInt(map.get("page"));
