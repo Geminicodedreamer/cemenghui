@@ -77,7 +77,7 @@ const _sfc_main = {
         return;
       }
       common_vendor.wx$1.request({
-        url: "http://localhost:3000/news/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/news/list",
         method: "GET",
         header: {
           Authorization: `Bearer ${token}`
@@ -114,5 +114,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e5b8984c"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/news/news.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-e5b8984c"], ["__file", "C:/Users/Lenovo/Desktop/springboot/wechatapp/cemenghui/src/pages/news/news.vue"]]);
 wx.createPage(MiniProgramPage);

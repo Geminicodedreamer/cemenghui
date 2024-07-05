@@ -34,7 +34,7 @@ const _sfc_main = {
       const token = common_vendor.wx$1.getStorageSync("jwt_token");
       if (token) {
         common_vendor.wx$1.request({
-          url: "http://127.0.0.1:3000/user/account/info/",
+          url: "https://app6457.acapp.acwing.com.cn/api/user/account/info/",
           method: "GET",
           header: {
             Authorization: `Bearer ${token}`
@@ -65,7 +65,7 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {};
 }
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/Lenovo/Desktop/springboot/wechatapp/cemenghui/src/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   app.use(store_index.store);

@@ -34,7 +34,7 @@ const mutations = {
 const actions = {
   login({ commit }, data) {
     common_vendor.wx$1.request({
-      url: "http://127.0.0.1:3000/user/account/token/",
+      url: "https://app6457.acapp.acwing.com.cn/api/user/account/token/",
       method: "POST",
       data: `username=${data.username}&password=${data.password}`,
       header: {
@@ -63,7 +63,7 @@ const actions = {
   },
   getinfo({ commit, state: state2 }, data) {
     common_vendor.wx$1.request({
-      url: "http://127.0.0.1:3000/user/account/info/",
+      url: "https://app6457.acapp.acwing.com.cn/api/user/account/info/",
       method: "GET",
       header: {
         Authorization: `Bearer ${common_vendor.wx$1.getStorageSync("jwt_token")}`

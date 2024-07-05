@@ -29,6 +29,9 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
     @Autowired
     private MeetingMapper meetingMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public Map<String, String> modifyorganization(Integer id,String uporganization, String organizationname, String charger, String telephone, String email, String status) {
         Map<String ,String> map =new HashMap<>();
@@ -97,6 +100,15 @@ public class ModifyOrganizationServiceImpl implements ModifyOrganizationService 
             {
                 Lesson new_lesson = new Lesson(lesson.getId() , lesson.getLessonname() , lesson.getLessonintro() , lesson.getLessonauthor() , lesson.getPhoto() , lesson.getVideo() , organizationname);
                 lessonMapper.updateById(new_lesson);
+            }
+
+            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.eq("companyname" , organization.getOrganizationname());
+            List<User> user_list = userMapper.selectList(userQueryWrapper);
+            for(User user : user_list)
+            {
+                User new_user = new User(user.getUserid() , user.getUsername() , user.getNickname() , user.getPassword() , user.getPhoto() , user.getTelephone() , user.getApartmentname() , user.getGender() , user.getStatus() , user.getEmail() , user.getRole() , organizationname , user.getPost() , user.getNote() , user.getCreatetime());
+                userMapper.updateById(new_user);
             }
 
         }

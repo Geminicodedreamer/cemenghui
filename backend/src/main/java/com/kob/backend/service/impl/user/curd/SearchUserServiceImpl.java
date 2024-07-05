@@ -25,7 +25,7 @@ public class SearchUserServiceImpl implements SearchUserService {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if(companyname != null && !companyname.isEmpty())
         {
-            queryWrapper.like("companyname" , companyname);
+            queryWrapper.eq("companyname" , companyname).or().eq("apartmentname" , companyname);
         }
         if(username != null && !username.isEmpty())
         {

@@ -50,7 +50,7 @@ const _sfc_main = {
       if (userType === "tourist")
         return;
       common_vendor.wx$1.request({
-        url: "http://127.0.0.1:3000/meeting/list/",
+        url: "https://app6457.acapp.acwing.com.cn/api/meeting/list/",
         method: "GET",
         header: {
           Authorization: `Bearer ${common_vendor.wx$1.getStorageSync("jwt_token")}`
@@ -111,5 +111,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   });
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-5605a37e"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/cooperation/meetingList.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-5605a37e"], ["__file", "C:/Users/Lenovo/Desktop/springboot/wechatapp/cemenghui/src/pages/cooperation/meetingList.vue"]]);
 wx.createPage(MiniProgramPage);

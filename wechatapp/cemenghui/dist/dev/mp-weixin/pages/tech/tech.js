@@ -40,7 +40,7 @@ const _sfc_main = {
     },
     getCourses(token) {
       common_vendor.wx$1.request({
-        url: "http://127.0.0.1:3000/lesson/list",
+        url: "https://app6457.acapp.acwing.com.cn/api/lesson/list",
         // 替换为你的实际接口地址
         method: "GET",
         header: {
@@ -115,5 +115,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-c9ec16af"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/tech/tech.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-c9ec16af"], ["__file", "C:/Users/Lenovo/Desktop/springboot/wechatapp/cemenghui/src/pages/tech/tech.vue"]]);
 wx.createPage(MiniProgramPage);

@@ -80,5 +80,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     s: common_vendor.o((...args) => $options.submitReceipt && $options.submitReceipt(...args))
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-d086d0e7"], ["__file", "C:/Users/DELL/Desktop/springboot/wechatapp/cemenghui/src/pages/cooperation/receipt.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-d086d0e7"], ["__file", "C:/Users/Lenovo/Desktop/springboot/wechatapp/cemenghui/src/pages/cooperation/receipt.vue"]]);
 wx.createPage(MiniProgramPage);
