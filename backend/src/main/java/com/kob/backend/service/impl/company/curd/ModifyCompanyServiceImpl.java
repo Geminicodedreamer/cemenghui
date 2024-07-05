@@ -1,10 +1,8 @@
 package com.kob.backend.service.impl.company.curd;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.kob.backend.mapper.CompanyMapper;
-import com.kob.backend.mapper.OrganizationMapper;
-import com.kob.backend.pojo.Company;
-import com.kob.backend.pojo.Organization;
+import com.kob.backend.mapper.*;
+import com.kob.backend.pojo.*;
 import com.kob.backend.service.company.curd.ModifyCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,15 @@ public class ModifyCompanyServiceImpl implements ModifyCompanyService {
 
     @Autowired
     private OrganizationMapper organizationMapper;
+
+    @Autowired
+    private NewsMapper newsMapper;
+
+    @Autowired
+    private MeetingMapper meetingMapper;
+
+    @Autowired
+    private LessonMapper lessonMapper;
 
     @Override
     public Map<String, String> modifycompany(Integer id, String companyname, String photo, String ownername, String telephone, String note) {
@@ -70,6 +77,32 @@ public class ModifyCompanyServiceImpl implements ModifyCompanyService {
         Organization organization = organizationMapper.selectOne(queryWrapper2);
         Organization new_organization = new Organization(organization.getId() , organization.getUporganization() , companyname , organization.getCharger() , organization.getTelephone() , organization.getEmail() , organization.getStatus() , organization.getCreattime());
         organizationMapper.updateById(new_organization);
+
+        QueryWrapper<News> newsQueryWrapper = new QueryWrapper<>();
+        newsQueryWrapper.eq("tenant" , company.getCompanyname());
+        List<News> news_list = newsMapper.selectList(newsQueryWrapper);
+        for(News news : news_list){
+            News new_news = new News(news.getNewsid() , news.getTitle(), news.getSummary() , news.getImagePath() , news.getContent() , news.getAuthor() , companyname);
+            newsMapper.updateById(new_news);
+        }
+
+        QueryWrapper<Meeting> meetingQueryWrapper = new QueryWrapper<>();
+        meetingQueryWrapper.eq("companyname" , company.getCompanyname());
+        List<Meeting> meeting_list = meetingMapper.selectList(meetingQueryWrapper);
+        for(Meeting meeting : meeting_list)
+        {
+            Meeting new_meeting = new Meeting(meeting.getMeetingid() , meeting.getMeetingname() , meeting.getCreator() , meeting.getContent() , meeting.getStarttime() , meeting.getEndtime() , meeting.getPhoto() , companyname);
+            meetingMapper.updateById(new_meeting);
+        }
+
+        QueryWrapper<Lesson> lessonQueryWrapper = new QueryWrapper<>();
+        lessonQueryWrapper.eq("companyname" , company.getCompanyname());
+        List<Lesson> lesson_list = lessonMapper.selectList(lessonQueryWrapper);
+        for(Lesson lesson : lesson_list)
+        {
+            Lesson new_lesson = new Lesson(lesson.getId() , lesson.getLessonname() , lesson.getLessonintro() , lesson.getLessonauthor() , lesson.getPhoto() , lesson.getVideo() , companyname);
+            lessonMapper.updateById(new_lesson);
+        }
 
         map.put("error_message" , "success");
         return map;
